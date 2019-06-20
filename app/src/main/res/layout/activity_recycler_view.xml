@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RecyclerViewActivity">
-    <com.wys.baselib.widget.recycler.XRecyclerView
+    <com.wys.module_common_ui.widget.recycler.XRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

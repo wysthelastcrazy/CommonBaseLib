@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.wys.baselib.widget.recycler.XRecyclerView;
 import com.wys.commonbaselib.adapter.TestAdapter;
+import com.wys.module_common_ui.widget.RandomCodeView;
+import com.wys.module_common_ui.widget.recycler.XRecyclerView;
 
 import java.util.ArrayList;
 
@@ -24,8 +26,12 @@ public class RecyclerViewActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 
         TextView header=new TextView(this);
+        RandomCodeView codeView = new RandomCodeView(this);
+        codeView.setLayoutParams(new RecyclerView.LayoutParams(200,
+                100));
         header.setText("this is a headerView");
 
+        recycler_view.addHeaderView(codeView);
         recycler_view.addHeaderView(header);
 
         recycler_view.setLayoutManager(layoutManager);

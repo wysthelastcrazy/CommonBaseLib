@@ -4,9 +4,9 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-import com.wys.baselib.widget.recycler.adapter.BaseRecyclerAdapter;
-import com.wys.baselib.widget.recycler.adapter.BaseViewHolder;
 import com.wys.commonbaselib.R;
+import com.wys.module_common_ui.widget.recycler.adapter.BaseRecyclerAdapter;
+import com.wys.module_common_ui.widget.recycler.adapter.BaseViewHolder;
 
 import java.util.ArrayList;
 

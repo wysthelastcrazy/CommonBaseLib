@@ -1,4 +1,4 @@
-package com.wys.baselib.widget.recycler.adapter;
+package com.wys.module_common_ui.widget.recycler.adapter;
 
 import android.view.View;
 

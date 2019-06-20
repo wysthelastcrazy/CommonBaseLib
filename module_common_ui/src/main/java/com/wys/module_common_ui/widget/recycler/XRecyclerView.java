@@ -1,7 +1,6 @@
-package com.wys.baselib.widget.recycler;
+package com.wys.module_common_ui.widget.recycler;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.util.SparseArrayCompat;
@@ -9,11 +8,9 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.wys.baselib.R;
 
 /**
  * Created by yas on 2019/6/4

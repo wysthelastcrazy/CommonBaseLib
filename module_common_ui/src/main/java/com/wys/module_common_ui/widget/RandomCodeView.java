@@ -1,4 +1,4 @@
-package com.wys.baselib.widget;
+package com.wys.module_common_ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,7 +8,10 @@ import android.graphics.Paint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-import com.wys.baselib.R;
+
+
+import com.wys.module_common_ui.R;
+
 import java.util.Random;
 
 /**
