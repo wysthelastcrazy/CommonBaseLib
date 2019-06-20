@@ -3,9 +3,13 @@ package com.wys.commonbaselib;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.wys.baselib.net.GSRequest;
+import com.wys.baselib.net.RequestParam;
+import com.wys.baselib.net.callback.ResponseCallback;
 import com.wys.baselib.utils.ScreenUtil;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +27,21 @@ public class MainActivity extends AppCompatActivity {
             case R.id.btn_recycler:
                 Intent intent = new Intent(this,RecyclerViewActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.btn_net:
+                GSRequest.getRequest("https://scoreenglish.aixuexi.com/student/class/record", null,
+                        new RequestParam().addParam("fbClassId","123").addParam("studentId","4321"),
+                        new ResponseCallback() {
+                    @Override
+                    public void onSuccess(String jsonString) {
+                        Log.d("MainActivity","[onSuccess] jsonString:"+jsonString);
+                    }
+
+                    @Override
+                    public void onFailure(int code, String msg) {
+                        Log.d("MainActivity","[onFailure] msg:"+msg+"   code:"+code);
+                    }
+                });
                 break;
         }
     }

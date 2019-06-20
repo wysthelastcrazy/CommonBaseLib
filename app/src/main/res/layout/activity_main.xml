@@ -17,7 +17,12 @@
             android:layout_height="wrap_content"
             android:text="recycler"
             android:onClick="onClick"/>
-
+        <Button
+            android:id="@+id/btn_net"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="net"
+            android:onClick="onClick"/>
     </LinearLayout>
     <TextView
         android:id="@+id/tv_info"

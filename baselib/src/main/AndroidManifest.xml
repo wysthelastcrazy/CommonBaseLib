@@ -1,2 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wys.baselib" />
+    package="com.wys.baselib" >
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--   获取网络信息状态，如当前的网络连接是否有效-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!--  允许程序访问Wi-Fi网络状态信息-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+</manifest>
