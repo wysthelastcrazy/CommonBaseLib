@@ -12,6 +12,8 @@ import com.wys.baselib.net.RequestParam;
 import com.wys.baselib.net.callback.ResponseCallback;
 import com.wys.baselib.utils.ScreenUtil;
 
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
     private TextView tv_info;
     @Override
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
                         new RequestParam().addParam("fbClassId","123").addParam("studentId","4321"),
                         new ResponseCallback() {
                     @Override
-                    public void onSuccess(String jsonString) {
+                    public void onSuccess(JSONObject jsonString) {
                         Log.d("MainActivity","[onSuccess] jsonString:"+jsonString);
                     }
 

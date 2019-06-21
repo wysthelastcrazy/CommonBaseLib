@@ -8,7 +8,7 @@ import com.wys.baselib.net.common.ICommonParams;
  * Describe:
  */
 public class BaseLib {
-    public static void initRequst(ICommonParams params){
+    public static void initRequest(ICommonParams params){
         RequestConfig.params = params;
     }
 }

@@ -1,6 +1,11 @@
 package com.wys.baselib.net;
 
+import android.text.TextUtils;
+
 import com.wys.baselib.net.callback.ResponseCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -43,7 +48,19 @@ public class GSRequest {
                 int code = response.code();
                 switch (code) {
                     case 200:
-                        callback.onSuccess(response.body().string());
+                        try {
+                            String rsp = response.body().string();
+                            if (TextUtils.isEmpty(rsp)){
+                                callback.onFailure(code, "response&body is null");
+                            }else {
+                                JSONObject jsonObject = new JSONObject(rsp);
+                                callback.onSuccess(jsonObject);
+                            }
+                        }catch (Exception e) {
+//                            e.printStackTrace();
+                            callback.onFailure(code, e.getMessage());
+                        }
+
                         break;
                     default:
                         callback.onFailure(code, response.message());

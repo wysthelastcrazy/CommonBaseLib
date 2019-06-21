@@ -15,6 +15,6 @@ public class MApp extends Application {
     public void onCreate() {
         super.onCreate();
         ScreenUtil.init(this,ScreenUtil.VERTICAL);
-        BaseLib.initRequst(new CommonParams());
+        BaseLib.initRequest(new CommonParams());
     }
 }

@@ -11,6 +11,7 @@ import java.util.Map;
 public class RequestConfig {
     public static ICommonParams params;
 
+
     public static Map<String,Object> getCommonParams(){
         if (params!=null){
             return params.getParams();
