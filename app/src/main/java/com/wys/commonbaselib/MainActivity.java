@@ -9,8 +9,12 @@ import android.widget.TextView;
 
 import com.wys.baselib.net.GSRequest;
 import com.wys.baselib.net.RequestParam;
+import com.wys.baselib.net.callback.GSResponse;
 import com.wys.baselib.net.callback.ResponseCallback;
 import com.wys.baselib.utils.ScreenUtil;
+import com.wys.commonbaselib.bean.UserBean;
+import com.wys.commonbaselib.net.BusinessCallback;
+import com.wys.commonbaselib.utils.Md5Util;
 
 import org.json.JSONObject;
 
@@ -31,19 +35,39 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.btn_net:
-                GSRequest.getRequest("https://scoreenglish.aixuexi.com/student/class/record", null,
-                        new RequestParam().addParam("fbClassId","123").addParam("studentId","4321"),
+                GSRequest.postFormRequest("http://c.dev.aixuexi.com/password/login", null,
+                        new RequestParam().addParam("username","19990000001")
+                                .addParam("password","123456"),
                         new ResponseCallback() {
                     @Override
-                    public void onSuccess(JSONObject jsonString) {
-                        Log.d("MainActivity","[onSuccess] jsonString:"+jsonString);
+                    public void onResponse(GSResponse gsResponse) {
+                        Log.d("MainActivity","[onSuccess] gsResponse:"+gsResponse.body+
+                                "  ,headers:"+gsResponse.headers.get("token"));
                     }
 
                     @Override
                     public void onFailure(int code, String msg) {
-                        Log.d("MainActivity","[onFailure] msg:"+msg+"   code:"+code);
                     }
                 });
+                break;
+            case R.id.btn_postJson:
+                GSRequest.postJsonRequest("https://gushiapi.egaosi.com/login/login", null,
+                        new RequestParam().addParam("mobile", "18811426939")
+                                .addParam("pwd", Md5Util.parseMD5("111111"))
+                                .addParam("type",2),
+                        new BusinessCallback<UserBean>(UserBean.class) {
+                            @Override
+                            public void onSuccess(UserBean userBean) {
+
+                            }
+
+                            @Override
+                            public void onError(int code, String errorMsg) {
+
+                            }
+                        });
+                break;
+            case R.id.btn_cer:
                 break;
         }
     }

@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.wys.baselib.BaseLib;
 import com.wys.baselib.utils.ScreenUtil;
-import com.wys.commonbaselib.net.CommonParams;
+import com.wys.commonbaselib.net.RequestConfig;
 
 /**
  * Created by yas on 2019/6/10
@@ -15,6 +15,6 @@ public class MApp extends Application {
     public void onCreate() {
         super.onCreate();
         ScreenUtil.init(this,ScreenUtil.VERTICAL);
-        BaseLib.initRequest(new CommonParams());
+        BaseLib.initRequest(new RequestConfig());
     }
 }
