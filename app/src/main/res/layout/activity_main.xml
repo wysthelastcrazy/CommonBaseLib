@@ -30,10 +30,10 @@
             android:text="postJson"
             android:onClick="onClick"/>
         <Button
-            android:id="@+id/btn_cer"
+            android:id="@+id/btn_downFile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="postCer"
+            android:text="downFile"
             android:onClick="onClick"/>
     </LinearLayout>
     <TextView

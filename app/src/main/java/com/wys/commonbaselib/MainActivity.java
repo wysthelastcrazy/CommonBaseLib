@@ -1,6 +1,7 @@
 package com.wys.commonbaselib;
 
 import android.content.Intent;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,13 +11,14 @@ import android.widget.TextView;
 import com.wys.baselib.net.GSRequest;
 import com.wys.baselib.net.RequestParam;
 import com.wys.baselib.net.callback.GSResponse;
-import com.wys.baselib.net.callback.ResponseCallback;
+import com.wys.baselib.net.callback.IDownloadCallback;
+import com.wys.baselib.net.callback.IResponseCallback;
 import com.wys.baselib.utils.ScreenUtil;
 import com.wys.commonbaselib.bean.UserBean;
 import com.wys.commonbaselib.net.BusinessCallback;
 import com.wys.commonbaselib.utils.Md5Util;
 
-import org.json.JSONObject;
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     private TextView tv_info;
@@ -38,11 +40,10 @@ public class MainActivity extends AppCompatActivity {
                 GSRequest.postFormRequest("http://c.dev.aixuexi.com/password/login", null,
                         new RequestParam().addParam("username","19990000001")
                                 .addParam("password","123456"),
-                        new ResponseCallback() {
+                        new IResponseCallback() {
                     @Override
                     public void onResponse(GSResponse gsResponse) {
-                        Log.d("MainActivity","[onSuccess] gsResponse:"+gsResponse.body+
-                                "  ,headers:"+gsResponse.headers.get("token"));
+
                     }
 
                     @Override
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         new BusinessCallback<UserBean>(UserBean.class) {
                             @Override
                             public void onSuccess(UserBean userBean) {
-
+                                Log.d("MainActivity","[onSuccess] userBean:"+userBean.getUserInfo().getNickName());
                             }
 
                             @Override
@@ -67,7 +68,35 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                 break;
-            case R.id.btn_cer:
+            case R.id.btn_downFile:
+                File file = new File(Environment.getExternalStorageDirectory(), "/test.jpg");
+                GSRequest.download("https://timgsa." +
+                                "baidu.com/timg?image&quality=" +
+                                "80&size=b9999_10000&sec=1561372545884&di=" +
+                                "672d238c03f5d3cfdce839cb1ccf396c&imgtype=0&" +
+                                "src=http%3A%2F%2Fp4.so.qhmsg.com%2Ft0108dfa8062295f6a9.jpg",
+                        file,
+                        new IDownloadCallback() {
+                            @Override
+                            public void onStart() {
+                                Log.d("MainActivity111","[onStart] ++++++++");
+                            }
+
+                            @Override
+                            public void onProgress(long currProgress, long total) {
+                                Log.d("MainActivity111","[onProgress] ++++++++total:"+total+" ,+currProgress:"+currProgress);
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Log.d("MainActivity111","[onComplete] ++++++++");
+                            }
+
+                            @Override
+                            public void onError(String errorMsg) {
+                                Log.d("MainActivity111","[onError] ++++++++ errorMsg:"+errorMsg);
+                            }
+                        });
                 break;
         }
     }

@@ -2,7 +2,7 @@ package com.wys.commonbaselib.net;
 
 import com.google.gson.Gson;
 import com.wys.baselib.net.callback.GSResponse;
-import com.wys.baselib.net.callback.ResponseCallback;
+import com.wys.baselib.net.callback.IResponseCallback;
 
 import org.json.JSONObject;
 
@@ -10,7 +10,7 @@ import org.json.JSONObject;
  * Created by yas on 2019/6/24
  * Describe:
  */
-public abstract class BusinessCallback<T> implements ResponseCallback {
+public abstract class BusinessCallback<T> implements IResponseCallback {
     private Class<T> clz;
 
 

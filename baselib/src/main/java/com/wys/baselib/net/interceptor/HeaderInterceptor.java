@@ -1,6 +1,8 @@
 package com.wys.baselib.net.interceptor;
 
-import com.wys.baselib.net.RequestConfig;
+import android.util.Log;
+
+import com.wys.baselib.net.RequestClient;
 
 import java.io.IOException;
 import java.util.Map;
@@ -19,14 +21,12 @@ public class HeaderInterceptor implements Interceptor {
         Request request = chain.request();
 
         Request.Builder builder = request.newBuilder();
-        if (RequestConfig.getHeaders()!=null){
-            for (Map.Entry<String,String> entry:RequestConfig.getHeaders().entrySet()){
+        if (RequestClient.getHeaders()!=null){
+            for (Map.Entry<String,String> entry: RequestClient.getHeaders().entrySet()){
                 builder.header(entry.getKey(),entry.getValue());
             }
         }
         Request newRequest = builder.build();
-
-
         return chain.proceed(newRequest);
     }
 }

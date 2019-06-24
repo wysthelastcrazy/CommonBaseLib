@@ -3,6 +3,8 @@ package com.wys.baselib.net;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.wys.baselib.net.https.SSLConfig;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -120,6 +122,10 @@ public class HttpUtils {
 
 
 
+
+
+
+
     public static X509TrustManager UnSafeTrustManager = new X509TrustManager() {
         public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
         }
@@ -141,35 +147,21 @@ public class HttpUtils {
     }
 
     public static HttpUtils.SSLParams getSslSocketFactory() {
-        return getSslSocketFactoryBase((X509TrustManager)null, (InputStream)null, (String)null);
+        SSLConfig config = RequestClient.getSSLConfig();
+        if (config!=null){
+            return getSslSocketFactoryBase(config.getKeyMangerIn(), config.getKeyMangerPWD(),config.getCertificatesIn());
+        }else{
+            return getSslSocketFactoryBase((InputStream)null, (String)null);
+        }
     }
-
-    public static HttpUtils.SSLParams getSslSocketFactory(X509TrustManager trustManager) {
-        return getSslSocketFactoryBase(trustManager, (InputStream)null, (String)null);
-    }
-
-    public static HttpUtils.SSLParams getSslSocketFactory(InputStream... certificates) {
-        return getSslSocketFactoryBase((X509TrustManager)null, (InputStream)null, (String)null, certificates);
-    }
-
-    public static HttpUtils.SSLParams getSslSocketFactory(InputStream bksFile, String password, InputStream... certificates) {
-        return getSslSocketFactoryBase((X509TrustManager)null, bksFile, password, certificates);
-    }
-
-    public static HttpUtils.SSLParams getSslSocketFactory(InputStream bksFile, String password, X509TrustManager trustManager) {
-        return getSslSocketFactoryBase(trustManager, bksFile, password);
-    }
-
-    private static HttpUtils.SSLParams getSslSocketFactoryBase(X509TrustManager trustManager, InputStream bksFile, String password, InputStream... certificates) {
+    private static HttpUtils.SSLParams getSslSocketFactoryBase(InputStream bksFile, String password, InputStream... certificates) {
         HttpUtils.SSLParams sslParams = new HttpUtils.SSLParams();
 
         try {
             KeyManager[] keyManagers = prepareKeyManager(bksFile, password);
             TrustManager[] trustManagers = prepareTrustManager(certificates);
             X509TrustManager manager;
-            if (trustManager != null) {
-                manager = trustManager;
-            } else if (trustManagers != null) {
+            if (trustManagers != null) {
                 manager = chooseTrustManager(trustManagers);
             } else {
                 manager = UnSafeTrustManager;

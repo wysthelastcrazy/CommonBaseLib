@@ -2,11 +2,12 @@ package com.wys.baselib.net;
 
 
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.wys.baselib.net.common.ICommonParams;
+import com.wys.baselib.net.https.SSLConfig;
 import com.wys.baselib.net.interceptor.HeaderInterceptor;
+import com.wys.baselib.net.interceptor.RetryInterceptor;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -27,6 +28,8 @@ public class RequestClient {
 
     private static RequestClient instance;
 
+    private static IRequestConfig mConfig;
+
     public static RequestClient getInstance() {
         if (instance == null) {
             synchronized (RequestClient.class) {
@@ -41,13 +44,14 @@ public class RequestClient {
     private RequestClient(){
         this.mRetryCount = 3;
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.readTimeout(60000L, TimeUnit.MILLISECONDS);
-        builder.writeTimeout(60000L, TimeUnit.MILLISECONDS);
-        builder.connectTimeout(60000L, TimeUnit.MILLISECONDS);
+        builder.readTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
+        builder.writeTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
+        builder.connectTimeout(DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
         HttpUtils.SSLParams sslParams = HttpUtils.getSslSocketFactory();
         builder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
         builder.hostnameVerifier(HttpUtils.UnSafeHostnameVerifier);
         builder.addInterceptor(new HeaderInterceptor());
+//        builder.addInterceptor(new RetryInterceptor());
         this.okHttpClient = builder.build();
     }
 
@@ -64,7 +68,6 @@ public class RequestClient {
         if (!TextUtils.isEmpty(paramStr)){
             url += "?"+paramStr;
         }
-        Log.d("RequestClient","[get] url:"+url);
         Request request = new Request.Builder()
                 .url(url)
                 .get()
@@ -106,7 +109,7 @@ public class RequestClient {
      * @param param
      * @param callback
      */
-    public void post(String url, String tag, RequestParam param, Callback callback) {
+    public void postForm(String url, String tag, RequestParam param, Callback callback) {
         RequestBody requestBody= null;
         if (param.getFileParams().size()>0){
             requestBody = HttpUtils.createMultipartBody(param.getParams(),param.getFileParams());
@@ -123,5 +126,37 @@ public class RequestClient {
         Call call = okHttpClient.newCall(request);
         call.enqueue(callback);
 
+    }
+
+
+    public void downloadFile(String url,Callback callback){
+        Request request = new Request.Builder().url(url).build();
+        okHttpClient.newCall(request).enqueue(callback);
+    }
+
+
+
+
+    public static void setRequestConfig(IRequestConfig config){
+        mConfig = config;
+    }
+
+    public static Map<String,Object> getCommonParams(){
+        if (mConfig!=null){
+            return mConfig.getParams();
+        }
+        return null;
+    }
+    public static Map<String,String> getHeaders(){
+        if (mConfig!=null){
+            return mConfig.getHeaders();
+        }
+        return null;
+    }
+    public static SSLConfig getSSLConfig(){
+        if (mConfig!=null){
+            return mConfig.getSSLConfig();
+        }
+        return null;
     }
 }

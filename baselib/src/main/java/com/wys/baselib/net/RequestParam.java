@@ -15,8 +15,8 @@ public class RequestParam {
     public RequestParam(){
         mMap = new HashMap<>();
         files = new HashMap<>();
-        if (RequestConfig.getCommonParams()!=null){
-            mMap.putAll(RequestConfig.params.getParams());
+        if (RequestClient.getCommonParams()!=null){
+            mMap.putAll(RequestClient.getCommonParams());
         }
     }
 
