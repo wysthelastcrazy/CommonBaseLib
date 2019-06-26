@@ -35,6 +35,12 @@
             android:layout_height="wrap_content"
             android:text="downFile"
             android:onClick="onClick"/>
+        <Button
+            android:id="@+id/btn_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="camera"
+            android:onClick="onClick"/>
     </LinearLayout>
     <TextView
         android:id="@+id/tv_info"

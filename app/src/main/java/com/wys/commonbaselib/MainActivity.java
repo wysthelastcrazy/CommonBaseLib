@@ -98,6 +98,10 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                 break;
+            case R.id.btn_camera:
+                Intent intent1 = new Intent(this,AVEditorActivity.class);
+                startActivity(intent1);
+                break;
         }
     }
 }
