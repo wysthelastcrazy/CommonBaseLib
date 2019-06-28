@@ -2,8 +2,6 @@ package com.wys.audio_video_editor.camera;
 
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES20;
-import android.opengl.GLSurfaceView;
-
 
 import com.wys.audio_video_editor.utils.OpenGLUtil;
 
@@ -17,8 +15,7 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public class CameraDrawer{
 
-
-    private SurfaceTexture mSurfaceTextrue;
+    private SurfaceTexture mSurfaceTexture;
     /**预览数据的宽高*/
     private int mPreviewWidth=0,mPreviewHeight=0;
     /**控件的宽高*/
@@ -33,7 +30,7 @@ public class CameraDrawer{
 
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         textureID = OpenGLUtil.createTextureID();
-        mSurfaceTextrue = new SurfaceTexture(textureID);
+        mSurfaceTexture = new SurfaceTexture(textureID);
         mDirectDrawer  = new DirectDrawer(textureID);
     }
 
@@ -46,13 +43,13 @@ public class CameraDrawer{
         GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
         //从图像流中将纹理图像更新为最近的帧
-        mSurfaceTextrue.updateTexImage();
+        mSurfaceTexture.updateTexImage();
         mDirectDrawer.draw();
     }
 
 
     public SurfaceTexture getTexture() {
-        return mSurfaceTextrue;
+        return mSurfaceTexture;
     }
 
     /**设置预览效果的size*/

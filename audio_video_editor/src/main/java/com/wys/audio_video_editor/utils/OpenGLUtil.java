@@ -1,6 +1,7 @@
 package com.wys.audio_video_editor.utils;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.util.Log;
 import com.wys.audio_video_editor.AVEditor;
 
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -99,6 +101,41 @@ public class OpenGLUtil {
         GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
         //设置环绕方向T，截取纹理坐标到[1/2n,1-1/2n]。将导致永远不会与border融合
         GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+    }
+
+    public static int loadBitmapTexture2D(Bitmap bitmap){
+
+        if(bitmap == null){
+            return -1;
+        }
+
+        int[] textureIds  = new int[1];
+
+        GLES20.glGenTextures(1,textureIds,0);
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D,textureIds[0]);
+
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_WRAP_S,GLES20.GL_REPEAT);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_WRAP_T,GLES20.GL_REPEAT);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MIN_FILTER,GLES20.GL_LINEAR);
+        GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D,GLES20.GL_TEXTURE_MAG_FILTER,GLES20.GL_LINEAR);
+
+        ByteBuffer bitmapBuffer = ByteBuffer.allocate(bitmap.getWidth() * bitmap.getHeight() * 4);
+        bitmap.copyPixelsToBuffer(bitmapBuffer);
+        bitmapBuffer.flip();
+
+        GLES20.glTexImage2D(
+                GLES20.GL_TEXTURE_2D,
+                0,
+                GLES20.GL_RGBA,
+                bitmap.getWidth(),
+                bitmap.getHeight(),
+                0,
+                GLES20.GL_RGBA,
+                GLES20.GL_UNSIGNED_BYTE,
+                bitmapBuffer
+        );
+
+        return textureIds[0];
     }
 
     public static void glError(int code,Object index){

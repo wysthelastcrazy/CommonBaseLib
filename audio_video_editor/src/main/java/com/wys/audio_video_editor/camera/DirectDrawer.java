@@ -1,7 +1,10 @@
 package com.wys.audio_video_editor.camera;
 
+import android.graphics.Bitmap;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
+
+import com.wys.audio_video_editor.utils.OpenGLUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -31,6 +34,50 @@ public class DirectDrawer {
                     "void main() {" +
                     "  gl_FragColor = texture2D( s_texture, textureCoordinate );\n" +
                     "}";
+//    private final String fragmentShaderCode = "#extension GL_OES_EGL_image_external:require\n" +
+//        "precision mediump float;\n" +
+//        "varying vec2 textureCoordinate;\n" +
+//        "uniform samplerExternalOES s_texture;\n" +
+//        "float colorMatrix[20];\n" +
+//        "void main(){\n" +
+//        "\n" +
+//        "    colorMatrix[0] = 0.8;\n" +
+//        "    colorMatrix[1] = 0.3;\n" +
+//        "    colorMatrix[2] = 0.1;\n" +
+//        "    colorMatrix[3] = 0.0;\n" +
+//        "    colorMatrix[4] = 46.5 / 255.0;\n" +
+//        "\n" +
+//        "\n" +
+//        "    colorMatrix[5] = 0.1;\n" +
+//        "    colorMatrix[6] = 0.9;\n" +
+//        "    colorMatrix[7] = 0.0;\n" +
+//        "    colorMatrix[8] = 0.0;\n" +
+//        "    colorMatrix[9] = 46.5 / 255.0;\n" +
+//        "\n" +
+//        "    colorMatrix[10] = 0.1;\n" +
+//        "    colorMatrix[11] = 0.3;\n" +
+//        "    colorMatrix[12] = 0.7;\n" +
+//        "    colorMatrix[13] = 0.0;\n" +
+//        "    colorMatrix[14] = 46.5 / 255.0;\n" +
+//        "\n" +
+//        "    colorMatrix[15] = 0.0;\n" +
+//        "    colorMatrix[16] = 0.0;\n" +
+//        "    colorMatrix[17] = 0.0;\n" +
+//        "    colorMatrix[18] = 1.0;\n" +
+//        "    colorMatrix[19] = 0.0;\n" +
+//        "\n" +
+//        "\n" +
+//        "\n" +
+//        "    vec4 rgb = texture2D(s_texture,textureCoordinate);\n" +
+//        "\n" +
+//        "    float rn = rgb.r * colorMatrix[0 + 5 * 0] + rgb.g * colorMatrix[1 + 5 * 0] + rgb.b * colorMatrix[2 + 5 * 0] + rgb.a * colorMatrix[3 + 5 * 0] + colorMatrix[4 + 5 * 0];\n" +
+//        "    float gn = rgb.r * colorMatrix[0 + 5 * 1] + rgb.g * colorMatrix[1 + 5 * 1] + rgb.b * colorMatrix[2 + 5 * 1] + rgb.a * colorMatrix[3 + 5 * 1] + colorMatrix[4 + 5 * 1];\n" +
+//        "    float bn = rgb.r * colorMatrix[0 + 5 * 2] + rgb.g * colorMatrix[1 + 5 * 2] + rgb.b * colorMatrix[2 + 5 * 2] + rgb.a * colorMatrix[3 + 5 * 2] + colorMatrix[4 + 5 * 2];\n" +
+//        "    float an =   0.0 * colorMatrix[0 + 5 * 3] +   0.0 * colorMatrix[1 + 5 * 3] +   0.0 * colorMatrix[2 + 5 * 3] +   1.0 * colorMatrix[3 + 5 * 3] + colorMatrix[4 + 5 * 3];\n" +
+//        "\n" +
+//        "    gl_FragColor = vec4(rn,gn,bn,an);\n" +
+//        "\n" +
+//        "}";
 
     private FloatBuffer vertexBuffer, textureVerticesBuffer;
     private ShortBuffer drawListBuffer;
@@ -59,6 +106,8 @@ public class DirectDrawer {
     };
 
     private int texture;
+
+    private int stickerTextureId;
 
     public DirectDrawer(int texture)
     {
@@ -89,8 +138,7 @@ public class DirectDrawer {
         GLES20.glAttachShader(mProgram, fragmentShader);
         GLES20.glLinkProgram(mProgram);
     }
-    public void draw()
-    {
+    public void draw() {
         GLES20.glUseProgram(mProgram);
         //使用纹理
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
@@ -118,4 +166,7 @@ public class DirectDrawer {
         return shader;
     }
 
+    public void setSticker(Bitmap sticker){
+        stickerTextureId = OpenGLUtil.loadBitmapTexture2D(sticker);
+    }
 }
