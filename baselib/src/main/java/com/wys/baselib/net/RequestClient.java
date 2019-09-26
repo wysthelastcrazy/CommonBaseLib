@@ -3,9 +3,10 @@ package com.wys.baselib.net;
 
 import android.text.TextUtils;
 
+import com.wys.baselib.net.ext.ProgressRequestBody;
+import com.wys.baselib.net.ext.ProgressRequestListener;
 import com.wys.baselib.net.https.SSLConfig;
 import com.wys.baselib.net.interceptor.HeaderInterceptor;
-import com.wys.baselib.net.interceptor.RetryInterceptor;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -132,6 +133,24 @@ public class RequestClient {
     public void downloadFile(String url,Callback callback){
         Request request = new Request.Builder().url(url).build();
         okHttpClient.newCall(request).enqueue(callback);
+    }
+
+    public void uploadFile(String url, String tag, RequestParam param, Callback callback, ProgressRequestListener listener){
+        RequestBody requestBody= null;
+        if (param.getFileParams().size()>0){
+            requestBody = HttpUtils.createMultipartBody(param.getParams(),param.getFileParams());
+        }else {
+            requestBody = HttpUtils.createFormBody(param.getParams());
+        }
+
+        final Request request = new Request.Builder()
+                .url(url)//请求的url
+                .tag(tag)
+                .post(new ProgressRequestBody(requestBody,listener))
+                .build();
+
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(callback);
     }
 
 

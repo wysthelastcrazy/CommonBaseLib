@@ -1,0 +1,54 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.wys.cp" >
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <application>
+        <!-- nearme game sdk config goes here -->
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        <!-- android 9.0及以上设备可能需要 -->
+        <meta-data android:name="debug_mode" android:value="false" />
+        <!-- 控制日志开关，发布时设置false -->
+        <meta-data android:name="is_offline_game"
+        android:value="true" />
+        <!--appKey，开发者后台 申请，务必使用应用自己的appkey -->
+        <meta-data android:name="app_key"
+        android:value="c5217trjnrmU6gO5jG8VvUFU0"/>
+        <!--app_type: 1表示应用，必须设为1-->
+        <meta-data android:name="app_type" android:value="1" /> <activity
+        android:name="com.nearme.game.sdk.component.proxy.ProxyActivity"
+        android:theme="@style/Theme_Dialog_Custom"
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:process=":gcsdk">
+    </activity>
+        <service
+            android:name="com.nearme.game.sdk.component.proxy.ProxyApiService"
+            android:process=":gcsdk"
+            android:priority="1000">
+        </service>
+        <receiver
+            android:name="com.nearme.game.sdk.component.proxy.ProxyUserCenterOperateReceiver"
+            android:exported="true"
+            android:process=":gcsdk">
+            <intent-filter>
+                <action android:name="com.oppo.usercenter.account_login" />
+                <action android:name="com.oppo.usercenter.account_logout" />
+                <action android:name="com.oppo.usercenter.modify_name" />
+            </intent-filter>
+        </receiver>
+        <!-- nearme game sdk config end -->
+    </application>
+</manifest>

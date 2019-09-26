@@ -13,10 +13,12 @@ import com.wys.baselib.net.RequestParam;
 import com.wys.baselib.net.callback.GSResponse;
 import com.wys.baselib.net.callback.IDownloadCallback;
 import com.wys.baselib.net.callback.IResponseCallback;
+import com.wys.baselib.net.ext.ProgressRequestListener;
 import com.wys.baselib.utils.ScreenUtil;
 import com.wys.commonbaselib.bean.UserBean;
 import com.wys.commonbaselib.net.BusinessCallback;
 import com.wys.commonbaselib.utils.Md5Util;
+import com.wys.cp.COPSdk;
 
 import java.io.File;
 
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tv_info = findViewById(R.id.tv_info);
         tv_info.setText("width:"+ScreenUtil.getScreenWidth()+" , height:"+ScreenUtil.getScreenHeight());
+        COPSdk.init(getApplication());
     }
 
     public void onClick(View view) {
@@ -37,19 +40,31 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.btn_net:
-                GSRequest.postFormRequest("http://c.dev.aixuexi.com/password/login", null,
-                        new RequestParam().addParam("username","19990000001")
-                                .addParam("password","123456"),
-                        new IResponseCallback() {
-                    @Override
-                    public void onResponse(GSResponse gsResponse) {
+                GSRequest.uploadFile("http://c.dev.aixuexi.com/password/login", null,
+                        new RequestParam().addParam("username", "19990000001")
+                                .addParam("password", "123456"),
+                        new ProgressRequestListener() {
+                            @Override
+                            public void onStart() {
+                                Log.d("MainActivity111","[onStart]++++++");
+                            }
 
-                    }
+                            @Override
+                            public void onProgress(long currProgress, long total) {
+                                Log.d("MainActivity111","[onProgress]++++++currProgress:"+currProgress
+                                        +",total:"+total);
+                            }
 
-                    @Override
-                    public void onFailure(int code, String msg) {
-                    }
-                });
+                            @Override
+                            public void onComplete() {
+                                Log.d("MainActivity111","[onComplete]++++++");
+                            }
+
+                            @Override
+                            public void onError(String errorMsg) {
+                                Log.d("MainActivity111","[onError]++++++");
+                            }
+                        });
                 break;
             case R.id.btn_postJson:
                 GSRequest.postJsonRequest("https://gushiapi.egaosi.com/login/login", null,

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.wys.baselib.net.callback.GSResponse;
 import com.wys.baselib.net.callback.IDownloadCallback;
 import com.wys.baselib.net.callback.IResponseCallback;
+import com.wys.baselib.net.ext.ProgressRequestListener;
 
 import org.json.JSONObject;
 
@@ -39,6 +40,19 @@ public class GSRequest {
 
         RequestClient.getInstance().get(url, tag, param,initCallback(callback));
 
+    }
+    public static void uploadFile(String url, String tag, RequestParam param, ProgressRequestListener listener){
+        RequestClient.getInstance().uploadFile(url, tag, param, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+            }
+        },listener);
     }
 
     public static void download(String url, final File file, final IDownloadCallback downloadCallback){
