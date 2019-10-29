@@ -1,4 +1,4 @@
-package com.wys.commonbaselib;
+package com.wys.commonbaselib.activity;
 
 import android.content.Intent;
 import android.os.Environment;
@@ -10,11 +10,10 @@ import android.widget.TextView;
 
 import com.wys.baselib.net.GSRequest;
 import com.wys.baselib.net.RequestParam;
-import com.wys.baselib.net.callback.GSResponse;
 import com.wys.baselib.net.callback.IDownloadCallback;
-import com.wys.baselib.net.callback.IResponseCallback;
 import com.wys.baselib.net.ext.ProgressRequestListener;
 import com.wys.baselib.utils.ScreenUtil;
+import com.wys.commonbaselib.R;
 import com.wys.commonbaselib.bean.UserBean;
 import com.wys.commonbaselib.net.BusinessCallback;
 import com.wys.commonbaselib.utils.Md5Util;
@@ -36,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_recycler:
-                Intent intent = new Intent(this,RecyclerViewActivity.class);
+                Intent intent = new Intent(this, RecyclerViewActivity.class);
                 startActivity(intent);
                 break;
             case R.id.btn_net:

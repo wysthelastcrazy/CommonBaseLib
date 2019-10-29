@@ -1,9 +1,10 @@
-package com.wys.commonbaselib;
+package com.wys.commonbaselib.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.wys.audio_video_editor.camera.CameraView;
+import com.wys.commonbaselib.R;
 
 public class AVEditorActivity extends AppCompatActivity {
     private CameraView cameraView;

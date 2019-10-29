@@ -1,4 +1,4 @@
-package com.wys.commonbaselib;
+package com.wys.commonbaselib.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.wys.commonbaselib.R;
 import com.wys.commonbaselib.adapter.TestAdapter;
 import com.wys.module_common_ui.widget.RandomCodeView;
 import com.wys.module_common_ui.widget.recycler.XRecyclerView;

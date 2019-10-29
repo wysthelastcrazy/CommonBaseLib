@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecyclerViewActivity">
+    tools:context=".activity.RecyclerViewActivity">
     <com.wys.module_common_ui.widget.recycler.XRecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

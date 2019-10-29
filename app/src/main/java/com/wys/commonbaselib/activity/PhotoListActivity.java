@@ -1,4 +1,4 @@
-package com.wys.commonbaselib;
+package com.wys.commonbaselib.activity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -8,6 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.wys.commonbaselib.R;
+import com.wys.commonbaselib.activity.BigPhotoActivity;
 
 /**
  * Created by yas on 2019/9/23
@@ -64,7 +67,7 @@ public class PhotoListActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void test(View view,String name){
-        Intent intent = new Intent(this,BigPhotoActivity.class);
+        Intent intent = new Intent(this, BigPhotoActivity.class);
         intent.putExtra("name",name);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             startActivity(intent,ActivityOptions.makeSceneTransitionAnimation(this,

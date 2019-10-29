@@ -1,4 +1,4 @@
-package com.wys.commonbaselib;
+package com.wys.commonbaselib.activity;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.wys.commonbaselib.R;
 
 /**
  * Created by yas on 2019/9/23
