@@ -20,14 +20,17 @@
 
         </activity>
         <activity android:name=".activity.PhotoListActivity">
+
+        </activity>
+        <activity android:name=".activity.BigPhotoActivity"
+            android:theme="@style/TransparentTheme"/>
+        <activity android:name=".activity.VideoListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.BigPhotoActivity"
-            android:theme="@style/TransparentTheme"/>
     </application>
 
 </manifest>

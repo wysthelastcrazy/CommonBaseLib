@@ -57,9 +57,8 @@
         android:src="@mipmap/ic_launcher"
         android:layout_gravity="center_horizontal"
         android:transitionName="image_bottom"/>
-
-    <Switch
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_height="wrap_content"/>
 </LinearLayout>
