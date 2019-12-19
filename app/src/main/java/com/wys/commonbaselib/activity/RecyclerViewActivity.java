@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.wys.commonbaselib.R;
 import com.wys.commonbaselib.adapter.TestAdapter;
+import com.wys.commonbaselib.adapter.TestMulAdapter;
 import com.wys.module_common_ui.widget.RandomCodeView;
 import com.wys.module_common_ui.widget.recycler.XRecyclerView;
 
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 public class RecyclerViewActivity extends AppCompatActivity {
     private XRecyclerView recycler_view;
     private TestAdapter testAdapter;
+    private TestMulAdapter mulAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,13 +38,18 @@ public class RecyclerViewActivity extends AppCompatActivity {
         recycler_view.addHeaderView(header);
 
         recycler_view.setLayoutManager(layoutManager);
-        testAdapter = new TestAdapter(this,getTestStrings());
-        recycler_view.setAdapter(testAdapter);
+//        testAdapter = new TestAdapter(this,getTestStrings());
+//        recycler_view.setAdapter(testAdapter);
+        mulAdapter = new TestMulAdapter(this,getTestStrings());
+        recycler_view.setAdapter(mulAdapter);
     }
 
     private ArrayList<String> getTestStrings(){
         ArrayList<String> mList = new ArrayList<>();
         for (int i=0;i<9;i++){
+            if (i%3 == 0){
+                mList.add("aaa001");
+            }
             mList.add("item0"+(i+1));
         }
         return mList;

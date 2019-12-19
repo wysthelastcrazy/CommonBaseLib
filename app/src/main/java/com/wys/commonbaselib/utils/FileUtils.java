@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 public class FileUtils {
 
-    public static ArrayList<VideoBean> getVideos(Context mContext){
+    public static ArrayList<VideoBean> getVideos(Context mContext,long maxDuration){
         ArrayList<VideoBean> videoBeans = new ArrayList<>();
         ContentResolver mContentResolver = mContext.getContentResolver();
         Cursor c = null;
@@ -30,21 +30,26 @@ public class FileUtils {
                 continue;
             }
             int id = c.getInt(c.getColumnIndexOrThrow(MediaStore.Video.Media._ID));// 视频的id
-            String name = c.getString(c.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)); // 视频名称
-            String resolution = c.getString(c.getColumnIndexOrThrow(MediaStore.Video.Media.RESOLUTION)); //分辨率
-            long size = c.getLong(c.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE));// 大小
+//            String name = c.getString(c.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)); // 视频名称
+//            String resolution = c.getString(c.getColumnIndexOrThrow(MediaStore.Video.Media.RESOLUTION)); //分辨率
+//            long size = c.getLong(c.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE));// 大小
             long duration = c.getLong(c.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION));// 时长
-            long date = c.getLong(c.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED));//修改时间
+//            long date = c.getLong(c.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_MODIFIED));//修改时间
             Bitmap thumbnail= getVideoThumbnail(id,mContentResolver);
-
-            VideoBean bean = new VideoBean();
-            bean.path = path;
-            bean.duration = duration;
-            bean.thumbnail = thumbnail;
-            videoBeans.add(bean);
+            if (maxDuration <=0||duration<=maxDuration) {
+                VideoBean bean = new VideoBean();
+                bean.path = path;
+                bean.duration = duration;
+                bean.thumbnail = thumbnail;
+                videoBeans.add(bean);
+            }
         }
 
         return videoBeans;
+    }
+
+    public static ArrayList<VideoBean> getVideos(Context mContext){
+        return getVideos(mContext,0);
     }
 
     // 获取视频缩略图
