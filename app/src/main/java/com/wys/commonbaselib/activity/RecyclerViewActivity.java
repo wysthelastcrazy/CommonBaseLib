@@ -3,6 +3,7 @@ package com.wys.commonbaselib.activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,16 +27,20 @@ public class RecyclerViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recycler_view);
         recycler_view = findViewById(R.id.recycler_view);
         recycler_view.setEmptyView(findViewById(R.id.tv_empty));
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
 
         TextView header=new TextView(this);
         RandomCodeView codeView = new RandomCodeView(this);
         codeView.setLayoutParams(new RecyclerView.LayoutParams(200,
                 100));
         header.setText("this is a headerView");
+//
+//        recycler_view.addHeaderView(codeView);
+//        recycler_view.addHeaderView(header);
 
-        recycler_view.addHeaderView(codeView);
-        recycler_view.addHeaderView(header);
+        PagerSnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(recycler_view);
+
 
         recycler_view.setLayoutManager(layoutManager);
 //        testAdapter = new TestAdapter(this,getTestStrings());
@@ -47,9 +52,9 @@ public class RecyclerViewActivity extends AppCompatActivity {
     private ArrayList<String> getTestStrings(){
         ArrayList<String> mList = new ArrayList<>();
         for (int i=0;i<9;i++){
-            if (i%3 == 0){
-                mList.add("aaa001");
-            }
+//            if (i%3 == 0){
+//                mList.add("aaa001");
+//            }
             mList.add("item0"+(i+1));
         }
         return mList;
