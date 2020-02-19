@@ -2,11 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.AVEditorActivity">
-    <com.wys.audio_video_editor.camera.CameraView
-        android:id="@+id/cameraView"
+    <com.wys.module_common_ui.widget.TextThumbSeekBar
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_marginLeft="@dimen/dp_50"
+        android:layout_marginRight="@dimen/dp_50"
+        android:layout_height="@dimen/dp_30"
+        android:thumbOffset="@dimen/dp_0"
+        app:thumb_width="@dimen/dp_60"
+        app:thumb_height="@dimen/dp_30"
+        app:thumbTextSize="@dimen/sp_10"
+        android:thumb="@drawable/player_seek_icon"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_video"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:visibility="gone"/>
+    <Button
+        android:id="@+id/btn_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="play"/>
 </LinearLayout>

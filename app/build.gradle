@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.wys.commonbaselib"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -45,4 +45,7 @@ dependencies {
     officialImplementation project(':combined_operation:official')
     oppoImplementation project(':combined_operation:oppo')
     huaweiImplementation project(':combined_operation:huawei')
+
+//    implementation project(':ui_pad')
+    implementation project(':ui_phone')
 }

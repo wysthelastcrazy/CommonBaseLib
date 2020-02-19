@@ -3,4 +3,10 @@
     <declare-styleable name="RandomCodeView">
         <attr name="auto_refresh" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="TextThumbSeekBar">
+        <attr name="thumb_width" format="dimension"/>
+        <attr name="thumb_height" format="dimension"/>
+        <attr name="thumbTextSize" format="dimension"/>
+    </declare-styleable>
 </resources>
