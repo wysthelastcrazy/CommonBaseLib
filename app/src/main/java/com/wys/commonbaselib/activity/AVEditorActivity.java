@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import com.easefun.gspolyvsdk.GSPloyVsdkManager;
-import com.wys.audio_video_editor.camera.CameraView;
 import com.wys.commonbaselib.R;
 
 public class AVEditorActivity extends AppCompatActivity implements View.OnClickListener {
@@ -18,7 +16,6 @@ public class AVEditorActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aveditor);
         rl_video = findViewById(R.id.rl_video);
-        GSPloyVsdkManager.getInstance().setVideoHolder(rl_video);
 
         btn_play = findViewById(R.id.btn_play);
         btn_play.setOnClickListener(this);
