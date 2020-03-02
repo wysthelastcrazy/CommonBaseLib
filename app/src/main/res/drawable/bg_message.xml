@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background -->
+    <item>
+        <shape>
+            <solid android:color="#2C2E33" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/bg_message_shadow_top" android:gravity="top"/>
+    <item android:drawable="@drawable/bg_message_shadow_bottom" android:gravity="bottom"/>
+    <item android:drawable="@drawable/bg_message_shadow_left" android:gravity="left"/>
+    <item android:drawable="@drawable/bg_message_shadow_right" android:gravity="right"/>
+
+</layer-list>

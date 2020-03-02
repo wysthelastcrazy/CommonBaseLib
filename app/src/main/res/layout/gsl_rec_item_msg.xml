@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/ll_msg_item">
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:text="学员名字"
+        android:textColor="#00BE7B" />
+    <TextView
+        android:id="@+id/tvContentLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="#D9FFFFFF"
+        android:text="开始上课了吗？"
+        android:layout_gravity="left">
+    </TextView>
+    <TextView
+        android:id="@+id/tvContentRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="#D9FFFFFF"
+        android:text="开始上课了吗？"
+        android:visibility="gone"
+        android:layout_gravity="right">
+    </TextView>
+</LinearLayout>
+

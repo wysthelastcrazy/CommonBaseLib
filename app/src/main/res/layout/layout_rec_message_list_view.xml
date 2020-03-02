@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000000"/>
+    <TextView
+        android:id="@+id/tvRoomId"
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:paddingLeft="8dp"
+        android:textSize="10sp"
+        android:textColor="#A1A8AB"
+        android:background="#2C2E33"
+        android:gravity="center_vertical"
+        android:text="房间号："/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_message">
+        <com.wys.module_common_ui.widget.recycler.XRecyclerView
+            android:id="@+id/rlvMessage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"/>
+        <TextView
+            android:id="@+id/tvEmptyView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#5C6369"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:text="还没有学员发言"
+            android:visibility="gone"/>
+    </FrameLayout>
+</LinearLayout>

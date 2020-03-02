@@ -12,7 +12,7 @@
             android:id="@+id/rl_base_left"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="3">
             <LinearLayout
                 android:id="@+id/ll_msg_btn"
                 android:layout_width="match_parent"
@@ -28,6 +28,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="putMessages"/>
+                <Button
+                    android:id="@+id/btn_update_messages"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="updateMessages"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/ll_trophy"
@@ -40,7 +45,8 @@
 
         <LinearLayout
             android:id="@+id/ll_base_right"
-            android:layout_width="160dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:orientation="vertical">
             <ImageView
@@ -48,6 +54,10 @@
                 android:layout_height="120dp"
                 android:src="@mipmap/ic_launcher"
                 android:scaleType="fitXY"/>
+<!--            <com.wys.commonbaselib.im.GslRecordMessageListView-->
+<!--                android:id="@+id/msgListView"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"/>-->
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

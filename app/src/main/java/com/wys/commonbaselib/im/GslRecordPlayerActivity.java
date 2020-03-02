@@ -4,15 +4,16 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.graphics.Color;
+import android.content.res.AssetFileDescriptor;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import android.widget.LinearLayout;
 
 import com.wys.commonbaselib.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -28,13 +30,14 @@ import java.util.ArrayList;
  */
 public class GslRecordPlayerActivity extends Activity implements View.OnClickListener {
     private LinearLayout ll_base_right;
-    private GslRecordMessageListView msgListView;
+    private GslRecMessageListView msgListView;
     private Button btn_put_message;
     private Button btn_put_messages;
+    private Button btn_update_messages;
 
     private LinearLayout ll_trophy;
 
-    private ArrayList<GslRecordMessage> messages;
+    private ArrayList<GslRecMessage> messages;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,15 +45,20 @@ public class GslRecordPlayerActivity extends Activity implements View.OnClickLis
 
         initMessages();
         ll_base_right = findViewById(R.id.ll_base_right);
-        msgListView = new GslRecordMessageListView(this);
-        ll_base_right.addView(msgListView);
+//        msgListView = findViewById(R.id.msgListView);
+        msgListView = new GslRecMessageListView(this,ll_base_right,"002");
         msgListView.setRoomId("001");
 
         btn_put_message = findViewById(R.id.btn_put_message);
         btn_put_message.setOnClickListener(this);
         btn_put_messages = findViewById(R.id.btn_put_messages);
         btn_put_messages.setOnClickListener(this);
+
+        btn_update_messages = findViewById(R.id.btn_update_messages);
+        btn_update_messages.setOnClickListener(this);
+
         initTrophy();
+        initSoundPool();
     }
 
     private void initTrophy(){
@@ -160,8 +168,12 @@ public class GslRecordPlayerActivity extends Activity implements View.OnClickLis
                 putMessage();
                 break;
             case R.id.btn_put_messages:
-//                putMessages();
-                showTrophy();
+                putMessages();
+//                showTrophy();
+//                playSound();
+                break;
+            case R.id.btn_update_messages:
+                updateMessages();
                 break;
         }
     }
@@ -170,7 +182,7 @@ public class GslRecordPlayerActivity extends Activity implements View.OnClickLis
         if (position>messages.size() - 1){
             position = 0;
         }
-        GslRecordMessage message = messages.get(position);
+        GslRecMessage message = messages.get(position);
         msgListView.putMessage(message);
         position++;
 
@@ -179,18 +191,22 @@ public class GslRecordPlayerActivity extends Activity implements View.OnClickLis
         msgListView.putMessages(messages);
     }
 
+    private void updateMessages(){
+        msgListView.updateMessages(messages);
+    }
+
     private void initMessages(){
         messages = new ArrayList<>();
 
-        GslRecordMessage message = new GslRecordMessage();
-        message.setContent("第1条聊天消息++++++++++++++++++++++++");
+        GslRecMessage message = new GslRecMessage();
+        message.setContent("第1条聊天消息[困][举手][发呆]");
         message.setNickName("学生a");
         message.setSelf(false);
         message.setUserRole("");
         message.setUserId("001");
         messages.add(message);
 
-        message = new GslRecordMessage();
+        message = new GslRecMessage();
         message.setContent("第2条聊天消息");
         message.setNickName("学生b");
         message.setSelf(false);
@@ -198,7 +214,7 @@ public class GslRecordPlayerActivity extends Activity implements View.OnClickLis
         message.setUserId("002");
         messages.add(message);
 
-        message = new GslRecordMessage();
+        message = new GslRecMessage();
         message.setContent("第3条聊天消息");
         message.setNickName("老师");
         message.setSelf(false);
@@ -206,7 +222,7 @@ public class GslRecordPlayerActivity extends Activity implements View.OnClickLis
         message.setUserId("003");
         messages.add(message);
 
-        message = new GslRecordMessage();
+        message = new GslRecMessage();
         message.setContent("第4条聊天消息");
         message.setNickName("学生d");
         message.setSelf(false);
@@ -214,7 +230,7 @@ public class GslRecordPlayerActivity extends Activity implements View.OnClickLis
         message.setUserId("004");
         messages.add(message);
 
-        message = new GslRecordMessage();
+        message = new GslRecMessage();
         message.setContent("第5条聊天消息");
         message.setNickName("学生e");
         message.setSelf(true);
@@ -222,12 +238,56 @@ public class GslRecordPlayerActivity extends Activity implements View.OnClickLis
         message.setUserId("005");
         messages.add(message);
 
-        message = new GslRecordMessage();
+        message = new GslRecMessage();
         message.setContent("第6条聊天消息");
         message.setNickName("学生f");
         message.setSelf(false);
         message.setUserRole("");
         message.setUserId("006");
         messages.add(message);
+    }
+    private SoundPool soundPool;
+    private void initSoundPool(){
+        if (Build.VERSION.SDK_INT>=22){
+            SoundPool.Builder builder = new SoundPool.Builder();
+            //最多播放音频数量
+            builder.setMaxStreams(1);
+            AudioAttributes.Builder attrBuilder = new AudioAttributes.Builder();
+            attrBuilder.setLegacyStreamType(AudioManager.STREAM_MUSIC);
+            //加载一个AudioAttributes
+            builder.setAudioAttributes(attrBuilder.build());
+            soundPool = builder.build();
+        }else{
+            /**
+             * 第一个参数：int maxStreams：SoundPool对象的最大并发流数
+             * 第二个参数：int streamType：AudioManager中描述的音频流类型
+             *第三个参数：int srcQuality：采样率转换器的质量。 目前没有效果。 使用0作为默认值。
+             */
+            soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
+
+        }
+    }
+
+    private void playSound(){
+        try {
+            AssetFileDescriptor afd = getAssets().openFd("music/BackgroundMusic/game_end.mp3");
+            final int voiceId = soundPool.load(afd,1);
+            soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                @Override
+                public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                    if (status==0){
+                        //第一个参数soundID
+                        //第二个参数leftVolume为左侧音量值（范围= 0.0到1.0）
+                        //第三个参数rightVolume为右的音量值（范围= 0.0到1.0）
+                        //第四个参数priority 为流的优先级，值越大优先级高，影响当同时播放数量超出了最大支持数时SoundPool对该流的处理
+                        //第五个参数loop 为音频重复播放次数，0为值播放一次，-1为无限循环，其他值为播放loop+1次
+                        //第六个参数 rate为播放的速率，范围0.5-2.0(0.5为一半速率，1.0为正常速率，2.0为两倍速率)
+                        soundPool.play(voiceId, 1, 1, 1, 0, 1);
+                    }
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

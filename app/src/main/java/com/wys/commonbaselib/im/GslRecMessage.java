@@ -4,7 +4,7 @@ package com.wys.commonbaselib.im;
  * Created by yas on 2020-02-19
  * Describe:录制件播放，聊天室消息实体类
  */
-public class GslRecordMessage {
+public class GslRecMessage {
     private String userId;
     private String nickName;
     private String userRole;
