@@ -1,0 +1,89 @@
+package com.wys.downloader;
+
+import com.google.gson.annotations.Expose;
+
+/**
+ * Created by yas on 2020-02-13
+ * Describe:保存网络请求的类
+ */
+public class DownloadRequest {
+    @Expose private final String downloadUrl; //下载的url
+    @Expose private final String downloadDir; //下载的目标文件路径
+    @Expose private final String downloadName; //下载的文件名
+    @Expose private final String taskId;      //任务id
+    @Expose private final int taskType;       //任务所属的类别，为区分不懂类型的文件下载
+
+    private DownloadRequest(Builder builder){
+        downloadUrl = builder.downloadUrl;
+        downloadDir = builder.downloadDir;
+        downloadName = builder.downloadName;
+        taskId = builder.taskId;
+        taskType = builder.taskType;
+    }
+
+    public String getFilePath() {
+        return getDownloadDir() + "/" + getDownloadName();
+    }
+
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public String getDownloadUrl() {
+        return downloadUrl;
+    }
+
+    public String getDownloadDir() {
+        return downloadDir;
+    }
+
+    public String getDownloadName() {
+        return downloadName;
+    }
+
+    public String getTaskId(){
+        return taskId;
+    }
+    public int getTaskType(){
+        return taskType;
+    }
+
+
+    public static final class Builder{
+        private String downloadUrl;
+        private String downloadDir;
+        private String downloadName;
+        private String taskId;
+        private int taskType;
+
+        public IDownloadListener listtener;
+
+        private Builder(){}
+
+        public Builder downloadUrl(String downloadUrl){
+            this.downloadUrl = downloadUrl;
+            return this;
+        }
+
+        public Builder downloadDir(String downloadDir){
+            this.downloadDir = downloadDir;
+            return this;
+        }
+
+        public Builder downloadName(String downloadName){
+            this.downloadName = downloadName;
+            return this;
+        }
+        public Builder taskId(String taskId){
+            this.taskId = taskId;
+            return this;
+        }
+        public Builder taskType(int taskType){
+            this.taskType = taskType;
+            return this;
+        }
+        public DownloadRequest build(){
+            return new DownloadRequest(this);
+        }
+    }
+}
