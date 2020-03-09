@@ -48,4 +48,7 @@ dependencies {
 
 //    implementation project(':ui_pad')
     implementation project(':ui_phone')
+    implementation project(':downloader')
+    implementation project(':mediaPlayer')
+
 }
