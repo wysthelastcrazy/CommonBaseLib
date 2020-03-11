@@ -5,13 +5,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.FrameLayout;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -19,12 +13,10 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -38,21 +30,18 @@ import com.google.android.exoplayer2.util.Util;
 import java.io.File;
 
 /**
- * Created by yas on 2020-03-09
- * Describe:视频播放器，基于exoplayer2
+ * Created by yas on 2020-03-10
+ * Describe:音频播放器
  */
-public class CustomVideoPlayerView extends FrameLayout {
-    private final String TAG = "CustomVideoPlayerView";
-    private PlayerView mPlayerView;
+public class CustomAudioPlayer {
     private TrackSelector mTrackSelector;
     private SimpleExoPlayer mPlayer;
     //定义数据源工厂对象
     DataSource.Factory mediaDataSourceFactory;
-
     private SimpleCache simpleCache;
     private CacheDataSourceFactory cachedDataSourceFactory;
-
     private IMediaPlayListener mediaPlayListener;
+
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -64,46 +53,26 @@ public class CustomVideoPlayerView extends FrameLayout {
             }
         }
     };
-    public CustomVideoPlayerView(@NonNull Context context) {
-        this(context,null);
+
+    public CustomAudioPlayer(Context context){
+        init(context);
     }
+    private void init(Context context){
+        /**创建DefaultTrackSelector对象，即磁道选择工厂对象*/
+        //创建带宽对象
+        BandwidthMeter bandwidthMeter=new DefaultBandwidthMeter();
+        //根据当前宽带来创建选择磁道工厂对象
+        TrackSelection.Factory factory=new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        //传入工程对象，以便创建选择磁道工对象
+        mTrackSelector=new DefaultTrackSelector(factory);
 
-    public CustomVideoPlayerView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs,0);
+        /**创建播放器对象，并与View进行绑定*/
+        //根据选择磁道创建播放器对象
+        mPlayer= ExoPlayerFactory.newSimpleInstance(context,mTrackSelector);
+        mPlayer.addListener(eventListener);
+        mediaDataSourceFactory=new DefaultDataSourceFactory(context,
+                Util.getUserAgent(context,context.getApplicationInfo().name));
     }
-
-    public CustomVideoPlayerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init();
-    }
-    private void init(){
-        {
-            mPlayerView = new PlayerView(getContext());
-            LayoutParams playerParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-            mPlayerView.setLayoutParams(playerParams);
-            mPlayerView.setOnTouchListener(playerTouchListener);
-            mPlayerView.setUseController(false);
-            addView(mPlayerView);
-
-            /**创建DefaultTrackSelector对象，即磁道选择工厂对象*/
-            //创建带宽对象
-            BandwidthMeter bandwidthMeter=new DefaultBandwidthMeter();
-            //根据当前宽带来创建选择磁道工厂对象
-            TrackSelection.Factory factory=new AdaptiveTrackSelection.Factory(bandwidthMeter);
-            //传入工程对象，以便创建选择磁道工对象
-            mTrackSelector=new DefaultTrackSelector(factory);
-
-            /**创建播放器对象，并与View进行绑定*/
-            //根据选择磁道创建播放器对象
-            mPlayer= ExoPlayerFactory.newSimpleInstance(getContext(),mTrackSelector);
-            mPlayer.addListener(eventListener);
-            //将player和View绑定
-            mPlayerView.setPlayer(mPlayer);
-            mediaDataSourceFactory=new DefaultDataSourceFactory(getContext(),
-                    Util.getUserAgent(getContext(),getContext().getApplicationInfo().name));
-        }
-    }
-
     /**
      * 加载资源
      * @param url
@@ -112,27 +81,14 @@ public class CustomVideoPlayerView extends FrameLayout {
         prepare(url,false);
     }
     public void prepare(String url,boolean autoPlay){
-        String type = getUrlType(url);
-        Log.d(TAG,"[play] type:"+type);
         //创建数据源
         MediaSource mediaSource =null;
-        if ("m3u8".equals(type)) {
-            //创建数据源
-            if (cachedDataSourceFactory!=null){
-                mediaSource = new HlsMediaSource.Factory(cachedDataSourceFactory)
+        if (cachedDataSourceFactory!=null) {
+            mediaSource = new ExtractorMediaSource.Factory(cachedDataSourceFactory)
+                    .createMediaSource(Uri.parse(url));
+        }else{
+            mediaSource = new ExtractorMediaSource.Factory(mediaDataSourceFactory)
                         .createMediaSource(Uri.parse(url));
-            }else {
-                mediaSource = new HlsMediaSource.Factory(mediaDataSourceFactory)
-                        .createMediaSource(Uri.parse(url));
-            }
-        }else {
-            if (cachedDataSourceFactory!=null) {
-                mediaSource = new ExtractorMediaSource.Factory(cachedDataSourceFactory)
-                        .createMediaSource(Uri.parse(url));
-            }else{
-                mediaSource = new ExtractorMediaSource.Factory(mediaDataSourceFactory)
-                        .createMediaSource(Uri.parse(url));
-            }
         }
         isFirstPlay = true;
         isPlayFinish = false;
@@ -255,27 +211,4 @@ public class CustomVideoPlayerView extends FrameLayout {
             }
         }
     };
-
-    private OnTouchListener playerTouchListener = new OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            return true;
-        }
-    };
-    private String getUrlType(String url){
-        if (!TextUtils.isEmpty(url)){
-            String urlStr = url.split("\\?")[0];
-            String[] params = urlStr.split("/");
-            if (params.length>0) {
-                String type = params[params.length - 1];
-                if (!TextUtils.isEmpty(type)) {
-                    String[] strs = type.split("\\.");
-                    if (strs.length>1){
-                        return strs[strs.length-1];
-                    }
-                }
-            }
-        }
-        return null;
-    }
 }

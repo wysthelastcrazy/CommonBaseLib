@@ -6,7 +6,7 @@
     <com.aigushi.videoplayer.CustomVideoPlayerView
         android:id="@+id/video_player"
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
+        android:layout_height="600dp"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,5 +18,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/btn_pause"
         android:text="pause"
+        android:onClick="onClick"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_download"
+        android:text="download"
         android:onClick="onClick"/>
 </LinearLayout>

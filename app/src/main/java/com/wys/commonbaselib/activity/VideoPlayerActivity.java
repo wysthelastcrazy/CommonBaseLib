@@ -1,16 +1,24 @@
 package com.wys.commonbaselib.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 
 import com.aigushi.videoplayer.CustomVideoPlayerView;
 import com.aigushi.videoplayer.IMediaPlayListener;
+import com.easefun.m3u8.M3U8DownloadTask;
+import com.easefun.m3u8.listener.OnDownloadListener;
 import com.wys.commonbaselib.R;
+
+import java.io.File;
 
 
 /**
@@ -25,6 +33,7 @@ public class VideoPlayerActivity extends Activity {
     private String testUrl3 = "https://gushiimage.egaosi.com/sample/math/144669059_enc/test.m3u8";
 
     private boolean isFinished;
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +72,15 @@ public class VideoPlayerActivity extends Activity {
                 Log.d(TAG,"[onPlayError]+++++++++++++++++++");
             }
         });
-        playerView.prepare(testUrl);
+//        playerView.prepare(testUrl3);
+        String uri = Environment.getExternalStorageDirectory().getPath() + File.separator
+                + "m3u8Release"+File.separator+"local.m3u8";
+        playerView.prepare(uri);
+        String[] permissions = {
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+        };
+        requestPermissions(permissions,100);
     }
 
     public void onClick(View view){
@@ -78,7 +95,44 @@ public class VideoPlayerActivity extends Activity {
             case R.id.btn_pause:
                 playerView.pause();
                 break;
+            case R.id.btn_download:
+                download(testUrl3);
+                break;
         }
     }
 
+    private void download(String url){
+        M3U8DownloadTask task = new M3U8DownloadTask("1_01");
+        task.download(url, new OnDownloadListener() {
+            @Override
+            public void onDownloading(long itemFileSize, int totalTs, int curTs) {
+                Log.d(TAG,"[onDownloading]+++++++++++++++++++");
+                Log.d(TAG,"[onDownloading] itemFileSize:"+itemFileSize);
+                Log.d(TAG,"[onDownloading] totalTs:"+totalTs);
+                Log.d(TAG,"[onDownloading] curTs:"+curTs);
+            }
+
+            @Override
+            public void onSuccess() {
+                Log.d(TAG,"[onSuccess]+++++++++++++++++++");
+            }
+
+            @Override
+            public void onProgress(long curLength) {
+                Log.d(TAG,"[onProgress]+++++++++++++++++++");
+                Log.d(TAG,"[onProgress] curLength:"+curLength);
+            }
+
+            @Override
+            public void onStart() {
+                Log.d(TAG,"[onStart]+++++++++++++++++++");
+            }
+
+            @Override
+            public void onError(Throwable errorMsg) {
+                Log.d(TAG,"[onError]+++++++++++++++++++");
+                Log.d(TAG,"[onError] errorMsg:"+errorMsg);
+            }
+        });
+    }
 }

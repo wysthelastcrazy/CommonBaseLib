@@ -20,7 +20,7 @@ android {
     }
     repositories {
         flatDir {
-            dirs 'libs', project(':baselib').file('libs')
+            dirs 'libs', project(':baselib').file('libs'),project(':m3u8').file('libs')
         }
     }
     productFlavors {
@@ -50,5 +50,6 @@ dependencies {
     implementation project(':ui_phone')
     implementation project(':downloader')
     implementation project(':mediaPlayer')
+    implementation project(':m3u8')
 
 }

@@ -11,7 +11,7 @@ public class DownloadRequest {
     @Expose private final String downloadDir; //下载的目标文件路径
     @Expose private final String downloadName; //下载的文件名
     @Expose private final String taskId;      //任务id
-    @Expose private final int taskType;       //任务所属的类别，为区分不懂类型的文件下载
+    @Expose private final int taskType;       //区分任务分类
 
     private DownloadRequest(Builder builder){
         downloadUrl = builder.downloadUrl;

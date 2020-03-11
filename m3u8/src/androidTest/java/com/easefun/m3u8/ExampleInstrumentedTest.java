@@ -1,8 +1,9 @@
-package com.aigushi.videoplayer;
+package com.easefun.m3u8;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.aigushi.videoplayer.test", appContext.getPackageName());
+        assertEquals("com.easefun.m3u8.test", appContext.getPackageName());
     }
 }
