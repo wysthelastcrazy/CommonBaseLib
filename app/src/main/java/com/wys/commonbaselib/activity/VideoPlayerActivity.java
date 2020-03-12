@@ -2,8 +2,6 @@ package com.wys.commonbaselib.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,8 +12,10 @@ import android.view.View;
 
 import com.aigushi.videoplayer.CustomVideoPlayerView;
 import com.aigushi.videoplayer.IMediaPlayListener;
-import com.easefun.m3u8.M3U8DownloadTask;
-import com.easefun.m3u8.listener.OnDownloadListener;
+import com.easefun.m3u8.IDownloadListener;
+import com.easefun.m3u8.M3U8DownloadManager;
+import com.easefun.m3u8.M3U8DownloadRecord;
+import com.easefun.m3u8.M3U8DownloadRequest;
 import com.wys.commonbaselib.R;
 
 import java.io.File;
@@ -28,7 +28,7 @@ import java.io.File;
 public class VideoPlayerActivity extends Activity {
     private final String TAG = "VideoPlayerActivity";
     private CustomVideoPlayerView playerView;
-    private String testUrl = "http://c-vod.egaosi.com/sv/56a648dc-170ae4584ef/56a648dc-170ae4584ef.m3u8?auth_key=1583722735-150ad4e137de4dc88f75bda298d31699-0-13b9450f5dc45eb2ce824259562e807c";
+    private String testUrl = "https://c-vod.egaosi.com/sv/56a648dc-170ae4584ef/56a648dc-170ae4584ef.m3u8?auth_key=1583982412-7a60684524924618b2589b60b8148a28-0-f8a9b8754663c30fe34d3477bb30694b";
     private String testUrl2 = "https://gushiimage.egaosi.com/poetry/video/2019-11-06/1573027292_780101e74c5553afaf83f5cb5e9207e8_1b1zb.mp4";
     private String testUrl3 = "https://gushiimage.egaosi.com/sample/math/144669059_enc/test.m3u8";
 
@@ -38,6 +38,10 @@ public class VideoPlayerActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
+
+        M3U8DownloadManager.getInstance().init(this,1);
+        M3U8DownloadManager.getInstance().registerListener(downloadListener);
+
         playerView = findViewById(R.id.video_player);
         playerView.addPlayListener(new IMediaPlayListener() {
             @Override
@@ -75,7 +79,7 @@ public class VideoPlayerActivity extends Activity {
 //        playerView.prepare(testUrl3);
         String uri = Environment.getExternalStorageDirectory().getPath() + File.separator
                 + "m3u8Release"+File.separator+"local.m3u8";
-        playerView.prepare(uri);
+        playerView.prepare(getDownloadDir("test2")+File.separator+"风.m3u8");
         String[] permissions = {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -96,43 +100,64 @@ public class VideoPlayerActivity extends Activity {
                 playerView.pause();
                 break;
             case R.id.btn_download:
-                download(testUrl3);
+//                download(testUrl);
+                download();
                 break;
         }
     }
 
-    private void download(String url){
-        M3U8DownloadTask task = new M3U8DownloadTask("1_01");
-        task.download(url, new OnDownloadListener() {
-            @Override
-            public void onDownloading(long itemFileSize, int totalTs, int curTs) {
-                Log.d(TAG,"[onDownloading]+++++++++++++++++++");
-                Log.d(TAG,"[onDownloading] itemFileSize:"+itemFileSize);
-                Log.d(TAG,"[onDownloading] totalTs:"+totalTs);
-                Log.d(TAG,"[onDownloading] curTs:"+curTs);
-            }
-
-            @Override
-            public void onSuccess() {
-                Log.d(TAG,"[onSuccess]+++++++++++++++++++");
-            }
-
-            @Override
-            public void onProgress(long curLength) {
-                Log.d(TAG,"[onProgress]+++++++++++++++++++");
-                Log.d(TAG,"[onProgress] curLength:"+curLength);
-            }
-
-            @Override
-            public void onStart() {
-                Log.d(TAG,"[onStart]+++++++++++++++++++");
-            }
-
-            @Override
-            public void onError(Throwable errorMsg) {
-                Log.d(TAG,"[onError]+++++++++++++++++++");
-                Log.d(TAG,"[onError] errorMsg:"+errorMsg);
-            }
-        });
+    private void download(){
+        M3U8DownloadRequest request = M3U8DownloadRequest.newBuilder()
+                .downloadUrl(testUrl)
+                .downloadDir(getDownloadDir("test2"))
+                .downloadName("风.m3u8")
+                .taskId("2_1")
+                .taskType(2)
+                .build();
+        M3U8DownloadManager.getInstance().enqueue(request);
     }
+    private String getDownloadDir(String name){
+        return Environment.getExternalStorageDirectory().getPath() + File.separator
+                + "m3u8"+File.separator+name;
+    }
+    private IDownloadListener downloadListener = new IDownloadListener() {
+        @Override
+        public void onNewTaskAdd(final M3U8DownloadRecord record) {
+            Log.d(TAG,"[onNewTaskAdd] +++++++++++++++++++++++++");
+            Log.d(TAG,"[onNewTaskAdd] record:"+record.getTaskId());
+        }
+        @Override
+        public void onEnqueue(final M3U8DownloadRecord record) {
+            Log.d(TAG,"[onEnqueue] +++++++++++++++++++++++++");
+            Log.d(TAG,"[onEnqueue] record:"+record.getTaskId());
+        }
+        @Override
+        public void onStart(final M3U8DownloadRecord record) {
+            Log.d(TAG,"[onStart] +++++++++++++++++++++++++");
+            Log.d(TAG,"[onStart] record:"+record.getTaskId());
+        }
+        @Override
+        public void onProgress(final M3U8DownloadRecord record) {
+            Log.d(TAG,"[onProgress] +++++++++++++++++++++++++");
+            Log.d(TAG,"[onProgress] record:"+record.getTaskId());
+        }
+        @Override
+        public void onPaused(final M3U8DownloadRecord record) {
+            Log.d(TAG,"[onPaused] +++++++++++++++++++++++++");
+            Log.d(TAG,"[onPaused] record:"+record.getTaskId());
+
+        }
+        @Override
+        public void onFinish(final M3U8DownloadRecord record) {
+            Log.d(TAG,"[onFinish] +++++++++++++++++++++++++");
+            Log.d(TAG,"[onFinish] record:"+record.getTaskId());
+        }
+
+        @Override
+        public void onFailed(final M3U8DownloadRecord record, final String errMsg) {
+            Log.d(TAG,"[onFailed] +++++++++++++++++++++++++");
+            Log.d(TAG,"[onFailed] record:"+record.getTaskId()+",errMsg:"+errMsg);
+        }
+
+    };
 }
