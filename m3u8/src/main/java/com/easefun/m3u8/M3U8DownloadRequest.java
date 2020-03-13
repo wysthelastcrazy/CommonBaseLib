@@ -7,7 +7,7 @@ import com.google.gson.annotations.Expose;
  * Describe:保存网络请求的类
  */
 public class M3U8DownloadRequest {
-    @Expose private final String downloadUrl; //下载的url
+    @Expose private  String downloadUrl; //下载的url
     @Expose private final String downloadDir; //下载的目标文件路径
     @Expose private final String downloadName; //下载的文件名
     @Expose private final String taskId;      //任务id
@@ -31,6 +31,10 @@ public class M3U8DownloadRequest {
 
     public String getDownloadUrl() {
         return downloadUrl;
+    }
+
+    public void updateDownloadUrl(String downloadUrl){
+        this.downloadUrl = downloadUrl;
     }
 
     public String getDownloadDir() {

@@ -2,8 +2,6 @@ package com.easefun.m3u8;
 
 import android.os.AsyncTask;
 
-import com.easefun.m3u8.bean.M3U8Item;
-import com.easefun.m3u8.bean.M3U8;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,8 +28,7 @@ public class M3U8DownloadTask extends AsyncTask<M3U8DownloadRecord,Integer,M3U8D
             String realUrl = conn.getURL().toString();
             reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String basePath = realUrl.substring(0,realUrl.lastIndexOf("/") + 1);
-            M3U8 m3U8 = new M3U8();
-            m3U8.setBasepath(basePath);
+            record.setSubTaskBaseUrl(basePath);
             String line;
             float seconds = 0;
             while ((line = reader.readLine())!=null){
@@ -50,24 +47,39 @@ public class M3U8DownloadTask extends AsyncTask<M3U8DownloadRecord,Integer,M3U8D
                         if (ivIndex!=-1){
                             String key = line.substring(1,ivIndex-1);
                             String iv = line.substring(ivIndex+4);
-                            m3U8.addTs(new M3U8Item(key,0,M3U8Item.TYPE_KEY));
+                            M3U8SubTask subTask = record.getSubTask(getFileName(key));
+                            if (subTask==null){
+                                subTask = new M3U8SubTask(record,key,0,M3U8SubTask.TYPE_KEY);
+                                record.getSubTaskList().add(subTask);
+                            }else {
+                                subTask.updateInfo(key,0);
+                            }
                         }
                     }
                     continue;
                 }else if (line.startsWith("#")){
                     continue;
                 }
-                m3U8.addTs(new M3U8Item(line,seconds,M3U8Item.TYPE_TS));
+
+                M3U8SubTask subTask = record.getSubTask(getFileName(line));
+                if (subTask!=null){
+                    subTask.updateInfo(line,seconds);
+                }else {
+                    subTask = new M3U8SubTask(record,line,seconds,M3U8SubTask.TYPE_TS);
+                    record.getSubTaskList().add(subTask);
+                }
+                M3U8DownloadManager.getInstance().saveRecord(record);
                 seconds = 0;
             }
-            record.setM3U8(m3U8);
             return record;
         } catch (IOException e) {
             M3U8DownloadManager.getInstance().downloadFailed(record, "Get m3u8 file failed!");
             e.printStackTrace();
         }finally {
             try {
-                reader.close();
+                if (reader!=null) {
+                    reader.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -77,24 +89,18 @@ public class M3U8DownloadTask extends AsyncTask<M3U8DownloadRecord,Integer,M3U8D
 
     @Override
     protected void onPostExecute(M3U8DownloadRecord m3U8DownloadRecord) {
-        if (m3U8DownloadRecord!=null&&m3U8DownloadRecord.getM3U8()!=null){
-            m3U8DownloadRecord.getSubTaskList().clear();
-            M3U8 m3U8 = m3U8DownloadRecord.getM3U8();
-            if (m3U8.getTsList()!=null) {
-                for (M3U8Item item:m3U8.getTsList()){
-                    String urlPath;
-                    if (item.getUri().startsWith("http")) {
-                        urlPath = item.getUri();
-                    } else {
-                        urlPath = m3U8.getBasepath() + item.getUri();
-                    }
-                    M3U8SubTask subTask = new M3U8SubTask(m3U8DownloadRecord,item.getFileName(),
-                            urlPath);
-                    m3U8DownloadRecord.getSubTaskList().add(subTask);
-                    M3U8DownloadManager.sExecutor.execute(subTask);
-                }
+        if (m3U8DownloadRecord!=null&&m3U8DownloadRecord.getSubTaskList()!=null){
+            for (M3U8SubTask subTask:m3U8DownloadRecord.getSubTaskList()){
+                 M3U8DownloadManager.sExecutor.execute(subTask);
             }
-            M3U8DownloadManager.getInstance().saveRecord(m3U8DownloadRecord);
         }
+    }
+
+    private String getFileName(String uri) {
+        String fileName = uri.substring(uri.lastIndexOf("/") + 1);
+        if (fileName.contains("?")) {
+            return fileName.substring(0, fileName.indexOf("?"));
+        }
+        return fileName;
     }
 }

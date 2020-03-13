@@ -1,6 +1,5 @@
 package com.easefun.m3u8;
 
-import com.easefun.m3u8.bean.M3U8;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class M3U8DownloadRecord implements Comparable<M3U8DownloadRecord>{
     @Expose private int completedSubTask;//完成任务的子任务数
     @Expose private List<M3U8SubTask> subTaskList;  //记录子任务的列表
     @Expose private long createTime;    //任务创建时间。可以用来排序
-    @Expose private M3U8 m3U8;
+    @Expose private String subTaskBaseUrl;      //子任务的baseUrl
 
     public M3U8DownloadRecord(M3U8DownloadRequest request) {
         this.request = request;
@@ -68,9 +67,24 @@ public class M3U8DownloadRecord implements Comparable<M3U8DownloadRecord>{
     }
     public int getTaskType(){return request.getTaskType();}
 
+    /**
+     * 更新下载链接，以为m3u8下载链接具有时效性，过期后需要使用新的链接
+     * @param downloadUrl
+     */
+    public void updateDownloadUrl(String downloadUrl){
+        request.updateDownloadUrl(downloadUrl);
+    }
 
     public List<M3U8SubTask> getSubTaskList(){
         return subTaskList;
+    }
+    public M3U8SubTask getSubTask(String fileName){
+        for (M3U8SubTask item:subTaskList){
+            if (fileName.equals(item.getFileName())){
+                return item;
+            }
+        }
+        return null;
     }
     public long getCreateTime(){
         return createTime;
@@ -79,13 +93,15 @@ public class M3U8DownloadRecord implements Comparable<M3U8DownloadRecord>{
      * 子任务完成
      * @return 是否全部子任务都已经完成
      */
-    synchronized public boolean completeSubTask(){
+    synchronized public void completeSubTask(){
         completedSubTask++;
-        if (completedSubTask == subTaskList.size()){
-            return true;
-        }
-        return false;
     }
+
+    synchronized public boolean isAllSubTaskComplete(){
+        if (subTaskList.size()==0) return false;
+        return completedSubTask==subTaskList.size();
+    }
+
     synchronized void increaseLength(int length){
         currentLength += length;
     }
@@ -119,11 +135,11 @@ public class M3U8DownloadRecord implements Comparable<M3U8DownloadRecord>{
         return 0;
     }
 
-    public M3U8 getM3U8() {
-        return m3U8;
+    public String getSubTaskBaseUrl() {
+        return subTaskBaseUrl;
     }
 
-    public void setM3U8(M3U8 m3U8) {
-        this.m3U8 = m3U8;
+    public void setSubTaskBaseUrl(String subTaskBaseUrl) {
+        this.subTaskBaseUrl = subTaskBaseUrl;
     }
 }

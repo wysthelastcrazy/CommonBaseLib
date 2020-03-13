@@ -4,8 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.easefun.m3u8.bean.M3U8Item;
-import com.easefun.m3u8.bean.M3U8;
 
 import org.apache.commons.io.FileUtils;
 
@@ -30,7 +28,7 @@ public class M3U8DownloadManager {
     public static final int STATE_INITIAL = 0;  //初始化
     public static final int STATE_DOWNLOADING = 1;  //下载中
     public static final int STATE_PAUSED = 2;       //暂停下载中
-    public static final int STATE_FINISHED = 3;     //下载完成
+    public static final int STATE_FINISHED = 3;     //任务全部完成（包含分片下载和m3u8文件生成）
     public static final int STATE_CANCELED = 4;     //取消下载
     public static final int STATE_FAILED = 5;       //下载是吧
     public static final int STATE_REENQUEUE = 6;    //等待下载
@@ -145,8 +143,11 @@ public class M3U8DownloadManager {
         }
         M3U8DownloadRecord record = sRecordMap.get(request.getTaskId());
         if (record!=null){
-            reEnqueue(record.getTaskId());
+            Log.d(TAG,"[reEnqueue] ++++++le:"+record.getCurrentLength());
+            record.updateDownloadUrl(request.getDownloadUrl());
+            reEnqueue(record);
         }else {
+            Log.d(TAG,"[enqueue] +++++++");
             record = new M3U8DownloadRecord(request);
             sRecordMap.put(request.getTaskId(), record);
             mDataHelper.saveRecord(record);
@@ -156,17 +157,12 @@ public class M3U8DownloadManager {
         }
     }
 
-    public boolean reEnqueue(String taskId){
-        if (sRecordMap.get(taskId)!=null){
-            if (sRecordMap.get(taskId).getDownloadState()==STATE_FINISHED){
-                taskFinished(sRecordMap.get(taskId));
-                return false;
-            }else if (sRecordMap.get(taskId).getDownloadState() == STATE_FAILED){
-                sRecordMap.get(taskId).setDownloadState(STATE_INITIAL);
-            }else {
-                sRecordMap.get(taskId).setDownloadState(STATE_REENQUEUE);
-            }
-            mTaskDispatcher.enqueueRecord(sRecordMap.get(taskId));
+    public boolean reEnqueue(M3U8DownloadRecord record){
+        Log.d("VideoPlayerActivity","[reEnqueue] le:"+record.getCurrentLength());
+        if (record!=null){
+            record.setDownloadState(STATE_REENQUEUE);
+            mTaskDispatcher.enqueueRecord(record);
+            notifyEnqueue(record);
             return true;
         }
         return false;
@@ -178,21 +174,22 @@ public class M3U8DownloadManager {
      * @param record
      */
     protected void start(M3U8DownloadRecord record) {
-        record.reset();
-        record.setDownloadState(STATE_DOWNLOADING);
-        new M3U8DownloadTask().executeOnExecutor(sExecutor, record);
-        notifyStart(record);
+
+        if (record!=null) {
+//            record.reset();
+            record.setDownloadState(STATE_DOWNLOADING);
+            new M3U8DownloadTask().executeOnExecutor(sExecutor, record);
+            notifyStart(record);
+        }
     }
     /**
-     * 重新开始下载暂停的任务
+     * 重新开始下载已有的暂停任务
      * @param record
      */
     protected void reStart(M3U8DownloadRecord record) {
         if (record!= null) {
             record.setDownloadState(STATE_DOWNLOADING);
-            for (int i = 0; i < record.getSubTaskList().size(); i++) {
-                sExecutor.execute(record.getSubTaskList().get(i));
-            }
+            new M3U8DownloadTask().executeOnExecutor(sExecutor, record);
             notifyStart(record);
         }
     }
@@ -230,7 +227,20 @@ public class M3U8DownloadManager {
         }
         return false;
     }
-
+    /**
+     * 当前任务是否在等待下载
+     * @param taskId
+     * @return
+     */
+    public boolean isEnqueue(String taskId){
+        if (TextUtils.isEmpty(taskId)) return false;
+        M3U8DownloadRecord record = sRecordMap.get(taskId);
+        if (record!=null&&(record.getDownloadState() == STATE_REENQUEUE
+                ||record.getDownloadState() == STATE_INITIAL)){
+            return true;
+        }
+        return false;
+    }
     /**
      * 当前任务是否已经下载完成
      * @param taskId
@@ -258,16 +268,18 @@ public class M3U8DownloadManager {
      * @param record
      */
     protected void taskFinished(M3U8DownloadRecord record) {
-        Log.d(TAG,"[taskFinished]+++++++++");
-        if (createM3U8File(record.getDownloadDir(),record.getDownloadName(),record.getM3U8())){
-            sDownloadPermit.release();
-            record.setDownloadState(STATE_FINISHED);
+        if (record!=null) {
+            if (createM3U8File(record)) {
+                sDownloadPermit.release();
+                record.setDownloadState(STATE_FINISHED);
+                notifyFinish(record);
+            }else{
+                sDownloadPermit.release();
+                record.setDownloadState(STATE_FAILED);
+                notifyFailed(record,"生成m3u8文件失败");
+            }
             saveRecord(record);
-            notifyFinish(record);
-        }else{
-            record.setDownloadState(STATE_FAILED);
-            saveRecord(record);
-            notifyFailed(record,"生成m3u8文件失败");
+
         }
     }
     protected void fileLengthSet(M3U8DownloadRecord record) {
@@ -294,12 +306,15 @@ public class M3U8DownloadManager {
      */
     protected void loadAll(){
         for (M3U8DownloadRecord record : mDataHelper.loadAllRecords()){
-            if (record.getDownloadState() != STATE_FINISHED
-                    &&record.getDownloadState()!=STATE_INITIAL
-                    &&record.getDownloadState()!=STATE_CANCELED){
-                record.setDownloadState(STATE_PAUSED);
-            }
-            sRecordMap.put(record.getTaskId(),record);
+//            if (isRecordExists(record)) {
+                if (record != null && record.getDownloadState() != STATE_FINISHED
+                        && record.getDownloadState() != STATE_CANCELED) {
+                    record.setDownloadState(STATE_PAUSED);
+                }
+                sRecordMap.put(record.getTaskId(), record);
+//            }else{
+//                mDataHelper.deleteRecord(record);
+//            }
         }
     }
     protected void saveAll(){
@@ -338,7 +353,13 @@ public class M3U8DownloadManager {
         }
         return false;
     }
-
+    public void deleteTasks(ArrayList<M3U8DownloadRecord> records){
+        if (records==null)return;
+        for (M3U8DownloadRecord record:records){
+            if (record!=null)
+                deleteTask(record.getTaskId());
+        }
+    }
     /**
      * 获取对应type下全部已完成的任务任务
      * @param taskType
@@ -354,11 +375,27 @@ public class M3U8DownloadManager {
         }
         return list;
     }
+    /**
+     * 获取全部已完成的任务任务
+     * @return
+     */
+    public List<M3U8DownloadRecord> getAllFinishedRecords(){
+        List<M3U8DownloadRecord> list = new ArrayList<>();
+        for (M3U8DownloadRecord record :sRecordMap.values()){
+            if (record.getDownloadState() == STATE_FINISHED){
+                list.add(record);
+            }
+        }
+        return list;
+    }
 
-
-    private boolean createM3U8File(String dirPath,String fileName, M3U8 m3U8) {
+    private boolean createM3U8File(M3U8DownloadRecord record) {
         Log.d(TAG,"[createM3U8File]+++++++++");
-        List<M3U8Item> m3U8ItemList = m3U8.getTsList();
+        File file = new File(record.getDownloadDir(), record.getDownloadName());
+        if (file.exists()&&file.length()>0){
+            return true;
+        }
+        List<M3U8SubTask> subTasks = record.getSubTaskList();
         StringBuilder m3u8StringBuilder = new StringBuilder();
 
         m3u8StringBuilder.append("#EXTM3U").append('\n');
@@ -366,20 +403,19 @@ public class M3U8DownloadManager {
         m3u8StringBuilder.append("#EXT-X-TARGETDURATION:18").append('\n');
         m3u8StringBuilder.append("#EXT-X-MEDIA-SEQUENCE:0").append("\n\n");
 
-        for (M3U8Item m3U8Item :  m3U8ItemList) {
-            if (m3U8Item.getType()==M3U8Item.TYPE_KEY) {
+        for (M3U8SubTask subTask :  subTasks) {
+            if (subTask.getType()==M3U8SubTask.TYPE_KEY) {
                 m3u8StringBuilder.append(String.format("#EXT-X-KEY:METHOD=AES-128,URI=\"%s\",IV=0x4f97f9624a3f62d77a575236b4caba32",
-                        this.coverUriToLocal(m3U8Item.getFileName())));
+                        this.coverUriToLocal(subTask.getFileName())));
             } else {
-                m3u8StringBuilder.append(String.format("#EXTINF:%f,\n%s", m3U8Item.getSeconds(),
-                        this.coverUriToLocal(m3U8Item.getFileName())));
+                m3u8StringBuilder.append(String.format("#EXTINF:%f,\n%s", subTask.getSeconds(),
+                        this.coverUriToLocal(subTask.getFileName())));
             }
             m3u8StringBuilder.append('\n');
         }
 
         m3u8StringBuilder.append("#EXT-X-ENDLIST");
         try {
-            File file = new File(dirPath, fileName);
             if (!file.getParentFile().exists()){
                 file.getParentFile().mkdirs();
             }
@@ -396,7 +432,21 @@ public class M3U8DownloadManager {
     }
 
 
-
+    /**
+     * 判断任务是否存在（有效）
+     * @param record
+     * @return
+     */
+    private boolean isRecordExists(M3U8DownloadRecord record){
+        if (record!=null&&!TextUtils.isEmpty(record.getFilePath())){
+            File file = new File(record.getFilePath());
+            //如果缓存任务状态为STATE_INITIAL或者缓存任务文件存在，怎么任务有效
+            if (file.exists()||record.getDownloadState() == STATE_INITIAL){
+                return true;
+            }
+        }
+        return false;
+    }
     /**=======监听回调=========**/
     private void notifyNewTaskAdd(M3U8DownloadRecord record){
         for (WeakReference<IDownloadListener> weakReference : listeners){

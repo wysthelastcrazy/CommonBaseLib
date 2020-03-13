@@ -97,7 +97,8 @@ public class VideoPlayerActivity extends Activity {
                 playerView.start();
                 break;
             case R.id.btn_pause:
-                playerView.pause();
+//                playerView.pause();
+                M3U8DownloadManager.getInstance().pause("2_3");
                 break;
             case R.id.btn_download:
 //                download(testUrl);
@@ -108,10 +109,10 @@ public class VideoPlayerActivity extends Activity {
 
     private void download(){
         M3U8DownloadRequest request = M3U8DownloadRequest.newBuilder()
-                .downloadUrl(testUrl)
-                .downloadDir(getDownloadDir("test2"))
+                .downloadUrl(testUrl3)
+                .downloadDir(getDownloadDir("test4"))
                 .downloadName("风.m3u8")
-                .taskId("2_1")
+                .taskId("2_3")
                 .taskType(2)
                 .build();
         M3U8DownloadManager.getInstance().enqueue(request);
@@ -139,7 +140,7 @@ public class VideoPlayerActivity extends Activity {
         @Override
         public void onProgress(final M3U8DownloadRecord record) {
             Log.d(TAG,"[onProgress] +++++++++++++++++++++++++");
-            Log.d(TAG,"[onProgress] record:"+record.getTaskId());
+            Log.d(TAG,"[onProgress] record:"+record.getTaskId()+",progress:"+record.getProgress()+"%");
         }
         @Override
         public void onPaused(final M3U8DownloadRecord record) {

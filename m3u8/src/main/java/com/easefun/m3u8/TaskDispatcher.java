@@ -30,14 +30,15 @@ public class TaskDispatcher extends Thread{
                 M3U8DownloadRecord record = mRecordQueue.take();
                 //获取信号量，获取不到就阻塞在这里，直到有下载完成的任务释放一个信号量
                 M3U8DownloadManager.sDownloadPermit.acquire();
-                if (record.getDownloadState() == M3U8DownloadManager.STATE_REENQUEUE
-                        &&record.getFileLength()>0
-                        &&record.getSubTaskList().size()>0){
-                    // 这里对应暂停后重新启动的情形，详见后面 DownloadUtil 的分析
-                    M3U8DownloadManager.getInstance().reStart(record);
-                }else{
+                 if (record.isAllSubTaskComplete()){
+                    //该任务已经全部完成子任务的下载
+                    M3U8DownloadManager.getInstance().taskFinished(record);
+                }else if (record.getDownloadState() == M3U8DownloadManager.STATE_INITIAL){
                     // 这里对应新开始的任务的情形
                     M3U8DownloadManager.getInstance().start(record);
+                }else if (record.getDownloadState() == M3U8DownloadManager.STATE_REENQUEUE){
+                    // 这里对应暂停后重新启动的情形
+                    M3U8DownloadManager.getInstance().reStart(record);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
