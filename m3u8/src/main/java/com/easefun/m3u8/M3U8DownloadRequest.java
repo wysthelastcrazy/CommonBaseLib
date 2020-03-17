@@ -12,6 +12,7 @@ public class M3U8DownloadRequest {
     @Expose private final String downloadName; //下载的文件名
     @Expose private final String taskId;      //任务id
     @Expose private final int taskType;       //区分任务分类
+    @Expose private final String coverUrl;     //缩略图下载地址
 
     private M3U8DownloadRequest(Builder builder){
         downloadUrl = builder.downloadUrl;
@@ -19,6 +20,7 @@ public class M3U8DownloadRequest {
         downloadName = builder.downloadName;
         taskId = builder.taskId;
         taskType = builder.taskType;
+        coverUrl = builder.coverUrl;
     }
 
     public String getFilePath() {
@@ -52,6 +54,10 @@ public class M3U8DownloadRequest {
         return taskType;
     }
 
+    public String getCoverUrl(){
+        return coverUrl;
+    }
+
 
     public static final class Builder{
         private String downloadUrl;
@@ -59,6 +65,7 @@ public class M3U8DownloadRequest {
         private String downloadName;
         private String taskId;
         private int taskType;
+        private String coverUrl;
 
         private Builder(){}
 
@@ -84,6 +91,10 @@ public class M3U8DownloadRequest {
             this.taskType = taskType;
             return this;
         }
+        public Builder coverUrl(String coverUrl){
+            this.coverUrl = coverUrl;
+            return this;
+        };
         public M3U8DownloadRequest build(){
             return new M3U8DownloadRequest(this);
         }

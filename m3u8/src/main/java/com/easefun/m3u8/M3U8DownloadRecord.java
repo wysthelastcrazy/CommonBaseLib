@@ -2,6 +2,7 @@ package com.easefun.m3u8;
 
 import com.google.gson.annotations.Expose;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ public class M3U8DownloadRecord implements Comparable<M3U8DownloadRecord>{
     @Expose private List<M3U8SubTask> subTaskList;  //记录子任务的列表
     @Expose private long createTime;    //任务创建时间。可以用来排序
     @Expose private String subTaskBaseUrl;      //子任务的baseUrl
+
 
     public M3U8DownloadRecord(M3U8DownloadRequest request) {
         this.request = request;
@@ -56,16 +58,26 @@ public class M3U8DownloadRecord implements Comparable<M3U8DownloadRecord>{
     public String getDownloadUrl(){
         return request.getDownloadUrl();
     }
+
     public String getDownloadDir(){
         return request.getDownloadDir();
     }
+
     public String getDownloadName(){
         return request.getDownloadName();
     }
     public String getTaskId(){
         return request.getTaskId();
     }
+
     public int getTaskType(){return request.getTaskType();}
+
+    public String getCoverUrl(){
+        return request.getCoverUrl();
+    }
+    public String getCoverFileName(){
+        return "cover.png";
+    }
 
     /**
      * 更新下载链接，以为m3u8下载链接具有时效性，过期后需要使用新的链接
@@ -112,6 +124,10 @@ public class M3U8DownloadRecord implements Comparable<M3U8DownloadRecord>{
 
     public String getFilePath(){
         return getDownloadDir()+"/"+getDownloadName();
+    }
+    /**获取缩略图本地路径*/
+    public String getCoverPath(){
+        return getDownloadDir()+ File.separator+getCoverFileName();
     }
 
     synchronized public void reset(){

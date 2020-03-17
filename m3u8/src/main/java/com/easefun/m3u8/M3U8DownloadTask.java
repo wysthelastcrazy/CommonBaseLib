@@ -1,6 +1,7 @@
 package com.easefun.m3u8;
 
 import android.os.AsyncTask;
+import android.text.TextUtils;
 
 
 import java.io.BufferedReader;
@@ -19,6 +20,17 @@ public class M3U8DownloadTask extends AsyncTask<M3U8DownloadRecord,Integer,M3U8D
     protected M3U8DownloadRecord doInBackground(M3U8DownloadRecord... m3U8DownloadRecords) {
         M3U8DownloadRecord record = m3U8DownloadRecords[0];
         try {
+            String coverUrl = record.getCoverUrl();
+            if (!TextUtils.isEmpty(coverUrl)){
+                M3U8SubTask subTask = record.getSubTask(record.getCoverFileName());
+                if (subTask==null){
+                    subTask = new M3U8SubTask(record,record.getCoverUrl(),0,M3U8SubTask.TYPE_COVER);
+                    record.getSubTaskList().add(subTask);
+                }else{
+                    subTask.updateInfo(record.getCoverUrl(),0);
+                }
+            }
+
             URL url = new URL(record.getDownloadUrl());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");

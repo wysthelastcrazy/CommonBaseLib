@@ -2,6 +2,9 @@ package com.wys.commonbaselib.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -9,9 +12,11 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.aigushi.videoplayer.CustomVideoPlayerView;
 import com.aigushi.videoplayer.IMediaPlayListener;
+import com.bumptech.glide.Glide;
 import com.easefun.m3u8.IDownloadListener;
 import com.easefun.m3u8.M3U8DownloadManager;
 import com.easefun.m3u8.M3U8DownloadRecord;
@@ -19,6 +24,8 @@ import com.easefun.m3u8.M3U8DownloadRequest;
 import com.wys.commonbaselib.R;
 
 import java.io.File;
+
+import static android.provider.MediaStore.Video.Thumbnails.MINI_KIND;
 
 
 /**
@@ -28,6 +35,7 @@ import java.io.File;
 public class VideoPlayerActivity extends Activity {
     private final String TAG = "VideoPlayerActivity";
     private CustomVideoPlayerView playerView;
+    private ImageView iv_test;
     private String testUrl = "https://c-vod.egaosi.com/sv/56a648dc-170ae4584ef/56a648dc-170ae4584ef.m3u8?auth_key=1583982412-7a60684524924618b2589b60b8148a28-0-f8a9b8754663c30fe34d3477bb30694b";
     private String testUrl2 = "https://gushiimage.egaosi.com/poetry/video/2019-11-06/1573027292_780101e74c5553afaf83f5cb5e9207e8_1b1zb.mp4";
     private String testUrl3 = "https://gushiimage.egaosi.com/sample/math/144669059_enc/test.m3u8";
@@ -76,15 +84,19 @@ public class VideoPlayerActivity extends Activity {
                 Log.d(TAG,"[onPlayError]+++++++++++++++++++");
             }
         });
-//        playerView.prepare(testUrl3);
-        String uri = Environment.getExternalStorageDirectory().getPath() + File.separator
-                + "m3u8Release"+File.separator+"local.m3u8";
-        playerView.prepare(getDownloadDir("test2")+File.separator+"风.m3u8");
+        playerView.prepare(testUrl3);
+        String uri = getDownloadDir("test2")+File.separator+"风.m3u8";
+//        playerView.prepare(uri);
         String[] permissions = {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
         };
         requestPermissions(permissions,100);
+        iv_test = findViewById(R.id.iv_test);
+
+//        Glide.with(this)
+//                .load(getDownloadDir("test2")+File.separator+"144669059-1-290.ts")
+//                .into(iv_test);
     }
 
     public void onClick(View view){
@@ -97,8 +109,8 @@ public class VideoPlayerActivity extends Activity {
                 playerView.start();
                 break;
             case R.id.btn_pause:
-//                playerView.pause();
-                M3U8DownloadManager.getInstance().pause("2_3");
+                playerView.pause();
+//                M3U8DownloadManager.getInstance().pause("2_3");
                 break;
             case R.id.btn_download:
 //                download(testUrl);

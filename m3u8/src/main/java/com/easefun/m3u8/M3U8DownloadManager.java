@@ -407,7 +407,7 @@ public class M3U8DownloadManager {
             if (subTask.getType()==M3U8SubTask.TYPE_KEY) {
                 m3u8StringBuilder.append(String.format("#EXT-X-KEY:METHOD=AES-128,URI=\"%s\",IV=0x4f97f9624a3f62d77a575236b4caba32",
                         this.coverUriToLocal(subTask.getFileName())));
-            } else {
+            } else if (subTask.getType() == M3U8SubTask.TYPE_TS){
                 m3u8StringBuilder.append(String.format("#EXTINF:%f,\n%s", subTask.getSeconds(),
                         this.coverUriToLocal(subTask.getFileName())));
             }

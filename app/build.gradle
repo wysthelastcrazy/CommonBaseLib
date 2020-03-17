@@ -45,6 +45,7 @@ dependencies {
     officialImplementation project(':combined_operation:official')
     oppoImplementation project(':combined_operation:oppo')
     huaweiImplementation project(':combined_operation:huawei')
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
 
 //    implementation project(':ui_pad')
     implementation project(':ui_phone')

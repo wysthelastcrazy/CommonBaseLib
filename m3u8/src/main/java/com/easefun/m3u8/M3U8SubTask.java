@@ -18,6 +18,7 @@ import java.net.URL;
 public class M3U8SubTask implements Runnable{
     public static final int TYPE_TS = 1;
     public static final int TYPE_KEY = 2;
+    public static final int TYPE_COVER = 3;
     private M3U8DownloadRecord record;
     @Expose
     private int startLocation;      //下载文件的起点位置
@@ -125,10 +126,8 @@ public class M3U8SubTask implements Runnable{
                     M3U8DownloadManager.getInstance().taskFinished(record);
                 }
             }
-            Log.d("wys","[download] download:"+getDownloadUrl());
         } catch (IOException e) {
             M3U8DownloadManager.getInstance().downloadFailed(record, "subtask failed!");
-            Log.d("wys","[download&IOException] download:"+getDownloadUrl());
             e.printStackTrace();
         }finally {
             try {
@@ -161,6 +160,9 @@ public class M3U8SubTask implements Runnable{
     }
 
     public String getFileName() {
+        if(type == TYPE_COVER){
+            return "cover.png";
+        }
         String fileName = uri.substring(uri.lastIndexOf("/") + 1);
         if (fileName.contains("?")) {
             return fileName.substring(0, fileName.indexOf("?"));
