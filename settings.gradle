@@ -1,1 +1,1 @@
-include ':app', ':baselib', ':module_common_ui', ':audio_video_editor', ':combined_operation:oppo', ':combined_operation:huawei', ':combined_operation:official', ':ui_phone', ':ui_pad', ':downloader', ':mediaPlayer', ':m3u8'
+include ':app', ':baselib', ':module_common_ui', ':audio_video_editor', ':combined_operation:oppo', ':combined_operation:huawei', ':combined_operation:official', ':ui_phone', ':ui_pad', ':downloader', ':mediaPlayer', ':m3u8', ':zxing'

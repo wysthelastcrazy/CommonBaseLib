@@ -1,5 +1,7 @@
 package com.wys.baselib.net;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -111,40 +113,67 @@ public class GSRequest {
         });
     }
 
+
+    private static Handler handler = new Handler(Looper.getMainLooper());
     private static Callback initCallback(final IResponseCallback callback){
        return new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                callback.onFailure(-1,"网络链接错误");
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onFailure(-1,"网络链接错误");
+                    }
+                });
+
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (call.isCanceled()) {
-                    callback.onFailure(-2, "");
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onFailure(-2, "");
+                        }
+                    });
                     return;
                 }
 
-                int code = response.code();
+                final int code = response.code();
                 switch (code) {
                     case 200:
                         try {
                             String rsp = response.body().string();
                             if (TextUtils.isEmpty(rsp)){
-                                callback.onFailure(code, "response&body is null");
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        callback.onFailure(code, "response&body is null");
+                                    }
+                                });
                             }else {
                                 JSONObject jsonObject = new JSONObject(rsp);
-                                GSResponse gsResponse = new GSResponse();
+                                final GSResponse gsResponse = new GSResponse();
                                 gsResponse.body = jsonObject;
                                 gsResponse.code = code;
                                 gsResponse.headers = response.headers();
                                 String s = response.header("token");
                                 Log.d("wys","[initCallback] s:"+s);
-                                callback.onResponse(gsResponse);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        callback.onResponse(gsResponse);
+                                    }
+                                });
                             }
-                        }catch (Exception e) {
-//                            e.printStackTrace();
-                            callback.onFailure(code, e.getMessage());
+                        }catch (final Exception e) {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    callback.onFailure(code, e.getMessage());
+                                }
+                            });
                         }
 
                         break;
