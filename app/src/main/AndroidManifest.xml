@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.wys.commonbaselib">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -15,43 +16,46 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".zxing.activity.CaptureActivity"
-            android:screenOrientation="portrait">
+        <activity android:name=".music.MusicDetailActivity">
+
+        </activity>
+        <activity android:name=".music.MusicListActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.M3U8DownloadActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".activity.VideoPlayerActivity">
 
-        </activity>
-        <activity android:name=".activity.DownloadActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".im.GslRecordPlayerActivity"
+        <service
+            android:name=".music.MusicService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".zxing.activity.CaptureActivity"
             android:screenOrientation="landscape">
 
         </activity>
-        <activity android:name=".activity.AVEditorActivity">
+        <activity
+            android:name=".activity.M3U8DownloadActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.VideoPlayerActivity" />
+        <activity
+            android:name=".activity.DownloadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".im.GslRecordPlayerActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".activity.AVEditorActivity" />
+        <activity android:name=".activity.RecyclerViewActivity" />
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.PhotoListActivity" />
+        <activity
+            android:name=".activity.BigPhotoActivity"
+            android:theme="@style/TransparentTheme" />
+        <activity android:name=".activity.VideoListActivity" />
 
-        </activity>
-        <activity android:name=".activity.RecyclerViewActivity" >
-
-        </activity>
-        <activity android:name=".activity.MainActivity">
-
-        </activity>
-        <activity android:name=".activity.PhotoListActivity">
-
-        </activity>
-        <activity android:name=".activity.BigPhotoActivity"
-            android:theme="@style/TransparentTheme"/>
-        <activity android:name=".activity.VideoListActivity">
-
-        </activity>
     </application>
 
 </manifest>

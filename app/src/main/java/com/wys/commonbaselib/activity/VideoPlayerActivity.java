@@ -2,21 +2,17 @@ package com.wys.commonbaselib.activity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.aigushi.videoplayer.CustomVideoPlayerView;
 import com.aigushi.videoplayer.IMediaPlayListener;
-import com.bumptech.glide.Glide;
 import com.easefun.m3u8.IDownloadListener;
 import com.easefun.m3u8.M3U8DownloadManager;
 import com.easefun.m3u8.M3U8DownloadRecord;
@@ -24,8 +20,6 @@ import com.easefun.m3u8.M3U8DownloadRequest;
 import com.wys.commonbaselib.R;
 
 import java.io.File;
-
-import static android.provider.MediaStore.Video.Thumbnails.MINI_KIND;
 
 
 /**

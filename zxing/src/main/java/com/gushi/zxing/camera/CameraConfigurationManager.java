@@ -58,16 +58,16 @@ final class CameraConfigurationManager {
 		// thinking it's portrait
 		// when waking from sleep. If it's not landscape, assume it's mistaken
 		// and reverse them:
-		if (width < height) {
-			Log.i(TAG, "Display reports portrait orientation; assuming this is incorrect");
-			int temp = width;
-			width = height;
-			height = temp;
-		}
-		screenResolution = new Point(height, width);
+//		if (width < height) {
+//			Log.i(TAG, "Display reports portrait orientation; assuming this is incorrect");
+//			int temp = width;
+//			width = height;
+//			height = temp;
+//		}
+		screenResolution = new Point(width, height);
 		Log.i(TAG, "Screen resolution: " + screenResolution);
 
-		cameraResolution = findBestPreviewSizeValue(parameters, new Point(width, height), false);
+		cameraResolution = findBestPreviewSizeValue(parameters, new Point(width, height),width>height);
 		Log.i(TAG, "Camera resolution: " + cameraResolution);
 	}
 
@@ -89,8 +89,13 @@ final class CameraConfigurationManager {
 		}
 
 		parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);
-		/* 竖屏显示 */
-		camera.setDisplayOrientation(90);
+			/* 横屏显示 */
+		if (screenResolution.x>screenResolution.y){
+			camera.setDisplayOrientation(0);
+		}else{
+			/* 竖屏显示 */
+			camera.setDisplayOrientation(90);
+		}
 		camera.setParameters(parameters);
 	}
 
@@ -139,13 +144,15 @@ final class CameraConfigurationManager {
 		Point bestSize = null;
 		int diff = Integer.MAX_VALUE;
 		for (Camera.Size supportedPreviewSize : parameters.getSupportedPreviewSizes()) {
-			int pixels = supportedPreviewSize.height * supportedPreviewSize.width;
-//			if (pixels < MIN_PREVIEW_PIXELS || pixels > MAX_PREVIEW_PIXELS) {
-//				continue;
-//			}
-			int supportedWidth = portrait ? supportedPreviewSize.height : supportedPreviewSize.width;
-			int supportedHeight = portrait ? supportedPreviewSize.width : supportedPreviewSize.height;
-			int newDiff = Math.abs(screenResolution.x * supportedHeight - supportedWidth * screenResolution.y);
+			int newDiff;
+			int supportedWidth =  supportedPreviewSize.width;
+			int supportedHeight = supportedPreviewSize.height;
+			if (portrait){
+				newDiff = Math.abs(screenResolution.x * supportedHeight - supportedWidth * screenResolution.y);
+			}else{
+				newDiff = Math.abs(screenResolution.y * supportedHeight - supportedWidth * screenResolution.x);
+			}
+
 			if (newDiff == 0) {
 				bestSize = new Point(supportedWidth, supportedHeight);
 				break;
@@ -156,9 +163,10 @@ final class CameraConfigurationManager {
 			}
 		}
 		if (bestSize == null) {
-			Camera.Size defaultSize = parameters.getPreviewSize();
+			Camera.Size defaultSize = parameters.getSupportedPreviewSizes().get(0);
 			bestSize = new Point(defaultSize.width, defaultSize.height);
 		}
+		Log.d("wys","[findBestPreviewSizeValue]  bestSize:"+bestSize.x+","+bestSize.y);
 		return bestSize;
 	}
 

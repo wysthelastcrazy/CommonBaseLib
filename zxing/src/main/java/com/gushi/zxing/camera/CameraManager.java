@@ -69,10 +69,12 @@ public final class CameraManager {
 	 */
 	private final AutoFocusCallback autoFocusCallback;
 
+	private int framingRectSize;	//扫描区域大小
 	public static final String KEY_REVERSE_IMAGE = "preferences_reverse_image";
 
-	public CameraManager(Context context) {
+	public CameraManager(Context context,int framingRectSize) {
 		this.context = context;
+		this.framingRectSize = framingRectSize;
 		this.configManager = new CameraConfigurationManager(context);
 		previewCallback = new PreviewCallback(configManager);
 		autoFocusCallback = new AutoFocusCallback();
@@ -204,6 +206,12 @@ public final class CameraManager {
 				return null;
 			}
 			Point screenResolution = configManager.getScreenResolution();
+			if (framingRectSize>0){
+				int leftOffset = (screenResolution.x - framingRectSize) / 2;
+				int topOffset = (screenResolution.y - framingRectSize) * 2 / 5;
+				framingRect = new Rect(leftOffset, topOffset, leftOffset + framingRectSize,
+						topOffset + framingRectSize);
+			}else{
 			if (screenResolution!=null) {
 				int width = screenResolution.x * 3 / 4;
 				if (width < MIN_FRAME_WIDTH) {
@@ -223,6 +231,7 @@ public final class CameraManager {
 				int leftOffset = (screenResolution.x - width) / 2;
 				int topOffset = (screenResolution.y - height) * 2 / 5;
 				framingRect = new Rect(leftOffset, topOffset, leftOffset + width, topOffset + height);
+			}
 				Log.d(TAG, "Calculated framing rect: " + framingRect);
 			}
 		}

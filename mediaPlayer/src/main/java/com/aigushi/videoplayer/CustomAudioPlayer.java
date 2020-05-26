@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -127,6 +127,12 @@ public class CustomAudioPlayer {
             mPlayer.seekTo(progress);
             isPlayFinish = false;
         }
+    }
+    public boolean isPlaying(){
+        if (mPlayer!=null){
+            return mPlayer.getPlayWhenReady();
+        }
+        return false;
     }
     public void addPlayListener(IMediaPlayListener mediaPlayListener){
         this.mediaPlayListener = mediaPlayListener;

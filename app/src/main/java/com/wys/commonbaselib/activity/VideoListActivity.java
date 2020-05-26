@@ -1,9 +1,9 @@
 package com.wys.commonbaselib.activity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.wys.commonbaselib.R;
 import com.wys.commonbaselib.adapter.VideoListAdapter;

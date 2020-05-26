@@ -51,14 +51,16 @@ public class CaptureActivity extends Activity{
 		Window window = getWindow();
 		window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-		qrManager = new QRDecodingManager(this,surfaceView,viewfinderView);
+		qrManager = new QRDecodingManager(this,surfaceView,viewfinderView,
+				getResources().getDimensionPixelSize(R.dimen.dp_260));
+
 	}
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		}
+//		if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+//			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//		}
 		qrManager.onResume();
 		playBeep = true;
 		AudioManager audioService = (AudioManager) getSystemService(AUDIO_SERVICE);

@@ -4,15 +4,13 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.wys.commonbaselib.MApp;
 import com.wys.commonbaselib.R;
-import com.wys.commonbaselib.activity.BigPhotoActivity;
 import com.wys.commonbaselib.adapter.ViewPagerAdapter;
 
 import java.util.ArrayList;

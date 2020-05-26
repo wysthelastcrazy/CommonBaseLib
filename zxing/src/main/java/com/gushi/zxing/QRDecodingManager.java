@@ -27,16 +27,20 @@ public class QRDecodingManager implements SurfaceHolder.Callback,IZxingDecodingH
 
     private boolean hasSurface;
     private CameraManager cameraManager;
+    private int framingRectSize;
+    private IQRDecodingCallback callback;
 
-    public QRDecodingManager(Context context, SurfaceView surfaceView, ViewfinderView viewfinderView){
+    public QRDecodingManager(Context context, SurfaceView surfaceView,
+                             ViewfinderView viewfinderView,int framingRectSize){
         this.mContext = context;
+        this.framingRectSize = framingRectSize;
         this.surfaceView = surfaceView;
         this.viewfinderView = viewfinderView;
         init();
     }
     private void init(){
         hasSurface = false;
-        cameraManager = new CameraManager(mContext);
+        cameraManager = new CameraManager(mContext,framingRectSize);
         viewfinderView.setCameraManager(cameraManager);
     }
     public void onResume(){
@@ -87,6 +91,9 @@ public class QRDecodingManager implements SurfaceHolder.Callback,IZxingDecodingH
     }
 
 
+    public void setDecodingCallback(IQRDecodingCallback callback){
+        this.callback = callback;
+    }
     @Override
     public CameraManager getCameraManager() {
         return cameraManager;
@@ -94,9 +101,11 @@ public class QRDecodingManager implements SurfaceHolder.Callback,IZxingDecodingH
 
     @Override
     public void handleDecode(Result rawResult, Bitmap barcode) {
-        String result=rawResult.getText().toString();
+        String result=rawResult.getText();
         Log.d(TAG,"[handleDecode] result:"+result);
-        restartPreviewAfterDelay(10*1000L);
+        if (callback!=null){
+            callback.handleDecode(result);
+        }
     }
 
     @Override
@@ -117,5 +126,9 @@ public class QRDecodingManager implements SurfaceHolder.Callback,IZxingDecodingH
 		if (handler != null) {
 			handler.sendEmptyMessageDelayed(MessageIDs.restart_preview, delayMS);
 		}
+    }
+
+    public interface IQRDecodingCallback{
+        void handleDecode(String result);
     }
 }
