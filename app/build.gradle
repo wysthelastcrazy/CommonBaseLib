@@ -11,6 +11,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         flavorDimensions "versionCode"
+
+        ndk{
+            abiFilters "armeabi-v7a" , "x86"
+        }
     }
     buildTypes {
         release {
@@ -18,7 +22,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    repositories {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+        repositories {
         flatDir {
             dirs 'libs', project(':baselib').file('libs'), project(':m3u8').file('libs')
         }
@@ -54,5 +62,6 @@ dependencies {
     implementation project(':mediaPlayer')
     implementation project(':m3u8')
     implementation project(':zxing')
+    implementation project(':mediarecorder')
 
 }
