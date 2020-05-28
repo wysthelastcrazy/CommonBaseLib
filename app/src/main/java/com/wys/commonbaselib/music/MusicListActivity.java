@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.Button;
 
 import com.wys.commonbaselib.R;
 import com.wys.module_common_ui.widget.recycler.XRecyclerView;
@@ -21,19 +22,28 @@ public class MusicListActivity extends AppCompatActivity {
 
     private MusicConnection connection;
     private MusicService.MusicBinder musicBinder;
+
+    private Button btnGotoPlay;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music_list);
-        Intent intent = new Intent(this,MusicService.class);
-        connection = new MusicConnection();
-        bindService(intent,connection,BIND_AUTO_CREATE);
-
-
+        btnGotoPlay = findViewById(R.id.btn_goto_play);
+        btnGotoPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (musicBinder!=null&&!musicBinder.isPlayEnd()){
+                    gotoDetail(musicBinder.getCurrPosition(),0);
+                }
+            }
+        });
         rlv_music = findViewById(R.id.rlv_music);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rlv_music.setLayoutManager(layoutManager);
 
+        Intent intent = new Intent(this,MusicService.class);
+        connection = new MusicConnection();
+        bindService(intent,connection,BIND_AUTO_CREATE);
     }
 
     private ArrayList<MusicInfo> getMusicInfos(){
@@ -84,6 +94,15 @@ public class MusicListActivity extends AppCompatActivity {
         });
 
         rlv_music.setAdapter(mAdapter);
+
+        //正在处于播放状态或者暂停状态时，添加快捷跳转
+        if (musicBinder.isPlaying()){
+            btnGotoPlay.setText("正在播放");
+        }else if (!musicBinder.isPlayEnd()){
+            btnGotoPlay.setText("播放处于暂停中");
+        }else{
+            btnGotoPlay.setText("当前无播放");
+        }
     }
 
     private void gotoDetail(int position,int musicId){
@@ -91,5 +110,10 @@ public class MusicListActivity extends AppCompatActivity {
         intent.putExtra("position",position);
         intent.putExtra("musicId",musicId);
         startActivity(intent);
+    }
+    @Override
+    protected void onDestroy() {
+        unbindService(connection);
+        super.onDestroy();
     }
 }

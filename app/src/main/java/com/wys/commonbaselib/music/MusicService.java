@@ -38,8 +38,8 @@ public class MusicService extends Service {
     private final String notificationChannelName = "爱学习古诗";
     private CustomAudioPlayer mPlayer;
     private List<MusicInfo> musicInfoList = new ArrayList<>();
-    private int currMusicId;
-    private int currPosition;
+    private int currMusicId = -1;
+    private int currPosition = -1;
 
     private RemoteViews remoteView;
     private Notification notification;
@@ -55,6 +55,7 @@ public class MusicService extends Service {
         registerReceiver(mReceiver, intentFilter);
         mPlayer = new CustomAudioPlayer(this);
         mPlayer.addPlayListener(mediaPlayListener);
+
     }
 
     @Override
@@ -171,21 +172,43 @@ public class MusicService extends Service {
             }
             return flag;
         }
-        public void pause(){
-            mPlayer.pause();
-            notifyPause();
-            updateNotification();
-        }
-        public void play(){
-            mPlayer.start();
-            notifyPlay();
-            updateNotification();
+        public void playOrPause(){
+            changePlayState();
         }
         public MusicInfo getCurrMusicInfo(){
             if (currPosition>=0&&currPosition<musicInfoList.size()){
                 return musicInfoList.get(currPosition);
             }
             return null;
+        }
+        public int getCurrPosition(){
+            return currPosition;
+        }
+
+        /**
+         * 是否正在播放
+         * @return
+         */
+        public boolean isPlaying(){
+            if (mPlayer!=null){
+                return mPlayer.isPlaying();
+            }
+            return false;
+        }
+
+        /**
+         * 是否当前音频已经播放完成
+         * @return
+         */
+        public boolean isPlayEnd(){
+            if (mPlayer!=null){
+                return mPlayer.isPlayFinish();
+            }
+            return true;
+        }
+
+        public long getDuration(){
+            return mPlayer.getDuration();
         }
 
         /**==================监听=====================**/
@@ -217,7 +240,7 @@ public class MusicService extends Service {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (ACTION_PLAY_PAUSE.equals(action)){
-                playOrPause();
+                changePlayState();
             }else if (ACTION_PLAY_NEXT.equals(action)){
                 changeMusic(1);
             }else if (ACTION_PLAY_PRE.equals(action)){
@@ -229,7 +252,7 @@ public class MusicService extends Service {
     /**
      * 暂停或取消暂停
      */
-    private void playOrPause() {
+    private void changePlayState() {
         if (mPlayer!=null&&mPlayer.isPlaying()) {
             mPlayer.pause();
             notifyPause();
@@ -295,6 +318,7 @@ public class MusicService extends Service {
         @Override
         public void onPlayFinished() {
             notifyPlayEnd();
+            changeMusic(1);
         }
 
         @Override

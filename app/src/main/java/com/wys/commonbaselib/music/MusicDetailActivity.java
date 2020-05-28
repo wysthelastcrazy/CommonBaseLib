@@ -27,7 +27,7 @@ public class MusicDetailActivity extends AppCompatActivity implements IGSMusicPl
     private Button btnPause;
     private Button btnPre;
     private Button btnNext;
-    private boolean isPause;
+//    private boolean isPause;
 
     private SeekBar seekBar;
     @Override
@@ -60,14 +60,15 @@ public class MusicDetailActivity extends AppCompatActivity implements IGSMusicPl
         btnPause .setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isPause){
-                    musicBinder.play();
-                    btnPause.setText("暂停");
-                }else{
-                    musicBinder.pause();
-                    btnPause.setText("播放");
-                }
-                isPause = !isPause;
+//                if (isPause){
+//                    musicBinder.play();
+//                    btnPause.setText("暂停");
+//                }else{
+//                    musicBinder.pause();
+//                    btnPause.setText("播放");
+//                }
+//                isPause = !isPause;
+                musicBinder.playOrPause();
             }
         });
         btnNext = findViewById(R.id.btn_next);
@@ -94,7 +95,11 @@ public class MusicDetailActivity extends AppCompatActivity implements IGSMusicPl
     public void onHideBuffering() {
         Log.d(TAG,"[onHideBuffering]+++++++++++++");
     }
-
+    @Override
+    public void onGetPoetryInfoCallback(MusicInfo infoBean) {
+        Log.d(TAG,"[onGetPoetryInfoCallback]+++++++++++++");
+        tvName.setText(infoBean.musicName);
+    }
     @Override
     public void onAudioReady(long duration) {
         Log.d(TAG,"[onAudioReady]+++++++++++++duration:"+duration);
@@ -129,15 +134,11 @@ public class MusicDetailActivity extends AppCompatActivity implements IGSMusicPl
         Log.d(TAG,"[onAudioError]+++++++++++++");
     }
 
-    @Override
-    public void onGetPoetryInfoCallback(MusicInfo infoBean) {
-        Log.d(TAG,"[onGetPoetryInfoCallback]+++++++++++++");
-        tvName.setText(infoBean.musicName);
-    }
 
     @Override
     public void onMusicListEnd() {
         Log.d(TAG,"[onMusicListEnd]+++++++++++++");
+        tvName.setText("当前列表已经全部播放完毕");
     }
 
     private class MusicConnection implements ServiceConnection {
@@ -156,7 +157,11 @@ public class MusicDetailActivity extends AppCompatActivity implements IGSMusicPl
 
     private void onMusicServiceConnected(){
         musicBinder.register(this);
-        musicBinder.prepare(position);
+        if (position==musicBinder.getCurrPosition()){
+            initUIState();
+        }else {
+            musicBinder.prepare(position);
+        }
 
         Intent intent1 = new Intent(this, MusicService.class);
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
@@ -165,7 +170,17 @@ public class MusicDetailActivity extends AppCompatActivity implements IGSMusicPl
             startService(intent1);
         }
     }
-
+    private void initUIState(){
+        if (musicBinder==null||musicBinder.getCurrMusicInfo()==null)
+            return;
+        if (musicBinder.isPlaying()){
+            btnPause.setText("暂停");
+        }else{
+            btnPause.setText("播放");
+        }
+        tvName.setText(musicBinder.getCurrMusicInfo().musicName);
+        seekBar.setMax((int) musicBinder.getDuration());
+    }
     @Override
     protected void onDestroy() {
         unbindService(connection);

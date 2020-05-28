@@ -5,10 +5,13 @@ package com.wys.commonbaselib.music;
  * Describe:
  */
 public interface IGSMusicPlayListener {
+
     /**缓冲*/
     void onShowBuffering();
     /**结束缓冲**/
     void onHideBuffering();
+    /**当前诗歌数据获取成功**/
+    void onGetPoetryInfoCallback(MusicInfo infoBean);
     /**预加载完成**/
     void onAudioReady(long duration);
     /**播放**/
@@ -21,8 +24,6 @@ public interface IGSMusicPlayListener {
     void onAudioEnd();
     /**播放错误**/
     void onAudioError(int code, String errorMsg);
-    /**当前诗歌数据获取成功**/
-    void onGetPoetryInfoCallback(MusicInfo infoBean);
     /**当前播放列表播放结束**/
     void onMusicListEnd();
 }

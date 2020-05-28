@@ -128,11 +128,20 @@ public class CustomAudioPlayer {
             isPlayFinish = false;
         }
     }
+    public long getDuration(){
+        if (mPlayer!=null){
+            return mPlayer.getDuration();
+        }
+        return 0;
+    }
     public boolean isPlaying(){
         if (mPlayer!=null){
             return mPlayer.getPlayWhenReady();
         }
         return false;
+    }
+    public boolean isPlayFinish(){
+        return isPlayFinish;
     }
     public void addPlayListener(IMediaPlayListener mediaPlayListener){
         this.mediaPlayListener = mediaPlayListener;
@@ -184,7 +193,7 @@ public class CustomAudioPlayer {
     }
 
     private boolean isFirstPlay = true;     //第一次播放标示，防止多次触犯开始事件
-    private boolean isPlayFinish = false;   //播放完成标示，防止多次触发结束事件
+    private boolean isPlayFinish = true;   //播放完成标示，防止多次触发结束事件
     private Player.DefaultEventListener eventListener = new Player.DefaultEventListener() {
 
         @Override
