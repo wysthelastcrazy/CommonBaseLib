@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -48,31 +50,12 @@ public class PhotoListActivity extends AppCompatActivity implements View.OnClick
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("1");
         arrayList.add("2");
-//        arrayList.add("3");
-//        arrayList.add("4");
-        final ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(this,arrayList);
-        viewPager.setAdapter(viewPagerAdapter);
-        viewPager.setCurrentItem(1,false);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        arrayList.add("3");
+        arrayList.add("4");
+        new ViewPagerAdapter(this, arrayList, viewPager, new ViewPagerAdapter.OnPageChangeCallback() {
             @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(final int position) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                if (state == ViewPager.SCROLL_STATE_IDLE) {
-                    int position = viewPager.getCurrentItem();
-                    if (position == 0){
-                        viewPager.setCurrentItem(viewPagerAdapter.getCount()-2,false);
-                    } else if (position == viewPagerAdapter.getCount()-1) {
-                        viewPager.setCurrentItem(1,false);
-                    }
-                }
+            public void onPageChange(int position) {
+                Log.d("PhotoListActivity","[onPageChange] position:"+position);
             }
         });
     }

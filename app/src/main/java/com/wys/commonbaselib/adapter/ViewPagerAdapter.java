@@ -3,33 +3,24 @@ package com.wys.commonbaselib.adapter;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yas on 2019/11/5
  * Describe:
  */
-public class ViewPagerAdapter extends PagerAdapter {
-    private Context mContext;
-    private ArrayList<String> list;
-    public ViewPagerAdapter(Context context,ArrayList<String> list){
-        this.list = list;
-        this.mContext = context;
-    }
-    @Override
-    public int getCount() {
-        if (list!=null){
-            if (list.size()>1) {
-                return list.size() + 2;
-            }else{
-                return list.size();
-            }
-        }
-        return 0;
+public class ViewPagerAdapter extends BaseBannerAdapter<String> {
+    private OnPageChangeCallback changeCallback;
+    public ViewPagerAdapter(Context context, List dataList, ViewPager viewPager,OnPageChangeCallback changeCallback) {
+        super(context, dataList, viewPager);
+        this.changeCallback = changeCallback;
     }
 
     @Override
@@ -41,7 +32,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         TextView itemView = new TextView(mContext);
-        itemView.setText(getStr(position));
+        itemView.setText(mDataList.get(position));
 
         container.addView(itemView);
         return itemView;
@@ -52,13 +43,25 @@ public class ViewPagerAdapter extends PagerAdapter {
         container.removeView((View) object);
     }
 
-    private String getStr(int position){
-        if (position == 0){
-            return list.get(list.size()-1);
-        }else if (position == list.size()+1){
-            return list.get(0);
-        }else{
-            return list.get(position-1);
+    @Override
+    public void onPageScrollStateChanged(int state) {
+        super.onPageScrollStateChanged(state);
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        super.onPageSelected(position);
+        if (changeCallback!=null){
+            changeCallback.onPageChange(position);
         }
+    }
+
+    public interface OnPageChangeCallback{
+        /**
+         * 切换页卡
+         * @param position
+         */
+        void onPageChange(int position);
     }
 }

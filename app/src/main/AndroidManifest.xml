@@ -7,8 +7,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-<!--    <uses-feature android:name="android.hardware.type.watch" />-->
-
     <application
         android:name=".MApp"
         android:allowBackup="true"
@@ -18,14 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".music.MusicDetailActivity"></activity>
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".music.MusicDetailActivity" />
         <activity android:name=".music.MusicListActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service
@@ -35,7 +29,7 @@
 
         <activity
             android:name=".zxing.activity.CaptureActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.M3U8DownloadActivity"
             android:screenOrientation="portrait" />
@@ -48,8 +42,15 @@
             android:screenOrientation="landscape" />
         <activity android:name=".activity.AVEditorActivity" />
         <activity android:name=".activity.RecyclerViewActivity" />
-        <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.PhotoListActivity" />
+        <activity android:name=".activity.RequestActivity" />
+        <activity android:name=".activity.PhotoListActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".activity.BigPhotoActivity"
             android:theme="@style/TransparentTheme" />

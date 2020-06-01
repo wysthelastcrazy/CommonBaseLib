@@ -3,12 +3,30 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <compositeConfiguration>
-          <compositeBuild compositeDefinitionSource="SCRIPT" />
-        </compositeConfiguration>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/audio_video_editor" />
+            <option value="$PROJECT_DIR$/baselib" />
+            <option value="$PROJECT_DIR$/combined_operation" />
+            <option value="$PROJECT_DIR$/combined_operation/huawei" />
+            <option value="$PROJECT_DIR$/combined_operation/official" />
+            <option value="$PROJECT_DIR$/combined_operation/oppo" />
+            <option value="$PROJECT_DIR$/downloader" />
+            <option value="$PROJECT_DIR$/m3u8" />
+            <option value="$PROJECT_DIR$/mediaPlayer" />
+            <option value="$PROJECT_DIR$/mediarecorder" />
+            <option value="$PROJECT_DIR$/module_common_ui" />
+            <option value="$PROJECT_DIR$/ui_pad" />
+            <option value="$PROJECT_DIR$/ui_phone" />
+            <option value="$PROJECT_DIR$/zxing" />
+          </set>
+        </option>
         <option name="resolveModulePerSourceSet" value="false" />
+        <option name="testRunner" value="PLATFORM" />
       </GradleProjectSettings>
     </option>
   </component>

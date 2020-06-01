@@ -4,47 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity"
+    tools:context=".MainActivity"
     android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:id="@+id/btn_recycler"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="recycler"
-            android:onClick="onClick"/>
-        <Button
-            android:id="@+id/btn_net"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="net"
-            android:onClick="onClick"/>
-        <Button
-            android:id="@+id/btn_postJson"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="postJson"
-            android:onClick="onClick"/>
-        <Button
-            android:id="@+id/btn_downFile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="downFile"
-            android:onClick="onClick"/>
-        <Button
-            android:id="@+id/btn_camera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="camera"
-            android:onClick="onClick"/>
-    </LinearLayout>
-    <TextView
-        android:id="@+id/tv_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>

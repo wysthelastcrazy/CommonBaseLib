@@ -21,12 +21,15 @@ import com.wys.cp.COPSdk;
 
 import java.io.File;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * 网络请求测试
+ */
+public class RequestActivity extends AppCompatActivity {
     private TextView tv_info;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_request);
         tv_info = findViewById(R.id.tv_info);
         tv_info.setText("width:"+ScreenUtil.getScreenWidth()+" , height:"+ScreenUtil.getScreenHeight());
         COPSdk.init(getApplication());
