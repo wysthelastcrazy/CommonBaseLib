@@ -3,6 +3,7 @@ package com.gaosiedu.mediarecorder.camera;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.media.Ringtone;
@@ -12,10 +13,12 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.Surface;
+import android.view.SurfaceHolder;
 import android.view.WindowManager;
 
 import com.gaosiedu.mediarecorder.egl.EGLSurfaceView;
 import com.gaosiedu.mediarecorder.listener.OnFBOTextureIdChangedListener;
+import com.gaosiedu.mediarecorder.listener.OnTakePhotoListener;
 import com.gaosiedu.mediarecorder.render.BaseEGLRender;
 import com.gaosiedu.mediarecorder.render.CameraFBORender;
 import com.gaosiedu.mediarecorder.shader.PROGRAM;
@@ -55,14 +58,15 @@ public class CameraPreviewView extends EGLSurfaceView {
     }
 
     private void init(Context context, int width, int height) {
-
         this.width = width;
         this.height = height;
-
+        Log.d("CameraPreviewView","[init]++++++++++width:"+width+",height:"+height);
 
         fboRender = new CameraFBORender(context, width, height);
 
-        fboRender.setOnTakePhotoListener(this::getBitmap);
+        fboRender.setOnTakePhotoListener(buffer -> {
+            getBitmap(buffer);
+        });
 
         fboRender.setOnFBOTextureIdChangedListener(id -> {
             if (onFBOTextureIdChangedListener != null) {
@@ -73,9 +77,7 @@ public class CameraPreviewView extends EGLSurfaceView {
         camera = new CCamera(context);
 
         previewAngle(context);
-        Log.d("MainActivity","[init] +++++++++++");
         fboRender.setOnSurfaceCreatedListener((surfaceTexture, textureId) -> {
-            Log.d("MainActivity","[setOnSurfaceCreatedListener] +++++++++++");
             camera.initCamera(surfaceTexture, cameraId);
             this.textureId = textureId;
         });
@@ -170,14 +172,34 @@ public class CameraPreviewView extends EGLSurfaceView {
         return fboRender.getPreviewRender();
     }
 
-    public void setStickers(Bitmap b1, Bitmap b2) {
-        fboRender.setStickers(b1, b2);
+    /**
+     * 设置贴纸
+     * @param sticker
+     */
+    public void setSticker(Bitmap sticker){
+        fboRender.setSticker(sticker);
     }
 
+    /**
+     * 设置水印
+     * @param watermark
+     */
+    public void setWatermark(Bitmap watermark){
+        fboRender.setWatermark(watermark);
+    }
+
+    /**
+     * 设置滤镜
+     * @param p
+     */
     public void setFragmentShader(PROGRAM p) {
         fboRender.setFragmentShader(p);
     }
 
+    /**
+     * 切换摄像头
+     * @param cameraId
+     */
     public void switchCamera(int cameraId) {
         this.cameraId = cameraId;
         camera.switchCamera(cameraId);
@@ -187,55 +209,52 @@ public class CameraPreviewView extends EGLSurfaceView {
         this.onFBOTextureIdChangedListener = onFBOTextureIdChangedListener;
     }
 
+    /**
+     * 拍照
+     */
     public void takePhoto() {
         fboRender.takePhoto(cameraId);
     }
 
     private void getBitmap(byte[] buffer) {
         new Thread(() -> {
+            Bitmap bitmap = createFitBitmap(buffer,width,height);
 
-//            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-//
-//
-//            ByteBuffer b = ByteBuffer.wrap(buffer);
-//            b.rewind();
-//
-//            bitmap.copyPixelsFromBuffer(b);
-////
-//            Matrix matrix = new Matrix();
-//            matrix.setScale(1, -1);
-//
-//            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
-//
-//            if (onTakePhotoListener != null) {
-//                onTakePhotoListener.onTake(bitmap);
-//            }
-            initBitmap(buffer,width,height);
+            ByteBuffer b = ByteBuffer.wrap(buffer);
+            Log.d("CameraPreviewView","[getBitmap] size:"+buffer.length);
+            b.rewind();
+            bitmap.copyPixelsFromBuffer(b);
+
+            Matrix matrix = new Matrix();
+            matrix.setScale(1, -1);
+
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+            if (onTakePhotoListener != null) {
+                onTakePhotoListener.onTake(bitmap);
+            }
         }).start();
     }
-    private void initBitmap(byte[] buffer,int width,int height){
-        Log.d("CameraPreviewView","[initBitmap]  width:"+width+",height:"+height);
+
+    /**
+     * 生成合适的bitmap
+     * @param buffer
+     * @param width
+     * @param height
+     * @return
+     */
+    private Bitmap createFitBitmap(byte[] buffer,int width,int height){
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        ByteBuffer b = ByteBuffer.wrap(buffer);
-        b.rewind();
-
-        try {
-            bitmap.copyPixelsFromBuffer(b);
-        } catch (Exception var7) {
-            this.initBitmap(buffer, width * 9 / 10, height * 9 / 10);
+        if (buffer.length<bitmap.getByteCount()){
+            return createFitBitmap(buffer,width*9/10,height*9/10);
         }
-
-        Matrix matrix = new Matrix();
-        matrix.setScale(1.0F, -1.0F);
-        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
-        if (this.onTakePhotoListener != null) {
-            this.onTakePhotoListener.onTake(bitmap);
-        }
-
+        return bitmap;
     }
 
 
-    private boolean isNeedFocus = true; //是否需要聚焦
+    /**
+     * 是否需要聚焦
+     */
+    private boolean isNeedFocus = true;
     final long FLAG_MAX_DURATION = 1000;
     final long FLAG_MAX_SPACE = 50;
     long downTime = 0;
@@ -305,4 +324,9 @@ public class CameraPreviewView extends EGLSurfaceView {
 
     }
 
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        super.surfaceChanged(holder, format, width, height);
+        Log.d("CameraPreviewView","[surfaceChanged] width:"+width+",height:"+height);
+    }
 }

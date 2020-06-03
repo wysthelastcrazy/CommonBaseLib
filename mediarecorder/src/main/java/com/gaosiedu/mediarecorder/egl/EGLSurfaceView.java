@@ -2,6 +2,7 @@ package com.gaosiedu.mediarecorder.egl;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -58,6 +59,7 @@ public abstract class EGLSurfaceView extends SurfaceView implements SurfaceHolde
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        Log.d("CameraPreviewView","[surfaceChanged1111] width:"+width+",height:"+height);
         eglThread.width = width;
         eglThread.height = height;
         eglThread.isChange = true;

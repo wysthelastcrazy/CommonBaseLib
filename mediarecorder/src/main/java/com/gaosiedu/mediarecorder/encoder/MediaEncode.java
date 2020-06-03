@@ -20,9 +20,12 @@ public class MediaEncode extends BaseMediaEncoder {
     }
 
 
-    public void setStickers(Bitmap b1, Bitmap b2){
-        ((EncodeRender)encodeRender).addSticker1(b1);
-        ((EncodeRender)encodeRender).addSticker2(b2);
+    public void setSticker(Bitmap sticker){
+        ((EncodeRender)encodeRender).addSticker(sticker);
+
+    }
+    public void setWatermark(Bitmap watermark){
+        ((EncodeRender)encodeRender).addWatermark(watermark);
     }
 
     public void setFBOTextureId(int textureId){

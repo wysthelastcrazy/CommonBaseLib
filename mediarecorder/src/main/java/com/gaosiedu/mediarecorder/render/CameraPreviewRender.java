@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
+import android.util.Log;
 
 import com.gaosiedu.mediarecorder.R;
 import com.gaosiedu.mediarecorder.listener.OnTakePhotoListener;
@@ -17,20 +18,12 @@ import java.nio.FloatBuffer;
 
 
 public class CameraPreviewRender extends BaseEGLRender implements SurfaceTexture.OnFrameAvailableListener {
-
+    private final String TAG = "CameraPreviewRender";
     private final float[] vertex_data = {
             -1f, -1f,
             1f, -1f,
             -1f, 1f,
             1f, 1f,
-
-//            0f, 0f,。。
-
-
-
-//            0f, 0f,
-//            0f, 0f,
-//            0f, 0f,
 
             -0.3f, -0.3f,
             0.3f, -0.3f,
@@ -67,15 +60,26 @@ public class CameraPreviewRender extends BaseEGLRender implements SurfaceTexture
 
     private Context context;
 
-    private boolean changeSticker1 = false;
-    private boolean changeSticker2 = false;
+    /**
+     * 是否变更了贴纸
+     */
+    private boolean changeSticker = false;
+    /**
+     * 是否变更了水印
+     */
+    private boolean changeWatermark = false;
 
+    /**
+     * 贴纸
+     */
+    private Bitmap sticker;
+    /**
+     * 水印
+     */
+    private Bitmap watermark;
 
-    private Bitmap sticker1;
-    private Bitmap sticker2;
-
-    private int sticker1TextureId = -1;
-    private int sticker2TextureId = -1;
+    private int stickerTextureId = -1;
+    private int watermarkTextureId = -1;
 
     private int width;
     private int height;
@@ -89,7 +93,6 @@ public class CameraPreviewRender extends BaseEGLRender implements SurfaceTexture
 
 
     public CameraPreviewRender(Context context,int width,int height) {
-
         this.context = context;
         this.width = width;
         this.height = height;
@@ -170,27 +173,27 @@ public class CameraPreviewRender extends BaseEGLRender implements SurfaceTexture
 
         //stickers
 
-        if (changeSticker1) {
-            changeSticker1 = false;
-            sticker1TextureId = ImageTextureUtil.loadBitmapTexture2D(sticker1);
+        if (changeSticker) {
+            changeSticker = false;
+            stickerTextureId = ImageTextureUtil.loadBitmapTexture2D(sticker);
 
             bindVBO();
 
 
         }
 
-
-        if (changeSticker2) {
-            changeSticker2 = false;
-            sticker2TextureId = ImageTextureUtil.loadBitmapTexture2D(sticker2);
+        //watermark
+        if (changeWatermark) {
+            changeWatermark = false;
+            watermarkTextureId = ImageTextureUtil.loadBitmapTexture2D(watermark);
 
             bindVBO();
 
         }
 
-        if (sticker1TextureId != -1) {
+        if (stickerTextureId != -1) {
             //sticker1
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, sticker1TextureId);
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, stickerTextureId);
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, VBOId);
             GLES20.glEnableVertexAttribArray(avPosition);
             GLES20.glVertexAttribPointer(avPosition, 2, GLES20.GL_FLOAT, false, 8, 32);
@@ -200,9 +203,9 @@ public class CameraPreviewRender extends BaseEGLRender implements SurfaceTexture
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
         }
 
-        if (sticker2TextureId != -1) {
-            //sticker2
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, sticker2TextureId);
+        if (watermarkTextureId != -1) {
+            //watermark
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, watermarkTextureId);
             GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, VBOId);
             GLES20.glEnableVertexAttribArray(avPosition);
             GLES20.glVertexAttribPointer(avPosition, 2, GLES20.GL_FLOAT, false, 8, 32 * 2);
@@ -228,9 +231,9 @@ public class CameraPreviewRender extends BaseEGLRender implements SurfaceTexture
 
             //stickers
 
-            if (changeSticker1) {
-                changeSticker1 = false;
-                sticker1TextureId = ImageTextureUtil.loadBitmapTexture2D(sticker1);
+            if (changeSticker) {
+                changeSticker = false;
+                stickerTextureId = ImageTextureUtil.loadBitmapTexture2D(sticker);
 
                 bindVBO();
 
@@ -238,17 +241,17 @@ public class CameraPreviewRender extends BaseEGLRender implements SurfaceTexture
             }
 
 
-            if (changeSticker2) {
-                changeSticker2 = false;
-                sticker2TextureId = ImageTextureUtil.loadBitmapTexture2D(sticker2);
+            if (changeWatermark) {
+                changeWatermark = false;
+                watermarkTextureId = ImageTextureUtil.loadBitmapTexture2D(watermark);
 
                 bindVBO();
 
             }
 
-            if (sticker1TextureId != -1) {
+            if (stickerTextureId != -1) {
                 //sticker1
-                GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, sticker1TextureId);
+                GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, stickerTextureId);
                 GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, VBOId);
                 GLES20.glEnableVertexAttribArray(avPosition);
                 GLES20.glVertexAttribPointer(avPosition, 2, GLES20.GL_FLOAT, false, 8, 32);
@@ -258,9 +261,9 @@ public class CameraPreviewRender extends BaseEGLRender implements SurfaceTexture
                 GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
             }
 
-            if (sticker2TextureId != -1) {
-                //sticker2
-                GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, sticker2TextureId);
+            if (watermarkTextureId != -1) {
+                //watermark
+                GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, watermarkTextureId);
                 GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, VBOId);
                 GLES20.glEnableVertexAttribArray(avPosition);
                 GLES20.glVertexAttribPointer(avPosition, 2, GLES20.GL_FLOAT, false, 8, 32 * 2);
@@ -274,6 +277,8 @@ public class CameraPreviewRender extends BaseEGLRender implements SurfaceTexture
             ByteBuffer buffer = ByteBuffer.allocate(width * height * 4);
             GLES20.glReadPixels(0, 0, width, height, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, buffer);
             if (onTakePhotoListener != null) {
+                Log.d("CameraPreviewView","[onTakePhotoListener] width:"+width+",height:"+height);
+                Log.d("CameraPreviewView","[onTakePhotoListener] size:"+buffer.array().length);
                 onTakePhotoListener.onTake(buffer.array());
             }
 
@@ -333,91 +338,73 @@ public class CameraPreviewRender extends BaseEGLRender implements SurfaceTexture
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
     }
 
-
-    public void addSticker1(Bitmap sticker) {
+    /**
+     * 添加贴纸
+     * @param sticker
+     */
+    public void addSticker(Bitmap sticker) {
 
         if (sticker == null) {
-            sticker1TextureId = -1;
-            changeSticker1 = false;
+            stickerTextureId = -1;
+            changeSticker = false;
             return;
         }
-
-        float scale = sticker.getHeight() * 1.0f / height;
-
-//        float imageHeight = scale * sticker.getHeight();
-//        float imageWidth = scale * sticker.getWidth();
-        float imageHeight = sticker.getHeight() * 1.0f / scale;
-        float imageWidth = sticker.getWidth()  * 1.0f / scale;
-
-        float sh = imageHeight / height * 2;
-        float sw = imageWidth / width * 2;
-
 
         vertex_data[8] = -1f;
         vertex_data[9] = -1f;
 
-        vertex_data[10] = -1f + sw;
+        vertex_data[10] = 1f;
         vertex_data[11] = -1f;
 
         vertex_data[12] = -1f;
-        vertex_data[13] = -1f + sh;
+        vertex_data[13] = 1f;
 
-        vertex_data[14] = -1f + sw;
-        vertex_data[15] = -1f + sh;
+        vertex_data[14] = 1f;
+        vertex_data[15] = 1f;
 
 
-        this.sticker1 = sticker;
-        this.changeSticker1 = true;
+        this.sticker = sticker;
+        this.changeSticker = true;
     }
 
-    public void addSticker2(Bitmap sticker) {
+    /**
+     * 添加水印
+     * @param watermark
+     */
+    public void addWatermark(Bitmap watermark) {
 
-        //第二张，草原
-
-        if (sticker == null) {
-            sticker2TextureId = -1;
-            changeSticker2 = false;
+        if (watermark == null) {
+            watermarkTextureId = -1;
+            changeWatermark = false;
             return;
         }
 
         float scale = height * 1.0f / 720;
 
-        float imgWidth = sticker.getWidth() * 1.0f / scale;
+        float imgWidth = watermark.getWidth() * 1.0f / scale;
+        float imgHeight = watermark.getHeight()*1.0f/scale;
+        float marginTop = 40f/scale;
+        float marginLeft = 130f/scale;
 
-        float r = imgWidth /  width / 2;
+        float sw = 2f*imgWidth / width;
+        float sh = 2f*imgHeight/height;
+        float sMarginTop = 2f*marginTop/height;
+        float sMarginLeft = 2f*marginLeft/width;
 
-        if (r > 1) {
+        vertex_data[16] = - 1f + sMarginLeft;
+        vertex_data[17] = 1f - sMarginTop - sh;
 
-            vertex_data[16] = -r;
-            vertex_data[17] = -1f;
+        vertex_data[18] = -1 + sMarginLeft + sw;
+        vertex_data[19] = 1f - sMarginTop - sh;
 
-            vertex_data[18] = r;
-            vertex_data[19] = -1f;
+        vertex_data[20] = -1f + sMarginLeft;
+        vertex_data[21] = 1f - sMarginTop;
 
-            vertex_data[20] = -r;
-            vertex_data[21] = 1f;
+        vertex_data[22] = -1f + sMarginLeft + sw;
+        vertex_data[23] = 1f  - sMarginTop;
 
-            vertex_data[22] = r;
-            vertex_data[23] = 1f;
-
-        } else {
-
-            vertex_data[16] = -1f;
-            vertex_data[17] = -1f;
-
-            vertex_data[18] = 1f;
-            vertex_data[19] = -1f;
-
-            vertex_data[20] = -1f;
-            vertex_data[21] = 1f;
-
-            vertex_data[22] = 1f;
-            vertex_data[23] = 1f;
-
-        }
-
-        this.sticker2 = sticker;
-        this.changeSticker2 = true;
+        this.watermark = watermark;
+        this.changeWatermark = true;
     }
 
 

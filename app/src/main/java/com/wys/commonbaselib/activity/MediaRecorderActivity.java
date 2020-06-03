@@ -2,16 +2,20 @@ package com.wys.commonbaselib.activity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.media.MediaFormat;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.gaosiedu.mediarecorder.audio.AudioRecord;
+import com.gaosiedu.mediarecorder.camera.CCamera;
 import com.gaosiedu.mediarecorder.camera.CameraPreviewView;
 import com.gaosiedu.mediarecorder.encoder.MediaEncode;
 import com.gaosiedu.mediarecorder.listener.OnNativeCallbackPCMDataListener;
@@ -21,6 +25,7 @@ import com.gaosiedu.mediarecorder.util.DisplayUtil;
 import com.wys.commonbaselib.R;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -33,6 +38,7 @@ import androidx.appcompat.app.AppCompatActivity;
  * @Describe:
  */
 public class MediaRecorderActivity extends AppCompatActivity implements View.OnClickListener {
+    private final String TAG = "MediaRecorderActivity";
     CameraPreviewView cameraPreviewView;
 
     Button btnStart, btnStop,btnTakePhoto;
@@ -50,7 +56,8 @@ public class MediaRecorderActivity extends AppCompatActivity implements View.OnC
 
     int height;
     int width;
-    private Bitmap bitmap;
+    private Bitmap bitmapSticker;
+    private Bitmap bitmapWatermark;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,16 +70,25 @@ public class MediaRecorderActivity extends AppCompatActivity implements View.OnC
 
         height = (int) (scale * size.height);
         width = (int) (scale * size.width);
-        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.img_capture_sticker_donkey);
-
+        Log.d(TAG,"[onCreate]+++++++++++++width:"+width+",height:"+height);
+        bitmapSticker = BitmapFactory.decodeResource(getResources(),R.drawable.img_capture_sticker_donkey);
+        bitmapWatermark = BitmapFactory.decodeResource(getResources(),R.drawable.icon_watermark);
 
         RelativeLayout rlContent = findViewById(R.id.fl_content);
 
         cameraPreviewView = new CameraPreviewView(this,width,height);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width,height);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT);
         cameraPreviewView.setLayoutParams(params);
-        cameraPreviewView.setStickers(null,bitmap);
-        cameraPreviewView.setFragmentShader(PROGRAM.CHARMING);
+        cameraPreviewView.setOnTakePhotoListener(bitmap ->{
+            saveBitmap(bitmap);
+        });
+        cameraPreviewView.setFocusListener(new CCamera.IFocusListener() {
+            @Override
+            public void onFocus(Rect rect) {
+
+            }
+        });
         rlContent.addView(cameraPreviewView);
 
 
@@ -84,10 +100,11 @@ public class MediaRecorderActivity extends AppCompatActivity implements View.OnC
         btnStop.setOnClickListener(this);
         btnTakePhoto.setOnClickListener(this);
 
-        cameraPreviewView.setOnTakePhotoListener(this::saveBitmap);
-
-        cameraPreviewView.switchCamera(1);
-        cameraPreviewView.previewAngle(this);
+//        cameraPreviewView.switchCamera(1);
+//        cameraPreviewView.previewAngle(this);
+        cameraPreviewView.setSticker(bitmapSticker);
+        cameraPreviewView.setWatermark(bitmapWatermark);
+        cameraPreviewView.setFragmentShader(PROGRAM.CHARMING);
     }
 
     @Override
@@ -102,7 +119,7 @@ public class MediaRecorderActivity extends AppCompatActivity implements View.OnC
                 break;
             case R.id.takePhoto:
                 takePhoto();
-
+                break;
 
         }
     }
@@ -111,19 +128,24 @@ public class MediaRecorderActivity extends AppCompatActivity implements View.OnC
      * 开始录制视频
      */
     private void start(){
-
+        String recordVideoPath = Environment.getExternalStorageDirectory().getPath()+"/aaa/testabc.mp4";
+        File file = new File(recordVideoPath);
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
         audioRecord = new AudioRecord();
         audioRecord.startRecord();
         mediaEncode = new MediaEncode(this,cameraPreviewView.getTextureId(),width,height);
         mediaEncode.initEncoder(cameraPreviewView.getEglContext(),
-                Environment.getExternalStorageDirectory().getAbsolutePath()+"testabc.mp4",
+                recordVideoPath,
                 MediaFormat.MIMETYPE_VIDEO_AVC,960,540,44100,2);
-        mediaEncode.setStickers(null,bitmap);
         mediaEncode.startRecord();
 
         audioRecord.setOnNativeCallbackPCMDataListener((buffer, size)
                 -> mediaEncode.setPCMData(buffer,size));
 
+        mediaEncode.setSticker(bitmapSticker);
+        mediaEncode.setWatermark(bitmapWatermark);
     }
 
     /**
@@ -148,6 +170,7 @@ public class MediaRecorderActivity extends AppCompatActivity implements View.OnC
      * 拍照
      */
     private void takePhoto(){
+        Log.d(TAG,"[takePhoto] ++++++++++++++");
         cameraPreviewView.takePhoto();
         cameraPreviewView.pausePreview();
         cameraPreviewView.playSoundEffect(this);
@@ -158,19 +181,40 @@ public class MediaRecorderActivity extends AppCompatActivity implements View.OnC
      * @param b
      */
     public void saveBitmap(Bitmap b){
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/haha";
-
-        long dataTake = System.currentTimeMillis();
-        final String jpegName=path+ dataTake +".jpg";
+        Log.d(TAG,"[saveBitmap] ++++++++++++++");
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath()+"/aaa/";
+        String jpegName = path+"haha"+System.currentTimeMillis()+".jpg";
+        File file = new File(jpegName);
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        FileOutputStream fos = null;
+        BufferedOutputStream bos = null;
         try {
-            FileOutputStream fout = new FileOutputStream(jpegName);
-            BufferedOutputStream bos = new BufferedOutputStream(fout);
+            fos = new FileOutputStream(file);
+            bos = new BufferedOutputStream(fos);
             b.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             bos.flush();
             bos.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }

@@ -88,7 +88,6 @@ public class CameraFBORender extends BaseEGLRender implements SurfaceTexture.OnF
     private OnTakePhotoListener onTakePhotoListener;
 
     public CameraFBORender(Context context,int width,int height) {
-
         this.width = width;
         this.height = height;
 
@@ -235,6 +234,7 @@ public class CameraFBORender extends BaseEGLRender implements SurfaceTexture.OnF
     }
 
 
+    @Override
     public void onChange(int width, int height) {
         this.width = width;
         this.height = height;
@@ -306,9 +306,20 @@ public class CameraFBORender extends BaseEGLRender implements SurfaceTexture.OnF
         this.onFBOTextureIdChangedListener = onFBOTextureIdChangedListener;
     }
 
-    public void setStickers(Bitmap b1, Bitmap b2) {
-            previewRender.addSticker1(b1);
-            previewRender.addSticker2(b2);
+    /**
+     * 设置贴纸
+     * @param sticker
+     */
+    public void setSticker(Bitmap sticker){
+        previewRender.addSticker(sticker);
+    }
+
+    /**
+     * 设置水印
+     * @param watermark
+     */
+    public void setWatermark(Bitmap watermark){
+        previewRender.addWatermark(watermark);
     }
 
     public BaseEGLRender getPreviewRender() {
