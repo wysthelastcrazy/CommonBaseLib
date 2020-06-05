@@ -24,6 +24,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.core.app.NotificationCompat;
+
 /**
  * music播放前台服务
  */
@@ -82,18 +84,17 @@ public class MusicService extends Service {
      * 初始化通知栏
      */
     private void initNotification(){
-        Notification.Builder builder = new Notification.Builder(this);
-
-        Intent intent = new Intent(this,MusicListActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
+        // 设置ui
         remoteView = new RemoteViews(getPackageName(), R.layout.music_notification);
 
         {
             remoteView.setOnClickPendingIntent(R.id.play_pause,getPendingIntent(this,ACTION_PLAY_PAUSE));
             remoteView.setOnClickPendingIntent(R.id.prev_song,getPendingIntent(this,ACTION_PLAY_PRE));
             remoteView.setOnClickPendingIntent(R.id.next_song,getPendingIntent(this,ACTION_PLAY_NEXT));
-            String title = musicInfoList.get(currPosition).musicName;
-            remoteView.setTextViewText(R.id.notification_title,title);
+            if (musicInfoList!=null&&musicInfoList.size()>0) {
+                String title = musicInfoList.get(currPosition).musicName;
+                remoteView.setTextViewText(R.id.notification_title,title);
+            }
 
             if (mPlayer!=null&&mPlayer.isPlaying()){
                 remoteView.setTextViewText(R.id.play_pause, "暂停");
@@ -102,15 +103,22 @@ public class MusicService extends Service {
             }
         }
 
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+
+        Intent intent = new Intent(this,MusicListActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
+
+
         builder.setContentIntent(pendingIntent)
                 .setContent(remoteView)
+                .setAutoCancel(false)
                 .setWhen(System.currentTimeMillis())
-                .setOngoing(false)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setDefaults(Notification.DEFAULT_LIGHTS);
-
+                .setSmallIcon(R.mipmap.ic_launcher);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
             NotificationChannel channel = new NotificationChannel(notificationChannelID,notificationChannelName,
                     NotificationManager.IMPORTANCE_MIN);
             channel.setDescription("notification description");
@@ -119,11 +127,9 @@ public class MusicService extends Service {
             manager.createNotificationChannel(channel);
             builder.setChannelId(notificationChannelID);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setVisibility(Notification.VISIBILITY_PUBLIC);
-        }
         notification = builder.build();
         startForeground(notifyId,notification);
+        manager.notify(notifyId,notification);
 //        updateNotification();
     }
 
@@ -151,6 +157,7 @@ public class MusicService extends Service {
     private PendingIntent getPendingIntent(Context context,String action){
         Intent intent = new Intent();
         intent.setAction(action);
+        intent.setPackage(context.getPackageName());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
         return pendingIntent;
     }
