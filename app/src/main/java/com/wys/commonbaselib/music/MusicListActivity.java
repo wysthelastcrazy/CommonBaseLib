@@ -118,6 +118,7 @@ public class MusicListActivity extends AppCompatActivity {
         }else{
             btnGotoPlay.setText("当前无播放");
         }
+        //1167788469
     }
 
     private void gotoDetail(int position,int musicId){

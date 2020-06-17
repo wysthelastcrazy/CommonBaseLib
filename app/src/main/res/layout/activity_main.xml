@@ -68,5 +68,11 @@
             android:layout_height="wrap_content"
             android:text="mediaRecorder"
             android:onClick="onClick"/>
+        <Button
+            android:id="@+id/btn_jetpack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="jetpack"
+            android:onClick="onClick"/>
     </LinearLayout>
 </LinearLayout>

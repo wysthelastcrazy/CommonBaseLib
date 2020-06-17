@@ -15,6 +15,8 @@ import com.wys.commonbaselib.activity.MediaRecorderActivity;
 import com.wys.commonbaselib.activity.PhotoListActivity;
 import com.wys.commonbaselib.activity.VideoListActivity;
 import com.wys.commonbaselib.activity.VideoPlayerActivity;
+import com.wys.commonbaselib.jetpack.kotlin.LoginActivity;
+import com.wys.commonbaselib.kotlin.Day03;
 import com.wys.commonbaselib.music.MusicListActivity;
 import com.wys.commonbaselib.zxing.activity.CaptureActivity;
 
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.RECORD_AUDIO
         };
         requestPermissions(permissions,100);
+        Day03 day03 = new Day03();
+        day03.day03Enter();
     }
 
     public void onClick(View view) {
@@ -69,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btn_mediaRecorder:
                 intent = new Intent(this, MediaRecorderActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btn_jetpack:
+                intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 break;
         }

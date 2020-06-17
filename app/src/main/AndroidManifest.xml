@@ -6,9 +6,10 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".MApp"
@@ -19,9 +20,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".activity.MediaRecorderActivity"
+        <activity android:name=".jetpack.java.MyActivity"></activity>
+        <activity android:name=".jetpack.kotlin.LoginActivity" />
+        <activity
+            android:name=".activity.MediaRecorderActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".music.MusicDetailActivity" />
-        <activity android:name=".music.MusicListActivity"></activity>
+        <activity android:name=".music.MusicListActivity" />
 
         <service
             android:name=".music.MusicService"
@@ -53,7 +57,7 @@
         <activity android:name=".activity.AVEditorActivity" />
         <activity android:name=".activity.RecyclerViewActivity" />
         <activity android:name=".activity.RequestActivity" />
-        <activity android:name=".activity.PhotoListActivity"></activity>
+        <activity android:name=".activity.PhotoListActivity" />
         <activity
             android:name=".activity.BigPhotoActivity"
             android:theme="@style/TransparentTheme" />

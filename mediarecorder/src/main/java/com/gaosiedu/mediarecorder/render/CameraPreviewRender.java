@@ -381,15 +381,15 @@ public class CameraPreviewRender extends BaseEGLRender implements SurfaceTexture
 
         float scale = height * 1.0f / 720;
 
-        float imgWidth = watermark.getWidth() * 1.0f / scale;
-        float imgHeight = watermark.getHeight()*1.0f/scale;
-        float marginTop = 40f/scale;
-        float marginLeft = 130f/scale;
+        float imgWidth = watermark.getWidth() * 1.0f*scale;
+        float imgHeight = watermark.getHeight()*1.0f*scale;
+        float marginTop = 40f*scale;
+        float marginLeft = 130f*scale;
 
-        float sw = 2f*imgWidth / width;
-        float sh = 2f*imgHeight/height;
-        float sMarginTop = 2f*marginTop/height;
-        float sMarginLeft = 2f*marginLeft/width;
+        float sw = imgWidth/width*2;
+        float sh = imgHeight/height*2;
+        float sMarginTop = marginTop/height*2;
+        float sMarginLeft = marginLeft/width*2;
 
         vertex_data[16] = - 1f + sMarginLeft;
         vertex_data[17] = 1f - sMarginTop - sh;
