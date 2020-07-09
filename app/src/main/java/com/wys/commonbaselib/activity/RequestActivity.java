@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.wys.baselib.net.GSRequest;
+import com.wys.baselib.net.RequestHeaders;
 import com.wys.baselib.net.RequestParam;
 import com.wys.baselib.net.callback.IDownloadCallback;
 import com.wys.baselib.net.ext.ProgressRequestListener;
@@ -69,10 +70,12 @@ public class RequestActivity extends AppCompatActivity {
                         });
                 break;
             case R.id.btn_postJson:
-                GSRequest.postJsonRequest("https://gushiapi.egaosi.com/login/login", null,
+                GSRequest.postJsonRequest("http://gushitestapi.egaosi.com/login/login", null,
                         new RequestParam().addParam("mobile", "18811426939")
                                 .addParam("pwd", Md5Util.parseMD5("111111"))
                                 .addParam("type",2),
+                        new RequestHeaders().addHeader("header001","hhh")
+                        .addHeader("header002","yyy"),
                         new BusinessCallback<UserBean>(UserBean.class) {
                             @Override
                             public void onSuccess(UserBean userBean) {

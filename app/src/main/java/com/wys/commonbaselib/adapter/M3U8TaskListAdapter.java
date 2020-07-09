@@ -6,8 +6,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.easefun.m3u8.M3U8DownloadManager;
-import com.easefun.m3u8.M3U8DownloadRecord;
+import com.wys.m3u8.M3U8DownloadManager;
+import com.wys.m3u8.M3U8DownloadRecord;
 import com.wys.commonbaselib.R;
 import com.wys.module_common_ui.widget.recycler.adapter.BaseRecyclerAdapter;
 import com.wys.module_common_ui.widget.recycler.adapter.BaseViewHolder;

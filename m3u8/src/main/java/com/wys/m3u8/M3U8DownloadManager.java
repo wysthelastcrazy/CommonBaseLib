@@ -1,4 +1,4 @@
-package com.easefun.m3u8;
+package com.wys.m3u8;
 
 import android.content.Context;
 import android.text.TextUtils;

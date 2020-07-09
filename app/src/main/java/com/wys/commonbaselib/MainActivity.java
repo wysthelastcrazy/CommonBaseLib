@@ -13,6 +13,7 @@ import com.wys.commonbaselib.activity.DownloadActivity;
 import com.wys.commonbaselib.activity.M3U8DownloadActivity;
 import com.wys.commonbaselib.activity.MediaRecorderActivity;
 import com.wys.commonbaselib.activity.PhotoListActivity;
+import com.wys.commonbaselib.activity.RequestActivity;
 import com.wys.commonbaselib.activity.VideoListActivity;
 import com.wys.commonbaselib.activity.VideoPlayerActivity;
 import com.wys.commonbaselib.jetpack.kotlin.LoginActivity;
@@ -77,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.btn_jetpack:
                 intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btn_net:
+                intent = new Intent(this, RequestActivity.class);
                 startActivity(intent);
                 break;
         }

@@ -29,18 +29,33 @@ public class GSRequest {
 
     public static void postFormRequest(String url, String tag, RequestParam param, IResponseCallback callback) {
 
-        RequestClient.getInstance().postForm(url, tag, param, initCallback(callback));
+        RequestClient.getInstance().postForm(url, tag, param,null, initCallback(callback));
+
+    }
+    public static void postFormRequest(String url, String tag, RequestParam param, RequestHeaders headers, IResponseCallback callback) {
+
+        RequestClient.getInstance().postForm(url, tag, param,headers, initCallback(callback));
 
     }
     public static void postJsonRequest(String url, String tag, RequestParam param, IResponseCallback callback) {
 
-        RequestClient.getInstance().postJson(url, tag, param, initCallback(callback));
+        RequestClient.getInstance().postJson(url, tag, param,null, initCallback(callback));
+
+    }
+    public static void postJsonRequest(String url, String tag, RequestParam param,RequestHeaders headers, IResponseCallback callback) {
+
+        RequestClient.getInstance().postJson(url, tag, param,headers, initCallback(callback));
 
     }
 
     public static void getRequest(String url, String tag, RequestParam param, IResponseCallback callback) {
 
-        RequestClient.getInstance().get(url, tag, param,initCallback(callback));
+        RequestClient.getInstance().get(url, tag, param,null,initCallback(callback));
+
+    }
+    public static void getRequest(String url, String tag, RequestParam param,RequestHeaders headers, IResponseCallback callback) {
+
+        RequestClient.getInstance().get(url, tag, param,headers,initCallback(callback));
 
     }
     public static void uploadFile(String url, String tag, RequestParam param, ProgressRequestListener listener){

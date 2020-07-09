@@ -2,6 +2,7 @@ package com.wys.baselib.net;
 
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.wys.baselib.net.ext.ProgressRequestBody;
 import com.wys.baselib.net.ext.ProgressRequestListener;
@@ -63,13 +64,13 @@ public class RequestClient {
      * @param tag
      * @param callback
      */
-    public void get(String url,String tag,RequestParam param, Callback callback) {
+    public void get(String url,String tag,RequestParam param,RequestHeaders headers, Callback callback) {
 
         String paramStr = param.toString();
         if (!TextUtils.isEmpty(paramStr)){
             url += "?"+paramStr;
         }
-        Request request = new Request.Builder()
+        Request request = addHeaders(new Request.Builder(),headers)
                 .url(url)
                 .get()
                 .tag(tag)
@@ -87,10 +88,10 @@ public class RequestClient {
      * @param param
      * @param callback
      */
-    public void postJson(String url, String tag, RequestParam param, Callback callback) {
+    public void postJson(String url, String tag, RequestParam param,RequestHeaders headers, Callback callback) {
         RequestBody requestBody = RequestBody.create(HttpUtils.MEDIA_TYPE_JSON, param.toJsonStr());
 
-        final Request request = new Request.Builder()
+        final Request request = addHeaders(new Request.Builder(),headers)
                 .url(url)//请求的url
                 .tag(tag)
                 .post(requestBody)
@@ -110,7 +111,7 @@ public class RequestClient {
      * @param param
      * @param callback
      */
-    public void postForm(String url, String tag, RequestParam param, Callback callback) {
+    public void postForm(String url, String tag, RequestParam param, RequestHeaders headers,Callback callback) {
         RequestBody requestBody= null;
         if (param.getFileParams().size()>0){
             requestBody = HttpUtils.createMultipartBody(param.getParams(),param.getFileParams());
@@ -118,7 +119,7 @@ public class RequestClient {
             requestBody = HttpUtils.createFormBody(param.getParams());
         }
 
-        final Request request = new Request.Builder()
+        final Request request = addHeaders(new Request.Builder(),headers)
                 .url(url)//请求的url
                 .tag(tag)
                 .post(requestBody)
@@ -154,6 +155,21 @@ public class RequestClient {
     }
 
 
+    /**
+     * 添加请求头（非公共header）
+     * @param builder
+     * @param headers
+     * @return
+     */
+    private Request.Builder addHeaders(Request.Builder builder, RequestHeaders headers){
+        if (headers!=null&&headers.getHeaders()!=null){
+            for (Map.Entry<String,Object> entry:headers.getHeaders().entrySet()){
+                Log.d("wys","[addHeaders] key:"+entry.getKey()+",value:"+entry.getValue());
+                builder.addHeader(entry.getKey(),entry.getValue()+"");
+            }
+        }
+        return builder;
+    }
 
 
     public static void setRequestConfig(IRequestConfig config){

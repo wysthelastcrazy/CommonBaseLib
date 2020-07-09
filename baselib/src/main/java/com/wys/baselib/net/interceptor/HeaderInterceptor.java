@@ -1,5 +1,6 @@
 package com.wys.baselib.net.interceptor;
 
+
 import android.util.Log;
 
 import com.wys.baselib.net.RequestClient;
@@ -19,11 +20,10 @@ public class HeaderInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-
         Request.Builder builder = request.newBuilder();
         if (RequestClient.getHeaders()!=null){
             for (Map.Entry<String,String> entry: RequestClient.getHeaders().entrySet()){
-                builder.header(entry.getKey(),entry.getValue());
+                builder.addHeader(entry.getKey(),entry.getValue());
             }
         }
         Request newRequest = builder.build();

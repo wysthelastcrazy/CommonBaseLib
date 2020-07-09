@@ -13,10 +13,10 @@ import android.widget.ImageView;
 
 import com.aigushi.videoplayer.CustomVideoPlayerView;
 import com.aigushi.videoplayer.IMediaPlayListener;
-import com.easefun.m3u8.IDownloadListener;
-import com.easefun.m3u8.M3U8DownloadManager;
-import com.easefun.m3u8.M3U8DownloadRecord;
-import com.easefun.m3u8.M3U8DownloadRequest;
+import com.wys.m3u8.IDownloadListener;
+import com.wys.m3u8.M3U8DownloadManager;
+import com.wys.m3u8.M3U8DownloadRecord;
+import com.wys.m3u8.M3U8DownloadRequest;
 import com.wys.commonbaselib.R;
 
 import java.io.File;

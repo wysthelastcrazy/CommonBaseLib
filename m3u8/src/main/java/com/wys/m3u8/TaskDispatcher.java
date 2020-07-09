@@ -1,4 +1,4 @@
-package com.easefun.m3u8;
+package com.wys.m3u8;
 
 
 import java.util.concurrent.BlockingQueue;

@@ -1,6 +1,4 @@
-package com.easefun.m3u8;
-
-import android.util.Log;
+package com.wys.m3u8;
 
 import com.google.gson.annotations.Expose;
 
