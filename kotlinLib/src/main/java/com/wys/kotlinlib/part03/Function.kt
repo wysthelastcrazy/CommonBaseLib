@@ -191,7 +191,6 @@ fun dfs(){
 fun findFixPoint(x: Double = 1.0): Double
     = if (Math.abs(x - Math.cos(x)) < 1E-10)x else findFixPoint(Math.cos(x))
 
-
 fun test(){
     val result = double(2)
     val result2 = double()
@@ -218,4 +217,9 @@ fun test(){
     //等同于1.shl(2)
     val i = 1 shl 2
     MyStringCollection() add  "abc"
+
+    val double: (Int) -> Int = fun(value: Int):Int{
+        return 2*value
+    }
+    double(1)
 }

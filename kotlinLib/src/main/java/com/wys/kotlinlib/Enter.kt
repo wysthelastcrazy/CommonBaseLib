@@ -3,6 +3,7 @@ package com.wys.kotlinlib
 import com.wys.kotlinlib.part01.Constant
 import com.wys.kotlinlib.part02.day01.Man
 import com.wys.kotlinlib.part02.day02.*
+import com.wys.kotlinlib.part03.highOrderFunctionTest
 
 fun main(){
     println("hello kotlin")
@@ -14,7 +15,8 @@ fun main(){
 
 //    extensionTest()
 //    dataClassTest()
-    sealedClassTest();
+//    sealedClassTest()
+    highOrderFunctionTest()
 }
 
 /**
