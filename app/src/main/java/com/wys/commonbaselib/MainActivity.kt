@@ -8,7 +8,6 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.wys.commonbaselib.activity.*
-import com.wys.commonbaselib.jetpack.kotlin.LoginActivity
 import com.wys.commonbaselib.kotlin.Day03
 import com.wys.commonbaselib.music.MusicListActivity
 import com.wys.commonbaselib.zxing.activity.CaptureActivity
@@ -67,8 +66,8 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             R.id.btn_jetpack -> {
-                intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
+//                intent = Intent(this, LoginActivity::class.java)
+//                startActivity(intent)
             }
             R.id.btn_net -> {
                 intent = Intent(this, RequestActivity::class.java)
