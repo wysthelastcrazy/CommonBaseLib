@@ -83,10 +83,13 @@ package com.wys.kotlinlib.part03
 
 fun lambdaTest(){
     val sum = {x: Int, y: Int -> x+y}
+    //只读类型，无add和remove等放法
     val ints = listOf<Int>(-2,-1,1,2,3,4)
+
 
     //这个字面值是"（it: Int）-> Boolean"
     ints.filter { it > 0 }
+
 
 
     //一下两个写法是等价的
@@ -103,6 +106,12 @@ fun lambdaTest(){
     //LINQ-风格的代码
     val strings = listOf<String>("aaa","bbb","ccc")
     strings.filter { it.length == 5 }.sortedBy { it }.map { it.toUpperCase() }
+
+    val strings1 = mutableListOf<String>("a","b")
+    strings1.filter(fun (s: String): Boolean{
+        return s != "" && s != null
+    })
+
 
     //匿名函数语法,一下两种写法等价
     ints.filter(fun(item) = item > 0)

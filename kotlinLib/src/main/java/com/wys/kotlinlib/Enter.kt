@@ -5,6 +5,7 @@ import com.wys.kotlinlib.part02.day01.Man
 import com.wys.kotlinlib.part02.day02.*
 import com.wys.kotlinlib.part03.highOrderFunctionTest
 import com.wys.kotlinlib.part03.lambdaTest
+import com.wys.kotlinlib.part04.*
 
 fun main(){
     println("hello kotlin")
@@ -18,7 +19,12 @@ fun main(){
 //    dataClassTest()
 //    sealedClassTest()
 //    highOrderFunctionTest()
-    lambdaTest()
+//    lambdaTest()
+//    collectionsTest()
+//    iterableTest()
+//    rangeTest()
+//    sequenceTest()
+    operateTest()
 }
 
 /**
