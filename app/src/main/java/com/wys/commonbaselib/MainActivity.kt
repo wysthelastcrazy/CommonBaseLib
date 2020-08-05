@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.aixuexi.jetpack.JetPackActivity
 import com.wys.commonbaselib.activity.*
 import com.wys.commonbaselib.kotlin.Day03
 import com.wys.commonbaselib.music.MusicListActivity
@@ -66,8 +67,8 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             R.id.btn_jetpack -> {
-//                intent = Intent(this, LoginActivity::class.java)
-//                startActivity(intent)
+                intent = Intent(this, JetPackActivity::class.java)
+                startActivity(intent)
             }
             R.id.btn_net -> {
                 intent = Intent(this, RequestActivity::class.java)

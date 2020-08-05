@@ -1,5 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aixuexi.jetpack">
 
-    /
+    <application>
+        <activity android:name=".viewmodel.MyActivity"></activity>
+        <activity android:name=".JetPackActivity" />
+    </application>
+
 </manifest>

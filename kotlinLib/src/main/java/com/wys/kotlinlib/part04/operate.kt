@@ -235,7 +235,7 @@ fun operateTest3(){
     println(listString)
 
     val numbers2 = (1..100).toList()
-    //limit--包含在结果中的元素数量
+    //limit--包含在结果中的元素数量，truncated超出数量后的替代文案（不过多出几个元素，此值只一次）
     println(numbers2.joinToString(limit = 10, truncated = "<...>"))
 
 }
