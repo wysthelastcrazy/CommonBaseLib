@@ -18,13 +18,7 @@ class JigsawGameView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
     constructor(context: Context?): this(context,null)
     private var dragViewGroup: DragViewGroup? = null
 
-    private var ivBackground: ImageView? = null
-
-    private var j1: ImageView? = null
-    private var j2: ImageView? = null
-    private var j3: ImageView? = null
-    private var j4: ImageView? = null
-
+    /**四个可拖动的控件*/
     private var iv1: ImageView? = null
     private var iv2: ImageView? = null
     private var iv3: ImageView? = null
@@ -54,46 +48,47 @@ class JigsawGameView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
         addView(dragViewGroup)
     }
     private fun initQuestions(){
-        ivBackground = ImageView(context)
-        val layoutParams = LayoutParams(itemSize*2+gap*3,itemSize*2+gap*3)
-        layoutParams.setMargins(marginX,marginTop,0,0)
-        ivBackground?.setImageResource(R.drawable.bg_jigsaw)
-        ivBackground?.layoutParams = layoutParams
+        dragViewGroup?.addLockView(ImageView(context).apply {
+            layoutParams = LayoutParams(itemSize*2+gap*3,itemSize*2+gap*3).apply {
+                setMargins(marginX,marginTop,0,0)
+            }
+            setImageResource(R.drawable.bg_jigsaw)
+        })
 
-        dragViewGroup?.addLockView(ivBackground)
 
-        j1 = ImageView(context)
-        val layoutParamsJ1 = LayoutParams(itemSize, itemSize)
-        layoutParamsJ1.setMargins(marginX + gap,marginTop + gap,0,0)
-        j1?.layoutParams = layoutParamsJ1
-        j1?.setBackgroundColor(Color.RED)
-        j1?.tag = 1
-        dragViewGroup?.addLockView(j1)
 
-        j2 = ImageView(context)
-        val layoutParamsJ2 = LayoutParams(itemSize, itemSize)
-        layoutParamsJ2.setMargins(marginX + itemSize + gap*2,marginTop + gap,0,0)
-        j2?.layoutParams = layoutParamsJ2
-        j2?.setBackgroundColor(Color.BLUE)
-        j2?.tag = 2
-        dragViewGroup?.addLockView(j2)
+        dragViewGroup?.addLockView(ImageView(context).apply {
+            layoutParams = LayoutParams(itemSize,itemSize).apply {
+                setMargins(marginX + gap,marginTop + gap,0,0)
+            }
+            setBackgroundColor(Color.RED)
+            tag = 1
+        })
 
-        j3 = ImageView(context)
-        val layoutParamsJ3 = LayoutParams(itemSize, itemSize)
-        layoutParamsJ3.setMargins(marginX + gap,marginTop + itemSize + gap*2,0,0)
-        j3?.layoutParams = layoutParamsJ3
-        j3?.setBackgroundColor(Color.YELLOW)
-        j3?.tag = 3
-        dragViewGroup?.addLockView(j3)
+        dragViewGroup?.addLockView(ImageView(context).apply {
+            layoutParams = LayoutParams(itemSize, itemSize).apply {
+                setMargins(marginX + itemSize + gap*2,marginTop + gap,0,0)
+            }
+            setBackgroundColor(Color.BLUE)
+            tag = 2
+        })
+        dragViewGroup?.addLockView(ImageView(context).apply {
+            layoutParams = LayoutParams(itemSize, itemSize).apply {
+                setMargins(marginX + gap,marginTop + itemSize + gap*2,0,0)
+            }
+            setBackgroundColor(Color.YELLOW)
+            tag = 3
+        })
 
-        j4 = ImageView(context)
-        val layoutParamsJ4 = LayoutParams(itemSize, itemSize)
-        layoutParamsJ4.setMargins(marginX + itemSize + gap*2,
-                marginTop + itemSize + gap*2,0,0)
-        j4?.layoutParams = layoutParamsJ4
-        j4?.setBackgroundColor(Color.GREEN)
-        j4?.tag = 4
-        dragViewGroup?.addLockView(j4)
+        dragViewGroup?.addLockView(ImageView(context).apply {
+            layoutParams = LayoutParams(itemSize, itemSize).apply {
+                setMargins(marginX + itemSize + gap*2,
+                        marginTop + itemSize + gap*2,0,0)
+            }
+            setBackgroundColor(Color.GREEN)
+            tag = 4
+
+        })
     }
     private fun initOptions(){
 

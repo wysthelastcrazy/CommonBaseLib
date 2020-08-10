@@ -213,8 +213,8 @@ class DragViewGroup(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
         //滚动到指定的位置，此方法只能在callback的onViewReleased()中调用。
         mViewDragHelper.settleCapturedViewAt(targetChild.x.toInt(),targetChild.y.toInt())
         invalidate()
-        //保证位置一样
-        dragChild.layoutParams = targetChild.layoutParams
+//        //保证位置一样
+//        dragChild.layoutParams = targetChild.layoutParams
     }
 
     /**
