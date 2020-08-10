@@ -221,14 +221,10 @@ class DragViewGroup(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) 
      * 未拖拽至指定位置是，自动返回之前的位置
      */
     private fun setViewGoBack(releasedChild: View){
-        Log.d(TAG,"[setViewGoBack] beforeX:$beforeX , beforeY:$beforeY")
-        Log.d(TAG,"[setViewGoBack] releasedChild:${releasedChild.left} , ${releasedChild.top}")
         if (positions.contains(Point(beforeX,beforeY))){
             mViewDragHelper.settleCapturedViewAt(beforeX,beforeY)
             invalidate()
         }
-//        mViewDragHelper.settleCapturedViewAt(800,100)
-//        invalidate()
     }
 
 

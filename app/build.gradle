@@ -71,6 +71,7 @@ dependencies {
     implementation project(':zxing')
     implementation project(':mediarecorder')
     implementation project(':jetpack')
+    implementation project(':Interview')
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 

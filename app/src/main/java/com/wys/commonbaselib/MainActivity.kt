@@ -12,6 +12,7 @@ import com.wys.commonbaselib.activity.*
 import com.wys.commonbaselib.kotlin.Day03
 import com.wys.commonbaselib.music.MusicListActivity
 import com.wys.commonbaselib.zxing.activity.CaptureActivity
+import com.wys.interview.android.ViewActivity
 
 /**
  * @author wangyasheng
@@ -72,6 +73,10 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.btn_net -> {
                 intent = Intent(this, RequestActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.btn_view ->{
+                intent = Intent(this, ViewActivity::class.java)
                 startActivity(intent)
             }
         }
