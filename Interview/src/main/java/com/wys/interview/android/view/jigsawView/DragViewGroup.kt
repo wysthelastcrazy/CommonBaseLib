@@ -1,10 +1,9 @@
-package com.wys.interview.android.view
+package com.wys.interview.android.view.jigsawView
 
 import android.content.Context
 import android.graphics.Point
 import android.graphics.Rect
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.RelativeLayout

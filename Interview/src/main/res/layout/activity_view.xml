@@ -17,7 +17,20 @@
         android:layout_height="200dp"
         android:background="#ffffff"
         android:visibility="gone"/>
-    <com.wys.interview.android.view.JigsawGameView
+    <com.wys.interview.android.view.jigsawView.JigsawGameView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+    <com.wys.interview.android.view.cannon.CannonView
+        android:id="@+id/cannon_view"
+        android:layout_width="@dimen/dp_600"
+        android:layout_height="@dimen/dp_308"
+        android:layout_centerInParent="true"
+        android:src="@drawable/cannon"
+        android:scaleType="fitXY"
+        android:background="#ff0000"
+        android:visibility="gone"/>
+    <com.wys.interview.android.view.cannon.CannonGameView
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </RelativeLayout>
