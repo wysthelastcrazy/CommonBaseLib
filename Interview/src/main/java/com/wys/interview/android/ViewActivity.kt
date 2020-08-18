@@ -6,11 +6,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import com.wys.interview.R
-import com.wys.interview.android.view.FirstView
-import com.wys.interview.android.view.cannon.CannonGameView
+import com.wys.interview.android.view.henCoder.FirstView
+import com.wys.interview.javaBase.ThreadNote
 import kotlinx.android.synthetic.main.activity_view.*
 
 class ViewActivity : AppCompatActivity(), View.OnClickListener {
@@ -32,6 +31,8 @@ class ViewActivity : AppCompatActivity(), View.OnClickListener {
         cannon_view.setImageDrawable(getDrawable(R.drawable.cannon))
         cannon_view.setOnClickListener(this)
         cannon_view.visibility = View.GONE
+
+        ThreadNote().test3()
 
     }
 

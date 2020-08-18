@@ -1,13 +1,19 @@
 package com.wys.interview.javaBase;
 
+import android.os.Build;
 import android.util.Log;
 
 import com.wys.interview.OuterClass;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 /**
  * @author wangyasheng
@@ -101,6 +107,23 @@ class JavaBase {
          */
     }
 
+    private static void testThread(){
+        MyThread thread = new MyThread();
+        thread.start();
+        thread.interrupt();
+    }
+    private static class MyThread extends Thread{
+        @Override
+        public void run() {
+            try {
+                sleep(1000);
+                Log.d("wys","[run]+++");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public boolean equals(@Nullable Object obj) {
         return super.equals(obj);
@@ -126,10 +149,19 @@ class EqualExample implements Cloneable{
      * @param o
      * @return
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        HashMap<String,String> map = new HashMap<>();
+        map.size();
+        map.forEach((key, value) -> {
+        });
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         EqualExample that = (EqualExample) o;
         return x == that.x &&
                 y == that.y &&

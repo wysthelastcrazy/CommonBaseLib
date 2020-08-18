@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import com.wys.baselib.utils.ResourceUtil
 import com.wys.interview.R
@@ -44,6 +45,7 @@ class CannonGameView constructor(context: Context?, attrs: AttributeSet? = null,
                 addRule(ALIGN_PARENT_BOTTOM)
             }
             setImageResource(R.drawable.cannon)
+            scaleType = ImageView.ScaleType.FIT_XY
         }
         addView(cannonView)
     }
