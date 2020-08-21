@@ -8,7 +8,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.RequiresApi
 import com.wys.interview.R
-import com.wys.interview.android.view.henCoder.FirstView
+import com.wys.interview.android.henCoder.view.FirstView
 import com.wys.interview.javaBase.ThreadNote
 import kotlinx.android.synthetic.main.activity_view.*
 

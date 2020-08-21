@@ -1,4 +1,4 @@
-package com.wys.interview.android.view.henCoder
+package com.wys.interview.android.henCoder.view
 
 import android.content.Context
 import android.graphics.Canvas

@@ -34,18 +34,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
-    <com.wys.interview.android.view.henCoder.FirstView
-        android:layout_width="@dimen/dp_200"
-        android:layout_height="@dimen/dp_200"
-        android:layout_centerVertical="true"/>
-    <com.wys.interview.android.view.henCoder.SecondView
-        android:layout_width="@dimen/dp_200"
-        android:layout_height="@dimen/dp_200"
-        android:layout_marginLeft="@dimen/dp_210"
-        android:layout_centerVertical="true"/>
-    <com.wys.interview.android.view.henCoder.ThirdView
-        android:layout_width="@dimen/dp_200"
-        android:layout_height="@dimen/dp_200"
-        android:layout_marginLeft="@dimen/dp_422"
-        android:layout_centerVertical="true"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.wys.interview.android.henCoder.view.FirstView
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_200"
+                android:layout_centerVertical="true"/>
+            <com.wys.interview.android.henCoder.view.SecondView
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_200"
+                android:layout_marginLeft="@dimen/dp_210"
+                android:layout_centerVertical="true"/>
+            <com.wys.interview.android.henCoder.view.ThirdView
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_200"
+                android:layout_marginLeft="@dimen/dp_422"
+                android:layout_centerVertical="true"
+                android:background="@null"/>
+        </RelativeLayout>
+    </ScrollView>
+
 </RelativeLayout>
