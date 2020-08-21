@@ -40,9 +40,64 @@ class ThirdView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : Vi
         /**
          * 1.1基础颜色
          *
-         * 1、Canvas.drawColor()/ARGB() - 颜色参数
-         * 2、Canvas.drawBitmap() - bitmap参数
-         * 3、Canvas图形和文字绘制 - paint color参数
+         * 像素的基本颜色，根据绘制内容的不同而有不同的控制方式：
+         * - Canvas.drawColor()/ARGB()：Canvas颜色填充；
+         * - Canvas.drawBitmap() ：直接由Bitmap对象提供；
+         * - Canvas图形和文字绘制：需要Paint color参数额外设置
+         *
+         * Paint设置颜色的方法有两种：
+         * - 直接使用Paint.setColor()/ARGB()来设置颜色；
+         * - 使用Shader来指定着色方案。
+         *
+         * 1.1.1 直接设置颜色
+         * 使用paint.setColor(int color)或paint.setARGB(int a,int r,int g,int b)
+         * 直接给paint设置蓝色。
+         *
+         * 1.1.2 设置Shader
+         * 除了直接设置颜色，Paint还可以使用Shader。
+         *
+         * Shader（着色器）不是Android独有的，它是图形领域里一个通用的概念，
+         * 它和直接设置颜色的区别是，着色器设置的是一个颜色方案，或者说是一套
+         * 着色规则。当设置Shader之后，Paint在绘制图形和文字时就不使用setColor()
+         * 设置的颜色了，而是使用Shader的方案中的颜色。
+         *
+         * 在Android的绘制里使用Shader时，使用它的几个子类：
+         *
+         * 1.1.2.1 LinearGradient：线性渐变
+         * 构造方法：LinearGradient(float x0,float y0,float x1,float y1,int color0,int color1,Shader.TileMode title)
+         * x0,y0：渐变的起点；
+         * x1,y1：渐变的终点；
+         * color0，color1：渐变的两个端点颜色；
+         * tile：端点范围只为的着色器规则，类型是TitleMode。
+         * TitleMode一共有三个值可选：
+         * - CLAMP：在端点之外延续端点处的颜色；
+         * - MIRROR：镜像模式；
+         * - REPEAT：重复模式。
+         *
+         * 1.1.2.2 RadialGradient：中心辐射渐变
+         * 构造方法：RadialGradient(float centerX,float centerY,float radius,int centerColor,int edgeColor,TitleMode title)
+         * centerX,centerY：辐射中心的坐标；
+         * radius：辐射半径；
+         * centerColor：辐射中心的颜色；
+         * edgeColor：辐射边缘的颜色；
+         * titleMode：辐射范围之外的着色模式。
+         *
+         * 1.1.2.3 SweepGradient：扫面渐变
+         * 构造函数SweepGradient(float cx,float cy,int color0,int color1)
+         * cx,cy：扫描的中心；
+         * color0：扫描的起始颜色；
+         * color1：扫面的终止颜色。
+         *
+         * 1.1.2.4 BitmapShader：使用Bitmap的像素最为图形或文字的填充
+         * 构造方法：BitmapShader(Bitmap bitmap,Shader.TileMode tileX,Shader.TileMode tileY)
+         * bitmap：用来做模版的Bitmap对象；
+         * tileX：横向的TileMode
+         * tileY：纵向的TileMode
+         *
+         * 1.1.2.5 ComposeShader混合着色器
+         * 构造方法：ComposeShader(Shader shaderA,Shader shaderB,PorterDuff.Mode mode)
+         * shaderA,shaderB：两个相继使用的Shader；
+         * mode：两个Shader的叠加模式。
          */
         color = Color.CYAN
 
