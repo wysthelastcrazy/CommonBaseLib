@@ -45,15 +45,22 @@
                 android:layout_width="@dimen/dp_200"
                 android:layout_height="@dimen/dp_200"
                 android:layout_centerVertical="true"/>
+
             <com.wys.interview.android.henCoder.view.SecondView
                 android:layout_width="@dimen/dp_200"
                 android:layout_height="@dimen/dp_200"
-                android:layout_marginLeft="@dimen/dp_210"
-                android:layout_centerVertical="true"/>
+                android:layout_marginLeft="@dimen/dp_210" />
+
             <com.wys.interview.android.henCoder.view.ThirdView
                 android:layout_width="@dimen/dp_200"
                 android:layout_height="@dimen/dp_200"
                 android:layout_marginLeft="@dimen/dp_422"
+                android:layout_centerVertical="true"
+                android:background="@null"/>
+            <com.wys.interview.android.henCoder.view.FourthView
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_200"
+                android:layout_marginLeft="@dimen/dp_640"
                 android:layout_centerVertical="true"
                 android:background="@null"/>
         </RelativeLayout>

@@ -98,8 +98,12 @@ class ThirdView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : Vi
          * 构造方法：ComposeShader(Shader shaderA,Shader shaderB,PorterDuff.Mode mode)
          * shaderA,shaderB：两个相继使用的Shader；
          * mode：两个Shader的叠加模式。
+         * 注意：ComposeShader()在硬件加速下是不支持两个相同类型的Shader的。
+         * PorterDuff.Mode 是用来指定两个图像共同绘制时的颜色策略，它是一个enum，一共有17中，
+         * 具体效果使用是自行搜索。
          */
         color = Color.CYAN
+//        shader =
 
         /**
          * 1.2 ColorFilter 为绘制设置颜色过滤。
