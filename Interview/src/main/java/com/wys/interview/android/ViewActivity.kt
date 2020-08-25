@@ -14,36 +14,29 @@ import kotlinx.android.synthetic.main.activity_view.*
 
 class ViewActivity : AppCompatActivity(), View.OnClickListener {
     companion object{
-        val TAG = "ViewActivity"
-        val s = javaClass.simpleName
+        val TAG = javaClass.simpleName
     }
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_view)
+//        ivAdv.setOnClickListener(this)
+//        cannon_view.setImageDrawable(getDrawable(R.drawable.cannon))
+//        cannon_view.setOnClickListener(this)
+//        cannon_view.visibility = View.GONE
 
-        ivAdv.setOnTouchListener { _: View, _: MotionEvent ->
-            true
-        }
-        ivAdv.setOnClickListener(this)
-        val view = FirstView(this)
-
-        cannon_view.setImageDrawable(getDrawable(R.drawable.cannon))
-        cannon_view.setOnClickListener(this)
-        cannon_view.visibility = View.GONE
-
-        ThreadNote().test3()
+//        ThreadNote().test3()
 
     }
 
     override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.ivAdv -> {
-                Log.d(TAG,"onClick")
-            }
-            R.id.cannon_view ->{
-                cannon_view.turnAngle(45f)
-            }
-        }
+//        when(v?.id){
+//            R.id.ivAdv -> {
+//                Log.d(TAG,"onClick")
+//            }
+//            R.id.cannon_view ->{
+//                cannon_view.turnAngle(45f)
+//            }
+//        }
     }
 }

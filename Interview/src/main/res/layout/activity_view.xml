@@ -34,36 +34,40 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>
-    <ScrollView
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:scrollbars="none"
         android:layout_centerVertical="true">
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <com.wys.interview.android.henCoder.view.FirstView
                 android:layout_width="@dimen/dp_200"
                 android:layout_height="@dimen/dp_200"
-                android:layout_centerVertical="true"/>
-
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"/>
             <com.wys.interview.android.henCoder.view.SecondView
                 android:layout_width="@dimen/dp_200"
                 android:layout_height="@dimen/dp_200"
-                android:layout_marginLeft="@dimen/dp_210" />
-
+                android:layout_marginRight="@dimen/dp_10"/>
             <com.wys.interview.android.henCoder.view.ThirdView
                 android:layout_width="@dimen/dp_200"
                 android:layout_height="@dimen/dp_200"
-                android:layout_marginLeft="@dimen/dp_422"
-                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp_10"
                 android:background="@null"/>
             <com.wys.interview.android.henCoder.view.FourthView
                 android:layout_width="@dimen/dp_200"
                 android:layout_height="@dimen/dp_200"
-                android:layout_marginLeft="@dimen/dp_640"
-                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp_10"
                 android:background="@null"/>
-        </RelativeLayout>
-    </ScrollView>
+            <com.wys.interview.android.henCoder.view.FiveView
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_200"
+                android:layout_marginRight="@dimen/dp_10"
+                android:background="#ffffff"/>
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </RelativeLayout>
