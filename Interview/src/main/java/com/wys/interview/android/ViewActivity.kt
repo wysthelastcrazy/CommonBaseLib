@@ -1,5 +1,9 @@
 package com.wys.interview.android
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
+import android.graphics.Color
+import android.graphics.PointF
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +13,8 @@ import android.view.View
 import androidx.annotation.RequiresApi
 import com.wys.interview.R
 import com.wys.interview.android.henCoder.view.FirstView
+import com.wys.interview.android.henCoder.view.evalutor.HsvEvaluator
+import com.wys.interview.android.henCoder.view.evalutor.PointFEvaluator
 import com.wys.interview.javaBase.ThreadNote
 import kotlinx.android.synthetic.main.activity_view.*
 
@@ -26,7 +32,29 @@ class ViewActivity : AppCompatActivity(), View.OnClickListener {
 //        cannon_view.visibility = View.GONE
 
 //        ThreadNote().test3()
+        sportView.startAnim(0f,65f)
+        val animator = ObjectAnimator.ofInt(
+                sixthView,
+                "color",
+                Color.parseColor("#ff00ffff"),
+                Color.parseColor("#ff00ff00")
+        )
+        animator.duration = 2000L
+        animator.setEvaluator(HsvEvaluator())
+//        animator.start()
+        val pointAnimator = ObjectAnimator.ofObject(
+                sixthView,
+                "position",
+                PointFEvaluator(),
+                PointF(0f,0f),
+                PointF(1f,1f)
 
+        )
+        pointAnimator.duration = 2000L
+
+        val animatorSet = AnimatorSet()
+        animatorSet.play(animator).with(pointAnimator)
+        animatorSet.start()
     }
 
     override fun onClick(v: View?) {

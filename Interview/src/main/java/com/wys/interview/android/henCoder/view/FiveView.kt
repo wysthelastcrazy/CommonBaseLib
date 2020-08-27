@@ -34,17 +34,17 @@ class FiveView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : Vie
              * 1、范围裁切
              * clipRect()和clipPath()
              */
-//            it.save()
-//            it.clipRect(0f,0f,measuredWidth.toFloat()/2f,measuredHeight.toFloat()/2f)
-//            it.drawBitmap(bitmap,0f,0f,paint)
-//            it.restore()
-//
-//            path.addCircle(3f*measuredWidth.toFloat()/4f,measuredHeight.toFloat()/2f,radius,Path.Direction.CW)
-//            it.save()
-//            it.clipPath(path)
-//            it.clipOutPath(path)
-//            it.drawBitmap(bitmap,0f,0f,paint)
-//            it.restore()
+            it.save()
+            it.clipRect(0f,0f,measuredWidth.toFloat()/2f,measuredHeight.toFloat()/2f)
+            it.drawBitmap(bitmap,0f,0f,paint)
+            it.restore()
+
+            path.addCircle(3f*measuredWidth.toFloat()/4f,measuredHeight.toFloat()/2f,radius,Path.Direction.CW)
+            it.save()
+            it.clipPath(path)
+            it.clipOutPath(path)
+            it.drawBitmap(bitmap,0f,0f,paint)
+            it.restore()
 
             /**
              * 2、几何变换
@@ -113,40 +113,39 @@ class FiveView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : Vie
              * 2.3.3 Camera.setLocation(x,y,z)设置虚拟相机的位置。
              * 参数的单位不是像素，而是inch（英尺）。
              */
-//            val matrix = Matrix()
-//            val pointSrc = floatArrayOf(
-//                    0f,0f,
-//                    bitmap.width.toFloat(),0f,
-//                    0f,bitmap.height.toFloat(),
-//                    bitmap.width.toFloat(),bitmap.height.toFloat()
-//            )
-//            val pointDst = floatArrayOf(
-//                    measuredWidth.toFloat()/4f,measuredHeight.toFloat()/4f,
-//                    measuredWidth.toFloat(),0f,
-//                    measuredWidth.toFloat()/4f,3f*measuredHeight.toFloat()/4f,
-//                   3f* measuredWidth.toFloat()/4f,3f*measuredHeight.toFloat()/4f
-//            )
+            val matrix = Matrix()
+            val pointSrc = floatArrayOf(
+                    0f,0f,
+                    bitmap.width.toFloat(),0f,
+                    0f,bitmap.height.toFloat(),
+                    bitmap.width.toFloat(),bitmap.height.toFloat()
+            )
+            val pointDst = floatArrayOf(
+                    measuredWidth.toFloat()/4f,measuredHeight.toFloat()/4f,
+                    measuredWidth.toFloat(),0f,
+                    measuredWidth.toFloat()/4f,3f*measuredHeight.toFloat()/4f,
+                   3f* measuredWidth.toFloat()/4f,3f*measuredHeight.toFloat()/4f
+            )
 //            val pointDst = floatArrayOf(
 //                    0f,0f,
 //                    measuredWidth.toFloat(),0f,
 //                    0f,measuredHeight.toFloat(),
 //                    measuredWidth.toFloat(),measuredHeight.toFloat()
 //            )
-//            matrix.reset()
-//            matrix.setPolyToPoly(pointSrc,0,pointDst,0,4)
-//            it.save()
-//            it.concat(matrix)
-//            it.drawBitmap(bitmap,0f,0f,paint)
-//            it.restore()
+            matrix.reset()
+            matrix.setPolyToPoly(pointSrc,0,pointDst,0,4)
+            it.save()
+            it.concat(matrix)
+            it.drawBitmap(bitmap,0f,0f,paint)
+            it.restore()
             val camera = Camera()
             it.save()
-            val matrix = Matrix().apply {
-                setScale(measuredWidth.toFloat()/bitmap.width .toFloat()/2f,
+            matrix.reset()
+            matrix.setScale(measuredWidth.toFloat()/bitmap.width .toFloat()/2f,
                         measuredHeight.toFloat()/bitmap.height.toFloat()/2f,
                         0f,
                         0f
                 )
-            }
             it.setMatrix(matrix)
             //保存Camera的状态
             camera.save()

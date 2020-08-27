@@ -43,10 +43,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_200"
+                android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                android:background="#ffffff">
+                <com.wys.interview.android.henCoder.view.SixthView
+                    android:id="@+id/sixthView"
+                    android:layout_width="@dimen/dp_80"
+                    android:layout_height="@dimen/dp_80"
+                    android:padding="@dimen/dp_10" />
+            </LinearLayout>
+
+            <com.wys.interview.android.henCoder.view.SportView
+                android:id="@+id/sportView"
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_200"
+                android:layout_marginRight="@dimen/dp_10"
+                android:background="#ffffff"/>
+            <com.wys.interview.android.henCoder.view.SpottedLinearLayout
+                android:layout_width="@dimen/dp_200"
+                android:layout_height="@dimen/dp_200"
+                android:layout_marginRight="@dimen/dp_10"
+                android:foreground="#88000000">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/img_j3" />
+            </com.wys.interview.android.henCoder.view.SpottedLinearLayout>
             <com.wys.interview.android.henCoder.view.FirstView
                 android:layout_width="@dimen/dp_200"
                 android:layout_height="@dimen/dp_200"
-                android:layout_marginLeft="@dimen/dp_10"
                 android:layout_marginRight="@dimen/dp_10"/>
             <com.wys.interview.android.henCoder.view.SecondView
                 android:layout_width="@dimen/dp_200"
