@@ -19,10 +19,14 @@ class JigsawGameView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int)
     private var dragViewGroup: DragViewGroup? = null
 
     /**四个可拖动的控件*/
-    private var iv1: ImageView? = null
-    private var iv2: ImageView? = null
-    private var iv3: ImageView? = null
-    private var iv4: ImageView? = null
+//    private var iv1: ImageView? = null
+//    private var iv2: ImageView? = null
+//    private var iv3: ImageView? = null
+//    private var iv4: ImageView? = null
+    private lateinit var iv1:ImageView
+    private lateinit var iv2:ImageView
+    private lateinit var iv3:ImageView
+    private lateinit var iv4:ImageView
 
     //itemSize 选项的大小
     private val itemSize = ResourceUtil.getDimen(context,R.dimen.dp_100).toInt()
