@@ -7,6 +7,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.Nullable;
 
 /**
@@ -25,6 +28,8 @@ class CustomView extends ViewGroup {
 
     public CustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        List<?> list = new ArrayList<Integer>();
+        list = new ArrayList<String>();
     }
 
     @Override

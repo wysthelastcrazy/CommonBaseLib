@@ -12,10 +12,12 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.RequiresApi
 import com.wys.interview.R
+import com.wys.interview.android.bean.Man
 import com.wys.interview.android.henCoder.view.FirstView
 import com.wys.interview.android.henCoder.view.evalutor.HsvEvaluator
 import com.wys.interview.android.henCoder.view.evalutor.PointFEvaluator
 import com.wys.interview.javaBase.ThreadNote
+import com.wys.interview.leetcode.MinStack
 import kotlinx.android.synthetic.main.activity_view.*
 
 class ViewActivity : AppCompatActivity(), View.OnClickListener {
@@ -55,8 +57,33 @@ class ViewActivity : AppCompatActivity(), View.OnClickListener {
         val animatorSet = AnimatorSet()
         animatorSet.play(animator).with(pointAnimator)
         animatorSet.start()
+
+        val man = Man()
+        val minStack = MinStack()
+        minStack.push(2)
+        minStack.push(-2)
+        minStack.push(3)
+        Log.d("ViewActivity1111","min = ${minStack.getMin()}")
+        Log.d("ViewActivity1111","top = ${minStack.top()}")
+        minStack.pop()
+        Log.d("ViewActivity1111","min = ${minStack.getMin()}")
+        Log.d("ViewActivity1111","top = ${minStack.top()}")
+        minStack.pop()
+        Log.d("ViewActivity1111","min = ${minStack.getMin()}")
+        Log.d("ViewActivity1111","top = ${minStack.top()}")
+        minStack.pop()
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+//        return super.dispatchTouchEvent(ev)
+        Log.d(TAG,"[dispatchTouchEvent]+++++++++++++++++++")
+        return onTouchEvent(ev)
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        Log.d(TAG,"[onTouchEvent]+++++++++++++++++++")
+        return super.onTouchEvent(event)
+    }
     override fun onClick(v: View?) {
 //        when(v?.id){
 //            R.id.ivAdv -> {

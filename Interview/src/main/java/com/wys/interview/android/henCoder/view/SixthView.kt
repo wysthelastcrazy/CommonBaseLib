@@ -1,5 +1,7 @@
 package com.wys.interview.android.henCoder.view
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -7,6 +9,7 @@ import android.graphics.Paint
 import android.graphics.PointF
 import android.os.Build
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.RequiresApi
 import com.wys.baselib.utils.ResourceUtil
@@ -57,5 +60,30 @@ class SixthView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : Vi
     fun setPosition(pointF: PointF){
         translationX = pointF.x*translation
         translationY = pointF.y*translation
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        event?.let {
+            when(it.action){
+                MotionEvent.ACTION_DOWN -> {
+                    val animatorX = ObjectAnimator.ofFloat(this,"scaleX",1.0f,1.3f)
+                    val animatorY = ObjectAnimator.ofFloat(this,"scaleY",1.0f,1.3f)
+                    val animatorSet = AnimatorSet()
+                    animatorSet.duration = 1000L
+                    animatorSet.play(animatorX).with(animatorY)
+                    animatorSet.start()
+                }
+                MotionEvent.ACTION_UP ->{
+                    val animatorX = ObjectAnimator.ofFloat(this,"scaleX",1.3f,1.0f)
+                    val animatorY = ObjectAnimator.ofFloat(this,"scaleY",1.3f,1.0f)
+                    val animatorSet = AnimatorSet()
+                    animatorSet.duration = 1000L
+                    animatorSet.play(animatorX).with(animatorY)
+                    animatorSet.start()
+                }
+            }
+        }
+
+        return true
     }
 }
