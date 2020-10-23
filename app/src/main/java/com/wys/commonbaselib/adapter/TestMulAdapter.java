@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-import com.wys.commonbaselib.R;
+import com.aixuexi.gushi.R;
 import com.wys.module_common_ui.widget.recycler.adapter.BaseMultiTypeRecyclerAdapter;
 import com.wys.module_common_ui.widget.recycler.adapter.BaseViewHolder;
 

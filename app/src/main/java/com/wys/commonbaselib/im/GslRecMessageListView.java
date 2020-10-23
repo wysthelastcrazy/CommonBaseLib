@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.wys.commonbaselib.R;
+import com.aixuexi.gushi.R;
 import com.wys.module_common_ui.widget.recycler.XRecyclerView;
 
 import java.io.IOException;

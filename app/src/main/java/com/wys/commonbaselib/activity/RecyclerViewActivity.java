@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.wys.commonbaselib.R;
+import com.aixuexi.gushi.R;
 import com.wys.commonbaselib.adapter.TestAdapter;
 import com.wys.commonbaselib.adapter.TestMulAdapter;
 import com.wys.module_common_ui.widget.RandomCodeView;

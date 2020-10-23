@@ -16,11 +16,11 @@ import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.aixuexi.gushi.R;
 import com.google.zxing.Result;
 import com.gushi.zxing.QRDecodingManager;
 import com.gushi.zxing.camera.CameraManager;
 import com.gushi.zxing.view.ViewfinderView;
-import com.wys.commonbaselib.R;
 
 import java.io.IOException;
 

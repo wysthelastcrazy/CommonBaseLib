@@ -33,7 +33,7 @@ class ViewActivity : AppCompatActivity(), View.OnClickListener {
 //        cannon_view.setOnClickListener(this)
 //        cannon_view.visibility = View.GONE
 
-//        ThreadNote().test3()
+        ThreadNote().test4()
         sportView.startAnim(0f,65f)
         val animator = ObjectAnimator.ofInt(
                 sixthView,

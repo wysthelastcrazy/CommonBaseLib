@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.wys.commonbaselib.R;
+import com.aixuexi.gushi.R;
 import com.wys.commonbaselib.adapter.ViewPagerAdapter;
 
 import java.util.ArrayList;

@@ -9,7 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.wys.commonbaselib.R;
+import com.aixuexi.gushi.R;
+
 
 /**
  * Created by yas on 2019/9/23

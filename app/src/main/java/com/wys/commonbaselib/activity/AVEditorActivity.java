@@ -6,7 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import com.wys.commonbaselib.R;
+import com.aixuexi.gushi.R;
+
 
 public class AVEditorActivity extends AppCompatActivity implements View.OnClickListener {
     private RelativeLayout rl_video;

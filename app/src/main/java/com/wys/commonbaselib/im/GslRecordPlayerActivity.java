@@ -19,7 +19,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.wys.commonbaselib.R;
+
+import com.aixuexi.gushi.R;
 
 import java.io.IOException;
 import java.util.ArrayList;

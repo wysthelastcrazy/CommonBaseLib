@@ -16,11 +16,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.aixuexi.gushi.R;
 import com.wys.m3u8.IDownloadListener;
 import com.wys.m3u8.M3U8DownloadManager;
 import com.wys.m3u8.M3U8DownloadRecord;
 import com.wys.m3u8.M3U8DownloadRequest;
-import com.wys.commonbaselib.R;
 import com.wys.commonbaselib.adapter.M3U8TaskListAdapter;
 import com.wys.module_common_ui.widget.recycler.XRecyclerView;
 

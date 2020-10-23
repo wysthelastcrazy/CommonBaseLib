@@ -18,7 +18,7 @@ import android.widget.RemoteViews;
 
 import com.aigushi.videoplayer.CustomAudioPlayer;
 import com.aigushi.videoplayer.IMediaPlayListener;
-import com.wys.commonbaselib.R;
+import com.aixuexi.gushi.R;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

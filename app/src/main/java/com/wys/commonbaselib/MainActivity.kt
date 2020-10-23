@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.aixuexi.gushi.R
 import com.aixuexi.jetpack.JetPackActivity
 import com.wys.commonbaselib.activity.*
 import com.wys.commonbaselib.kotlin.Day03

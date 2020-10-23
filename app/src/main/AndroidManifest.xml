@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wys.commonbaselib">
+    package="com.aixuexi.gushi">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name=".MApp"
+        android:name="com.wys.commonbaselib.MApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,45 +21,50 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity
-            android:name=".activity.MediaRecorderActivity"
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|screenSize"
+            android:exported="true"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.wys.commonbaselib.activity.MediaRecorderActivity"
             android:configChanges="screenSize|keyboardHidden|orientation"
             android:screenOrientation="landscape" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.wys.commonbaselib.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".music.MusicDetailActivity" />
-        <activity android:name=".music.MusicListActivity" />
+        <activity android:name="com.wys.commonbaselib.music.MusicDetailActivity" />
+        <activity android:name="com.wys.commonbaselib.music.MusicListActivity" />
 
         <service
-            android:name=".music.MusicService"
+            android:name="com.wys.commonbaselib.music.MusicService"
             android:enabled="true"
             android:exported="true" />
 
         <activity
-            android:name=".zxing.activity.CaptureActivity"
+            android:name="com.wys.commonbaselib.zxing.activity.CaptureActivity"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".activity.M3U8DownloadActivity"
+            android:name="com.wys.commonbaselib.activity.M3U8DownloadActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.VideoPlayerActivity" />
+        <activity android:name="com.wys.commonbaselib.activity.VideoPlayerActivity" />
         <activity
-            android:name=".activity.DownloadActivity"
+            android:name="com.wys.commonbaselib.activity.DownloadActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".im.GslRecordPlayerActivity"
+            android:name="com.wys.commonbaselib.im.GslRecordPlayerActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".activity.AVEditorActivity" />
-        <activity android:name=".activity.RecyclerViewActivity" />
-        <activity android:name=".activity.RequestActivity" />
-        <activity android:name=".activity.PhotoListActivity" />
+        <activity android:name="com.wys.commonbaselib.activity.AVEditorActivity" />
+        <activity android:name="com.wys.commonbaselib.activity.RecyclerViewActivity" />
+        <activity android:name="com.wys.commonbaselib.activity.RequestActivity" />
+        <activity android:name="com.wys.commonbaselib.activity.PhotoListActivity" />
         <activity
-            android:name=".activity.BigPhotoActivity"
+            android:name="com.wys.commonbaselib.activity.BigPhotoActivity"
             android:theme="@style/TransparentTheme" />
-        <activity android:name=".activity.VideoListActivity" />
+        <activity android:name="com.wys.commonbaselib.activity.VideoListActivity" />
     </application>
 
 </manifest>

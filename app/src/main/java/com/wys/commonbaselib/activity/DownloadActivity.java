@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.wys.commonbaselib.R;
+import com.aixuexi.gushi.R;
 import com.wys.commonbaselib.adapter.TaskListAdapter;
 import com.wys.downloader.DownloadManager;
 import com.wys.downloader.DownloadRecord;

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.aixuexi.jetpack.bean.User
+import kotlinx.coroutines.delay
 import java.util.logging.Handler
 
 /**
@@ -12,19 +13,28 @@ import java.util.logging.Handler
  * @Describe:
  */
 class MyViewModel : ViewModel() {
-    private val users: MutableLiveData<List<User>> by lazy {
-        MutableLiveData<List<User>>().also {
+    private val users: MutableLiveData<MutableList<User>> by lazy {
+        MutableLiveData<MutableList<User>>().also {
             loadUsers(it)
         }
     }
-    fun getUsers(): LiveData<List<User>>{
+    private val name: MutableLiveData<String> by lazy {
+        MutableLiveData<String>().also {
+            it.value = "init"
+        }
+    }
+    fun getName():LiveData<String>{
+        return name
+    }
+    fun getUsers(): LiveData<MutableList<User>>{
         return users
     }
-    private fun loadUsers(it:MutableLiveData<List<User>>){
+    private fun loadUsers(it:MutableLiveData<MutableList<User>>){
         //do an asynchronous operation to fetch users
-        it.value = listOf(User("wys",18),User("dnd",16))
+        it.value = mutableListOf(User("wys",18),User("dnd",16))
     }
     fun updateUser(){
-        users.value = listOf(User("wys",18),User("dnd",16))
+        users.value = mutableListOf(User("wys",18),User("dnd",16))
+//        users.value?.add(User("dnd",16))
     }
 }

@@ -13,7 +13,8 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.wys.commonbaselib.R;
+import com.aixuexi.gushi.R;
+
 
 public class MusicDetailActivity extends AppCompatActivity implements IGSMusicPlayListener {
    private final String TAG = "MusicDetailActivity";

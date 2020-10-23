@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.aixuexi.gushi.R;
 import com.gaosiedu.mediarecorder.audio.AudioRecord;
 import com.gaosiedu.mediarecorder.camera.CCamera;
 import com.gaosiedu.mediarecorder.camera.CameraPreviewView;
@@ -22,7 +23,6 @@ import com.gaosiedu.mediarecorder.listener.OnNativeCallbackPCMDataListener;
 import com.gaosiedu.mediarecorder.shader.PROGRAM;
 import com.gaosiedu.mediarecorder.util.CameraUtil;
 import com.gaosiedu.mediarecorder.util.DisplayUtil;
-import com.wys.commonbaselib.R;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

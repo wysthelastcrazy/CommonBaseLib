@@ -7,7 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-import com.wys.commonbaselib.R;
+import com.aixuexi.gushi.R;
+
 
 /**
  * @author wangyasheng

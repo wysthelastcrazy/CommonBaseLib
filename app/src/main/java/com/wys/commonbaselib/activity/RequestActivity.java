@@ -8,13 +8,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.aixuexi.gushi.R;
 import com.wys.baselib.net.GSRequest;
 import com.wys.baselib.net.RequestHeaders;
 import com.wys.baselib.net.RequestParam;
 import com.wys.baselib.net.callback.IDownloadCallback;
 import com.wys.baselib.net.ext.ProgressRequestListener;
 import com.wys.baselib.utils.ScreenUtil;
-import com.wys.commonbaselib.R;
 import com.wys.commonbaselib.bean.UserBean;
 import com.wys.commonbaselib.net.BusinessCallback;
 import com.wys.commonbaselib.utils.Md5Util;

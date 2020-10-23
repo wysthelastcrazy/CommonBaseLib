@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.wys.commonbaselib.R;
+import com.aixuexi.gushi.R;
 import com.wys.commonbaselib.bean.VideoBean;
 import com.wys.module_common_ui.widget.recycler.adapter.BaseRecyclerAdapter;
 import com.wys.module_common_ui.widget.recycler.adapter.BaseViewHolder;

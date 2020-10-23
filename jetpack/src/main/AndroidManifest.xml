@@ -3,7 +3,7 @@
     package="com.aixuexi.jetpack">
 
     <application>
-        <activity android:name=".viewmodel.MyActivity"></activity>
+        <activity android:name=".ViewModelActivity"></activity>
         <activity android:name=".JetPackActivity" />
     </application>
 

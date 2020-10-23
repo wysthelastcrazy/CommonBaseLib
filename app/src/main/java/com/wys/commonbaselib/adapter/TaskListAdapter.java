@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.wys.commonbaselib.R;
+import com.aixuexi.gushi.R;
 import com.wys.downloader.DownloadManager;
 import com.wys.downloader.DownloadRecord;
 import com.wys.module_common_ui.widget.recycler.adapter.BaseRecyclerAdapter;

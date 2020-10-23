@@ -17,6 +17,7 @@ class MApp : Application() {
         ScreenUtil.init(this, ScreenUtil.VERTICAL)
         BaseLib.initRequest(RequestConfig())
         handler = Handler(Looper.getMainLooper())
+
     }
 
     companion object {
