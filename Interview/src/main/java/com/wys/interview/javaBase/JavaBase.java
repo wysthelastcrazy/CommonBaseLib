@@ -20,7 +20,7 @@ import androidx.annotation.RequiresApi;
  * @date 2020/8/5
  * @Describe:
  */
-class JavaBase{
+public class JavaBase{
     private static final String TAG = "JavaBase";
     public static void test(){
         testInteger();
