@@ -117,7 +117,7 @@ class SportView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : Vi
      * 很多使用，用不到它。在想要做动画的属性却没有setter/getter方法的时候，才会用到。
      * ValueAnimator是ObjectAnimator的父类，实际上ValueAnimator就是一个不能
      * 指定目标对象的ObjectAnimator。ObjectAnimator是自动调用目标对象的setter方法
-     * 来更新目标属性的值，以及跟多时候还会一次来改变目标对象的UI。而ValueAnimator
+     * 来更新目标属性的值，以及更多时候还会以此来改变目标对象的UI。而ValueAnimator
      * 只是通过渐变的方式来改变一个独立的数据，这个数据不是属于某个对象的，至于在数据
      * 更新后要做什么是，全都有自己定义。
      */
@@ -125,7 +125,7 @@ class SportView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : Vi
     /**
      * 总结
      * ViewPropertyAnimator、ObjectAnimator、ValueAnimator这三种Animator，
-     * 它们其实是一种递进的关系：从左到右一次变得更加难用，也更加灵活。它们的性能是一样的，
+     * 它们其实是一种递进的关系：从左到右以此变得更加难用，也更加灵活。它们的性能是一样的，
      * 因为ViewPropertyAnimator和ObjectAnimator的内部实现其实都是ValueAnimator。
      * 它们的差别只是使用的便捷性以及功能的灵活性。
      * 所以在实际使用的时候，尽量用简单的。

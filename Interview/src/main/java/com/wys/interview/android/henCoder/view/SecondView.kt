@@ -88,7 +88,7 @@ class SecondView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : V
          *          float sweepAngle,boolean useCenter,Paint paint)
          * drawArc()是使用一个椭圆来描述弧形的。
          * left,top,right,bottom描述的是这个弧形所在的椭圆；
-         * startAngle是弧形的其实角度（x轴的正向是0度的位置；顺时针为正角度，逆时针为负角度），
+         * startAngle是弧形的起始角度（x轴的正向是0度的位置；顺时针为正角度，逆时针为负角度），
          * sweepAngle是弧形划过的角度；
          * useCenter表示是否链接到圆心，如果不连接到圆心，就是弧形，如果链接到
          * 圆心就是扇形。

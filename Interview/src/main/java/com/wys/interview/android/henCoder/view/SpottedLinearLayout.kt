@@ -23,7 +23,7 @@ class SpottedLinearLayout(context: Context?, attrs: AttributeSet?, defStyleAttr:
      * 绘制过程简述
      *
      * 绘制过程中最典型的两个部分就是主体和子View，除此之外，绘制过程还包含
-     * 一些其他内容的绘制。一个完整的绘制过程会一次绘制一下几个内容:
+     * 一些其他内容的绘制。一个完整的绘制过程会依次绘制一下几个内容:
      * - 背景；
      * - 主体（onDraw()）；
      * - 子View(dispatchDraw())；
