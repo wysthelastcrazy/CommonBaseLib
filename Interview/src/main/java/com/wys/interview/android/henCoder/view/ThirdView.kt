@@ -51,7 +51,7 @@ class ThirdView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : Vi
          *
          * 1.1.1 直接设置颜色
          * 使用paint.setColor(int color)或paint.setARGB(int a,int r,int g,int b)
-         * 直接给paint设置蓝色。
+         * 直接给paint设置颜色。
          *
          * 1.1.2 设置Shader
          * 除了直接设置颜色，Paint还可以使用Shader。
@@ -68,7 +68,7 @@ class ThirdView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : Vi
          * x0,y0：渐变的起点；
          * x1,y1：渐变的终点；
          * color0，color1：渐变的两个端点颜色；
-         * tile：端点范围只为的着色器规则，类型是TitleMode。
+         * tile：端点范围之外的着色器规则，类型是TitleMode。
          * TitleMode一共有三个值可选：
          * - CLAMP：在端点之外延续端点处的颜色；
          * - MIRROR：镜像模式；
@@ -88,7 +88,7 @@ class ThirdView(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : Vi
          * color0：扫描的起始颜色；
          * color1：扫面的终止颜色。
          *
-         * 1.1.2.4 BitmapShader：使用Bitmap的像素最为图形或文字的填充
+         * 1.1.2.4 BitmapShader：使用Bitmap的像素作为图形或文字的填充
          * 构造方法：BitmapShader(Bitmap bitmap,Shader.TileMode tileX,Shader.TileMode tileY)
          * bitmap：用来做模版的Bitmap对象；
          * tileX：横向的TileMode
