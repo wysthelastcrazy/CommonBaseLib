@@ -1,3 +1,5 @@
+include ':leetcode'
+include ':rxJava'
 include ':shareLib'
 include ':jetpack'
 include ':Interview'
