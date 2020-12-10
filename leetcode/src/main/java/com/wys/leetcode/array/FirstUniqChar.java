@@ -1,4 +1,4 @@
-package com.wys.leetcode;
+package com.wys.leetcode.array;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

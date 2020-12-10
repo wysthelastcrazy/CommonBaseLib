@@ -1,4 +1,4 @@
-package com.wys.leetcode;
+package com.wys.leetcode.linkedList;
 
 /**
  * @author wangyasheng
