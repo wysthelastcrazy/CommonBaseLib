@@ -41,6 +41,14 @@ class ReversePrint {
         }
         return print;
     }
+
+    /**
+     * 方法二：双循环
+     * 时间复杂度O(N):需要遍历两次链表
+     * 空间复杂度O(1):除了返回的数组，只有常量的局部变量
+     * @param head
+     * @return
+     */
     public int[] reversePrint2(ListNode head){
         ListNode cur = head;
         int size = 0;
